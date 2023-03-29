@@ -1,0 +1,558 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Android Studio Part 5 | Lptexas</title><meta name="keywords" content="APP开发"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="多媒体播放与录制音频播放 通过MediaPlayer提供的方法，可以播放不同来源的音乐文件（res资源中、存储器中、或者网络）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Studio Part 5">
+<meta property="og:url" content="http://asucanyh-cn.github.io/posts/218529466/index.html">
+<meta property="og:site_name" content="Lptexas">
+<meta property="og:description" content="多媒体播放与录制音频播放 通过MediaPlayer提供的方法，可以播放不同来源的音乐文件（res资源中、存储器中、或者网络）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://lptexas.top/img/post/android.png">
+<meta property="article:published_time" content="2022-10-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-14T12:21:23.000Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="APP开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://lptexas.top/img/post/android.png"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="http://asucanyh-cn.github.io/posts/218529466/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"P2ZV0B43D6","apiKey":"f12489b76b57b857a0c03a13554bffc8","indexName":"prod_HEXO_SEARCH","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android Studio Part 5',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-14 20:21:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><script type="text/javascript" src="/js/banf12.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/schedule_style.css"><link rel="stylesheet" href="/css/hexoAdmonition.css"><link rel="stylesheet" href="/css/function.min.css"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.3.2/sakana.min.js"></script><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Lptexas" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">85</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('http://lptexas.top/img/post/android.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lptexas</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android Studio Part 5<a class="post-edit-link" href="https://github.com/asucanyh-cn/blog-source/edit/main/source/_posts/Android Studio Part5.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-24T16:00:00.000Z" title="发表于 2022-10-25 00:00:00">2022-10-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-14T12:21:23.000Z" title="更新于 2023-03-14 20:21:23">2023-03-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%BB%E5%8A%A8%E8%BD%AF%E4%BB%B6%E6%8A%80%E6%9C%AF/">移动软件技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android Studio Part 5"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="多媒体播放与录制"><a href="#多媒体播放与录制" class="headerlink" title="多媒体播放与录制"></a>多媒体播放与录制</h1><h2 id="音频播放"><a href="#音频播放" class="headerlink" title="音频播放"></a>音频播放</h2><blockquote>
+<p>通过MediaPlayer提供的方法，可以播放不同来源的音乐文件（res资源中、存储器中、或者网络）</p>
+</blockquote>
+<h3 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h3><ol>
+<li>构建MediaPlayer对象</li>
+</ol>
+<p>对于不同来源的音频文件，采用不同的方法</p>
+<p>（1）res资源</p>
+<p>存储在应用程序apk中res目录下，使用<code>create()</code>方法创建MediaPlayer对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MediaPlayer mplayer=MediaPlayer.create(<span class="built_in">this</span>,R.raw.&lt;文件名&gt;)</span><br></pre></td></tr></table></figure>
+
+<p>注：<code>create()</code>方法中已经封装了初始化及同步的方法，故不需要再进行<code>setDataSource()</code>初始化以及<code>prepare()</code>同步操作。</p>
+<p>（2）存储</p>
+<ul>
+<li><code>new()</code>创建MediaPlayer对象</li>
+<li>调用<code>setDataSource()</code>设置多媒体来源</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MediaPlayer mplayer=<span class="keyword">new</span> <span class="title class_">MediaPlayer</span>();</span><br><span class="line">mplayer.setDataSource(<span class="string">&#x27;PATH&#x27;</span>);</span><br><span class="line">mplayer.prepare();</span><br></pre></td></tr></table></figure>
+
+<p>注：</p>
+<ul>
+<li>PATH&#x3D;Environment.getExternalStoragePublicDirectory(Environment.&lt;目录名&gt;)+”&#x2F;&lt;文件名&gt;.mp3”</li>
+<li><a target="_blank" rel="noopener" href="https://lptexas.top/posts/2046905900/#%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95">更多方法见上一节</a></li>
+</ul>
+<h2 id="视频播放"><a href="#视频播放" class="headerlink" title="视频播放"></a>视频播放</h2><p>Android实现视频播放的应用程序有两种： </p>
+<ul>
+<li>MediaPlayer + SurfaceView<ul>
+<li>此方法是基础，可以编程控制播 放器的大小和位置。（Widgets&#x2F;SurfaceView）</li>
+</ul>
+</li>
+<li>MediaController + VideoView<ul>
+<li>此方法使用起来更方便，但由于是Android封装好的类，播放器的大小、位置等都不接受编程控制。（widgets&#x2F;VideoView)</li>
+</ul>
+</li>
+</ul>
+<h3 id="MediaPlayer-SurfaceView"><a href="#MediaPlayer-SurfaceView" class="headerlink" title="MediaPlayer + SurfaceView"></a>MediaPlayer + SurfaceView</h3><h4 id="访问内部存储"><a href="#访问内部存储" class="headerlink" title="访问内部存储"></a>访问内部存储</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mSurfaceView = (SurfaceView) findViewById(R.id.surfaceView);</span><br><span class="line">mediaPlayer = <span class="keyword">new</span> <span class="title class_">MediaPlayer</span>();</span><br><span class="line">mediaPlayer = MediaPlayer.create(<span class="built_in">this</span>,R.raw.video);</span><br><span class="line">mediaPlayer.setDisplay(sh);</span><br><span class="line">mediaPlayer.start();</span><br></pre></td></tr></table></figure>
+
+<h4 id="访问外部存储"><a href="#访问外部存储" class="headerlink" title="访问外部存储"></a>访问外部存储</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mSurfaceView = (SurfaceView) findViewById(R.id.surfaceView);</span><br><span class="line">mediaPlayer = <span class="keyword">new</span> <span class="title class_">MediaPlayer</span>();</span><br><span class="line"><span class="comment">//设置数据源</span></span><br><span class="line">path=getExternalFilesDir(<span class="literal">null</span>)+<span class="string">&quot;/video.mp4&quot;</span></span><br><span class="line">mediaPlayer.setDataSource(path);</span><br><span class="line"><span class="comment">//设置sh</span></span><br><span class="line"><span class="type">SurfaceHolder</span> <span class="variable">sh</span> <span class="operator">=</span> mSurfaceView.getHolder();</span><br><span class="line">mediaPlayer.setDisplay(sh);</span><br><span class="line">mediaPlayer.prepare()</span><br><span class="line">mediaPlayer.start();</span><br></pre></td></tr></table></figure>
+
+<h3 id="MediaController-VideoView"><a href="#MediaController-VideoView" class="headerlink" title="MediaController + VideoView"></a>MediaController + VideoView</h3><blockquote>
+<p>VideoView是系统自带的视频播放控件，自带进度条、暂停、播 放等功能，使用起来比较简单。（Widgets&#x2F;VideoView）</p>
+</blockquote>
+<p>只需要为控件设置好播放路径，判断监听是否准备就绪，直接播 放即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//新建对象</span></span><br><span class="line">mVideoView = (VideoView) findViewById(R.id.video);</span><br><span class="line">mMediaController = <span class="keyword">new</span> <span class="title class_">MediaController</span>(<span class="built_in">this</span>); <span class="comment">//调用构造器完成初始化</span></span><br><span class="line"><span class="comment">//设置</span></span><br><span class="line"><span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> getExternalFilesDir(<span class="literal">null</span>) + <span class="string">&quot;/sample.3gp&quot;</span>;</span><br><span class="line">mVideoView.setVideoPath(path);</span><br><span class="line">mMediaController.setMediaPlayer(mVideoView); <span class="comment">//关联控制器与视频</span></span><br><span class="line">mVideoView.setMediaController(mMediaController); <span class="comment">//关联视频与控制器</span></span><br><span class="line">mVideoView.start();</span><br></pre></td></tr></table></figure>
+
+<h2 id="录音与拍照"><a href="#录音与拍照" class="headerlink" title="录音与拍照"></a>录音与拍照</h2><blockquote>
+<p>Android系统提供了两种API用于实现录音功能：<code>AudioRecord</code>和 <code>MediaRecorder</code>。</p>
+</blockquote>
+<h3 id="MediaRecorder"><a href="#MediaRecorder" class="headerlink" title="MediaRecorder"></a>MediaRecorder</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mRecorder = <span class="keyword">new</span> <span class="title class_">MeidaRecorder</span>();</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="补充：设置监听的方法"><a href="#补充：设置监听的方法" class="headerlink" title="补充：设置监听的方法"></a>补充：设置监听的方法</h1><h2 id="利用已有类"><a href="#利用已有类" class="headerlink" title="利用已有类"></a>利用已有类</h2><p>直接利用现有的类，设置监听接口，绑定监听对象，重写监听方法。</p>
+<h2 id="新建一个类"><a href="#新建一个类" class="headerlink" title="新建一个类"></a>新建一个类</h2><h1 id="退出方法"><a href="#退出方法" class="headerlink" title="退出方法"></a>退出方法</h1><p>实现保留数据，退出Activity的方法总结</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">startActivityForResult()</span><br><span class="line"></span><br><span class="line">finish()	</span><br></pre></td></tr></table></figure>
+
+<p>实现退出功能的方法</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.<span class="keyword">exit</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="startActivityForResult"><a href="#startActivityForResult" class="headerlink" title="startActivityForResult"></a><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/75eccd29c229">startActivityForResult</a></h2><blockquote>
+<p>第一个Activity打开第二个Activity，第二个Activity关闭后需要返回数据给第一个Activity。</p>
+</blockquote>
+<h3 id="重写onActivityResult-方法"><a href="#重写onActivityResult-方法" class="headerlink" title="重写onActivityResult()方法"></a>重写onActivityResult()方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onActivityResult</span><span class="params">(<span class="type">int</span> requestCode, <span class="type">int</span> resultCode, Intent data)</span>&#123;</span><br><span class="line">	<span class="built_in">super</span>.onActivityResult(requestCode,resultCode,data);</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>当第二个Activity关闭时，返回第一个Activity，在第一个Activity中重写onActivityResult方法，数据可以从data中取出（以String类型和图片类型的数据为例）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> data.getExtras().getString(<span class="string">&quot;result&quot;</span>);<span class="comment">//得到新Activity 关闭后返回的数据</span></span><br><span class="line"><span class="type">Bitmap</span> <span class="variable">bitmap</span> <span class="operator">=</span> (Bitmap) data.getExtras().get(<span class="string">&quot;data&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="AndroidManifest详解"><a href="#AndroidManifest详解" class="headerlink" title="AndroidManifest详解"></a><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3b5b89d4e154">AndroidManifest详解</a></h1><blockquote>
+<p>从上到下</p>
+</blockquote>
+<h2 id="lt-manifest-gt-元素"><a href="#lt-manifest-gt-元素" class="headerlink" title="&lt;manifest&gt;元素"></a>&lt;manifest&gt;元素</h2><p>首先，所有的xml都必须包含&lt;manifest&gt;元素。这是文件的根节点。它必须要包含&lt;application&gt;元素，并且指明xmlns:android和package属性。</p>
+<h3 id="xmlns-android"><a href="#xmlns-android" class="headerlink" title="xmlns:android"></a>xmlns:android</h3><p>这个属性定义了Android命名空间。必须设置成”<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=http://schemas.android.com/apk/res/android">http://schemas.android.com/apk/res/android</a>“。不要手动修改。</p>
+<h3 id="xmlns-tools"><a href="#xmlns-tools" class="headerlink" title="xmlns:tools"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yejiurui/p/4962286.html">xmlns:tools</a></h3><p>定义了tools命名空间，tools可以告诉Android Studio，哪些属性在运行的时候是被忽略的，只在设计布局的时候有效。</p>
+<h3 id="package"><a href="#package" class="headerlink" title="package"></a>package</h3><p>这是一个完整的Java语言风格包名。包名由英文字母（大小写均可）、数字和下划线组成。每个独立的名字必须以字母开头。</p>
+<p>构建APK的时候，构建系统使用这个属性来做两件事：</p>
+<ul>
+<li>1、生成R.java类时用这个名字作为命名空间（用于访问APP的资源）<br> 比如：package被设置成com.sample.teapot，那么生成的R类就是：com.sample.teapot.R</li>
+<li>2、用来生成在manifest文件中定义的类的完整类名。比如package被设置成com.sample.teapot，并且activity元素被声明成<activity android:name=".MainActivity">，完整的类名就是com.sample.teapot.MainActivity。</li>
+</ul>
+<p>包名也代表着唯一的application ID，用来发布应用。但是，要<em>注意</em>的一点是：在APK构建过程的最后一步，package名会被build.gradle文件中的applicationId属性取代。如果这两个属性值一样，那么万事大吉，如果不一样，那就要小心了。</p>
+<h3 id="android-versionCode"><a href="#android-versionCode" class="headerlink" title="android:versionCode"></a>android:versionCode</h3><p>内部的版本号。用来表明哪个版本更新。这个数字不会显示给用户。显示给用户的是versionName。这个数字必须是整数。不能用16进制，也就是说不接受”0x1”这种参数</p>
+<h3 id="android-versionName"><a href="#android-versionName" class="headerlink" title="android:versionName"></a>android:versionName</h3><p>显示给用户看的版本号。</p>
+<h2 id="lt-application-gt-元素"><a href="#lt-application-gt-元素" class="headerlink" title="&lt;application&gt;元素"></a>&lt;application&gt;元素</h2><p>此元素描述了应用的配置。这是一个必备的元素，它包含了很多子元素来描述应用的组件，它的属性影响到所有的子组件。许多属性（例如icon、label、permission、process、taskAffinity和allowTaskReparenting）都可以设置成默认值。</p>
+<h3 id="android-allowBackup"><a href="#android-allowBackup" class="headerlink" title="android:allowBackup"></a>android:allowBackup</h3><p>表示是否允许APP加入到备份还原的结构中。如果设置成false，那么应用就不会备份还原。默认值为true。</p>
+<h3 id="android-dataExtractionRules"><a href="#android-dataExtractionRules" class="headerlink" title="android:dataExtractionRules"></a>android:dataExtractionRules</h3><p>应用可以将此属性设置为 XML 资源，在其中指定规则，以确定在备份或转移操作过程中您可以从设备复制哪些文件和目录。</p>
+<p>如需了解 XML 文件的格式，请参阅<a target="_blank" rel="noopener" href="https://developer.android.google.cn/about/versions/12/behavior-changes-12?hl=zh-cn#backup-restore">备份和恢复方面的变更</a>文档。</p>
+<h3 id="android-fullBackupContent"><a href="#android-fullBackupContent" class="headerlink" title="android:fullBackupContent"></a>android:fullBackupContent</h3><p>这个属性指向了一个xml文件，该文件中包含了在进行自动备份时的完全备份规则。这些规则定义了哪些文件需要备份。此属性是一个可选属性。默认情况下，自动备份包含了大部分app文件。</p>
+<h3 id="android-icon"><a href="#android-icon" class="headerlink" title="android:icon"></a>android:icon</h3><p>APP的图标，以及每个组件的默认图标。可以在组价中自定义图标。这个属性必须设置成一个引用，指向一个可绘制的资源，这个资源必须包含图片。系统不设置默认图标。</p>
+<h3 id="android-roundIcon"><a href="#android-roundIcon" class="headerlink" title="android:roundIcon"></a>android:roundIcon</h3><p>圆形图标</p>
+<h3 id="android-label"><a href="#android-label" class="headerlink" title="android:label"></a>android:label</h3><p>一个用户可读的标签，以及所有组件的默认标签。子组件可以用他们的label属性定义自己的标签，如果没有定义，那么就用这个标签。标签必须设置成一个字符串资源的引用。</p>
+<h3 id="android-supportsRtl"><a href="#android-supportsRtl" class="headerlink" title="android:supportsRtl"></a>android:supportsRtl</h3><p>声明您的应用是否愿意支持从右到左 (RTL) 布局。</p>
+<p>如果设为 <code>true</code> 并且 <a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/topics/manifest/uses-sdk-element?hl=zh-cn#target"><code>targetSdkVersion</code></a> 设为 17 或更高版本，则系统会激活和使用各种 RTL API，以便您的应用可以显示 RTL 布局。如果设为 <code>false</code> 或者如果 <a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/topics/manifest/uses-sdk-element?hl=zh-cn#target"><code>targetSdkVersion</code></a> 设为 16 或更低版本，则 RTL API 将被忽略或不起作用，无论与用户所选语言区域关联的布局方向为何（布局始终是从左到右），应用的行为都相同。</p>
+<p>此属性的默认值为 <code>false</code>。</p>
+<p>此属性是在 API 级别 17 中添加的。</p>
+<h3 id="android-theme"><a href="#android-theme" class="headerlink" title="android:theme"></a>android:theme</h3><p>该属性定义了应用使用的主题的，它是一个指向style资源的引用。各个activity也可以用自己的theme属性设置自己的主题。</p>
+<h3 id="tools-targetApi"><a href="#tools-targetApi" class="headerlink" title="tools:targetApi"></a><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/429f7541f897">tools:targetApi</a></h3><p>起到忽略警告的作用。</p>
+<h2 id="lt-activity-gt-元素"><a href="#lt-activity-gt-元素" class="headerlink" title="&lt;activity&gt;元素"></a>&lt;activity&gt;元素</h2><p>该元素声明一个实现应用可视化界面的Activity（Activity类子类）。这是<application>元素中必要的子元素。所有Activity都必须由清单文件中的<activity>元素表示。任何未在该处声明的Activity对系统都不可见，并且永远不会被执行。</p>
+<h3 id="android-name"><a href="#android-name" class="headerlink" title="android:name"></a>android:name</h3><p>Activity类的名称，是Activity类的子类。该属性值为完全限定类名称。</p>
+<p><strong>没有默认值，必须指定该名称。</strong></p>
+<h3 id="android-exported"><a href="#android-exported" class="headerlink" title="android:exported"></a>android:exported</h3><p>是Android中的四大组件Activity，Service，Provider，Receiver四大组件中都会有的一个属性。主要作用是：是否支持其它应用调用当前组件。默认值：如果包含有intent-filter默认值为true;没有intent-filter默认值为false。</p>
+<h2 id="lt-intent-filter元素"><a href="#lt-intent-filter元素" class="headerlink" title="&lt;intent-filter元素"></a>&lt;intent-filter元素</h2><p>指明这个activity可以以什么样的意图(intent)启动。该元素有几个子元素可以包含。</p>
+<h3 id="lt-action-gt-元素"><a href="#lt-action-gt-元素" class="headerlink" title="&lt;action&gt;元素"></a>&lt;action&gt;元素</h3><p>表示activity作为一个什么动作启动，android.intent.action.MAIN表示作为主activity启动。</p>
+<h3 id="lt-category-gt-元素"><a href="#lt-category-gt-元素" class="headerlink" title="&lt;category&gt;元素"></a>&lt;category&gt;元素</h3><p>这是action元素的额外类别信息，android.intent.category.LAUNCHER表示这个activity为当前应用程序优先级最高的Activity。</p>
+<blockquote>
+<p><strong>转自</strong></p>
+<p>作者：闪电的蓝熊猫<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3b5b89d4e154">https://www.jianshu.com/p/3b5b89d4e154</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://Asucanyh-cn.github.io">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://asucanyh-cn.github.io/posts/218529466/">http://asucanyh-cn.github.io/posts/218529466/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Asucanyh-cn.github.io" target="_blank">Lptexas</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/APP%E5%BC%80%E5%8F%91/">APP开发</a></div><div class="post_share"><div class="social-share" data-image="http://lptexas.top/img/post/android.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://lptexas.top/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/wechat.jpg" alt="Wechat"/></a><div class="post-qr-code-desc">Wechat</div></li><li class="reward-item"><a href="https://lptexas.top/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/alipay.jpg" alt="Alipay"/></a><div class="post-qr-code-desc">Alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/674339786/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/html.png" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSS要点梳理3（复习用）</div></div></a></div><div class="next-post pull-right"><a href="/posts/4228133455/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/R.png" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">R语言4</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/248435819/" title="Android Studio Part 1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/android.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">Android Studio Part 1</div></div></a></div><div><a href="/posts/2472733465/" title="Android Studio Part 2"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/android.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-05</div><div class="title">Android Studio Part 2</div></div></a></div><div><a href="/posts/3831880591/" title="Android Studio Part 3"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/android.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-08</div><div class="title">Android Studio Part 3</div></div></a></div><div><a href="/posts/2046905900/" title="Android Studio Part 4"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/android.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-20</div><div class="title">Android Studio Part 4</div></div></a></div><div><a href="/posts/2484023040/" title="Android Studio Part 6"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/android.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-30</div><div class="title">Android Studio Part 6</div></div></a></div><div><a href="/posts/3808960406/" title="Android Studio Part 7"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/android.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-05</div><div class="title">Android Studio Part 7</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">运维学习ing</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">85</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Asucanyh-cn"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a href="https://asucanyh-cn.github.io/">外链请使用asucanyh-cn.github.io/* 😘</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E5%AA%92%E4%BD%93%E6%92%AD%E6%94%BE%E4%B8%8E%E5%BD%95%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">多媒体播放与录制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE"><span class="toc-number">1.1.</span> <span class="toc-text">音频播放</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">基本流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE"><span class="toc-number">1.2.</span> <span class="toc-text">视频播放</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MediaPlayer-SurfaceView"><span class="toc-number">1.2.1.</span> <span class="toc-text">MediaPlayer + SurfaceView</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E5%86%85%E9%83%A8%E5%AD%98%E5%82%A8"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">访问内部存储</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E5%A4%96%E9%83%A8%E5%AD%98%E5%82%A8"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">访问外部存储</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MediaController-VideoView"><span class="toc-number">1.2.2.</span> <span class="toc-text">MediaController + VideoView</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%95%E9%9F%B3%E4%B8%8E%E6%8B%8D%E7%85%A7"><span class="toc-number">1.3.</span> <span class="toc-text">录音与拍照</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MediaRecorder"><span class="toc-number">1.3.1.</span> <span class="toc-text">MediaRecorder</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A%E8%AE%BE%E7%BD%AE%E7%9B%91%E5%90%AC%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">补充：设置监听的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%B7%B2%E6%9C%89%E7%B1%BB"><span class="toc-number">2.1.</span> <span class="toc-text">利用已有类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">新建一个类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%80%E5%87%BA%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">退出方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#startActivityForResult"><span class="toc-number">3.1.</span> <span class="toc-text">startActivityForResult</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%86%99onActivityResult-%E6%96%B9%E6%B3%95"><span class="toc-number">3.1.1.</span> <span class="toc-text">重写onActivityResult()方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AndroidManifest%E8%AF%A6%E8%A7%A3"><span class="toc-number">4.</span> <span class="toc-text">AndroidManifest详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-manifest-gt-%E5%85%83%E7%B4%A0"><span class="toc-number">4.1.</span> <span class="toc-text">&lt;manifest&gt;元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xmlns-android"><span class="toc-number">4.1.1.</span> <span class="toc-text">xmlns:android</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xmlns-tools"><span class="toc-number">4.1.2.</span> <span class="toc-text">xmlns:tools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#package"><span class="toc-number">4.1.3.</span> <span class="toc-text">package</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-versionCode"><span class="toc-number">4.1.4.</span> <span class="toc-text">android:versionCode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-versionName"><span class="toc-number">4.1.5.</span> <span class="toc-text">android:versionName</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-application-gt-%E5%85%83%E7%B4%A0"><span class="toc-number">4.2.</span> <span class="toc-text">&lt;application&gt;元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#android-allowBackup"><span class="toc-number">4.2.1.</span> <span class="toc-text">android:allowBackup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-dataExtractionRules"><span class="toc-number">4.2.2.</span> <span class="toc-text">android:dataExtractionRules</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-fullBackupContent"><span class="toc-number">4.2.3.</span> <span class="toc-text">android:fullBackupContent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-icon"><span class="toc-number">4.2.4.</span> <span class="toc-text">android:icon</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-roundIcon"><span class="toc-number">4.2.5.</span> <span class="toc-text">android:roundIcon</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-label"><span class="toc-number">4.2.6.</span> <span class="toc-text">android:label</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-supportsRtl"><span class="toc-number">4.2.7.</span> <span class="toc-text">android:supportsRtl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-theme"><span class="toc-number">4.2.8.</span> <span class="toc-text">android:theme</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tools-targetApi"><span class="toc-number">4.2.9.</span> <span class="toc-text">tools:targetApi</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-activity-gt-%E5%85%83%E7%B4%A0"><span class="toc-number">4.3.</span> <span class="toc-text">&lt;activity&gt;元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#android-name"><span class="toc-number">4.3.1.</span> <span class="toc-text">android:name</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#android-exported"><span class="toc-number">4.3.2.</span> <span class="toc-text">android:exported</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-intent-filter%E5%85%83%E7%B4%A0"><span class="toc-number">4.4.</span> <span class="toc-text">&lt;intent-filter元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lt-action-gt-%E5%85%83%E7%B4%A0"><span class="toc-number">4.4.1.</span> <span class="toc-text">&lt;action&gt;元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lt-category-gt-%E5%85%83%E7%B4%A0"><span class="toc-number">4.4.2.</span> <span class="toc-text">&lt;category&gt;元素</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/3306600581/" title="Spring相关原理总结"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/spring.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Spring相关原理总结"/></a><div class="content"><a class="title" href="/posts/3306600581/" title="Spring相关原理总结">Spring相关原理总结</a><time datetime="2023-03-20T16:00:00.000Z" title="发表于 2023-03-21 00:00:00">2023-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/3868235888/" title="常用IDE的技巧"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/ide.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="常用IDE的技巧"/></a><div class="content"><a class="title" href="/posts/3868235888/" title="常用IDE的技巧">常用IDE的技巧</a><time datetime="2023-03-20T16:00:00.000Z" title="发表于 2023-03-21 00:00:00">2023-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/4267699228/" title="spring初始化一个项目"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/spring.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="spring初始化一个项目"/></a><div class="content"><a class="title" href="/posts/4267699228/" title="spring初始化一个项目">spring初始化一个项目</a><time datetime="2023-03-19T16:00:00.000Z" title="发表于 2023-03-20 00:00:00">2023-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/751312367/" title="Java之Spring AOP面向切面编程"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/springboot.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Java之Spring AOP面向切面编程"/></a><div class="content"><a class="title" href="/posts/751312367/" title="Java之Spring AOP面向切面编程">Java之Spring AOP面向切面编程</a><time datetime="2023-03-12T16:00:00.000Z" title="发表于 2023-03-13 00:00:00">2023-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/1059130365/" title="Java之SpringBoot数据库API Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/springboot.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Java之SpringBoot数据库API Part2"/></a><div class="content"><a class="title" href="/posts/1059130365/" title="Java之SpringBoot数据库API Part2">Java之SpringBoot数据库API Part2</a><time datetime="2023-03-10T16:00:00.000Z" title="发表于 2023-03-11 00:00:00">2023-03-11</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('http://lptexas.top/img/post/android.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://www.beian.gov.cn/img/new/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff0000">蜀</span>
+<span style="color:#ca7900">I</span>
+<span style="color:#48ab18">C</span>
+<span style="color:#2720ac">P</span>
+<span style="color:#9b17ae">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff0000">20</span>
+<span style="color:#ca7900">22</span>
+<span style="color:#48ab18">01</span>
+<span style="color:#2720ac">84</span>
+<span style="color:#2778ac">59</span>
+<span style="color:#f40428">号</span>
+<span style="color:ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><script src="/js/schedule_index.js"></script><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://github-calendar-api.vercel.lptexas.top/api?Asucanyh-cn";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="Asucanyh-cn";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style></style><!-- hexo injector body_end end --></body></html>
