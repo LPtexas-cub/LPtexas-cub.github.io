@@ -108,10 +108,9 @@ https://lptexas.top/Blogroll/index.html
 https://lptexas.top/categories/index.html
 https://lptexas.top/cloud/index.html
 https://lptexas.top/collection/index.html
-https://lptexas.top/frps-dashboard/index.html
 https://lptexas.top/images/index.html
 https://lptexas.top/links/index.html
-https://lptexas.top/movies/index.html
+https://lptexas.top/frps-dashboard/index.html
 https://lptexas.top/music/index.html
 https://lptexas.top/resume/index.html
 https://lptexas.top/schedule/index.html
@@ -119,6 +118,7 @@ https://lptexas.top/server-android/index.html
 https://lptexas.top/server-minecraft-manager/index.html
 https://lptexas.top/tags/index.html
 https://lptexas.top/website/index.html
+https://lptexas.top/movies/index.html
 https://lptexas.top/
 https://lptexas.top/tags/APP%E5%BC%80%E5%8F%91/
 https://lptexas.top/tags/Android%E6%90%9E%E6%9C%BA/
