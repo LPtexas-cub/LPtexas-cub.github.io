@@ -1,0 +1,566 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>sql server数据库操作part7 | Lptexas</title><meta name="keywords" content="windows,sql server,T-SQL"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="本系列将主要面向sql server的sql语法学习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql server数据库操作part7">
+<meta property="og:url" content="https://lptexas.top/posts/1160719361/index.html">
+<meta property="og:site_name" content="Lptexas">
+<meta property="og:description" content="本系列将主要面向sql server的sql语法学习。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lptexas.top/img/post/SQL-Server.jpg">
+<meta property="article:published_time" content="2022-08-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-18T02:59:54.128Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="windows">
+<meta property="article:tag" content="sql server">
+<meta property="article:tag" content="T-SQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lptexas.top/img/post/SQL-Server.jpg"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="https://lptexas.top/posts/1160719361/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"X2KMQ66BV4","apiKey":"60d9b2dacd397575e8f5f26f9fb23e6c","indexName":"prod_HEXO_SEARCH","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'sql server数据库操作part7',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-18 10:59:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/function.min.css"></script><link rel="stylesheet" href="/css/hexoAdmonition.css"><script type="text/javascript" src="/js/banf12.js"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Lptexas" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://lptexas.top/img/post/SQL-Server.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lptexas</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">sql server数据库操作part7<a class="post-edit-link" href="https://github.com/asucanyh-cn/blog-source/edit/main/source/_posts/sql server数据库操作part7.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-22T16:00:00.000Z" title="发表于 2022-08-23 00:00:00">2022-08-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-18T02:59:54.128Z" title="更新于 2024-02-18 10:59:54">2024-02-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="sql server数据库操作part7"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-triggers.html">触发器</a></h1><blockquote>
+<p>当发生某一事件时，如果满足给定条件，则执行相应的动作</p>
+</blockquote>
+<h2 id="创建触发器"><a href="#创建触发器" class="headerlink" title="创建触发器"></a>创建触发器</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> [schema_name.]trigger_name</span><br><span class="line"><span class="keyword">ON</span> table_name</span><br><span class="line">AFTER  &#123;[<span class="keyword">INSERT</span>],[<span class="keyword">UPDATE</span>],[<span class="keyword">DELETE</span>]&#125;</span><br><span class="line">[<span class="keyword">NOT</span> <span class="keyword">FOR</span> REPLICATION]</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line">&#123;sql_statements&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<ul>
+<li><code>schema_name</code>是新触发器所属模式的名称。模式名称是可选的。</li>
+<li><code>trigger_name</code>是要创建触发器的用户定义名称。</li>
+<li><code>table_name</code>是触发器作用的表。</li>
+<li>事件列在<code>AFTER</code>子句中。事件可以是<code>INSERT</code>，<code>UPDATE</code>或<code>DELETE</code>。单个触发器可以响应针对该表的一个或多个动作而触发。</li>
+<li><code>NOT FOR REPLICATION</code>选项指示SQL Server在复制过程中进行数据修改时不触发触发器。</li>
+<li><code>sql_statements</code>是一个或多个Transact-SQL，用于在事件发生后执行操作。</li>
+</ul>
+<h3 id="触发器的虚拟表"><a href="#触发器的虚拟表" class="headerlink" title="触发器的虚拟表"></a>触发器的虚拟表</h3><p>SQL Server提供了两个专门用于名为<code>INSERTED</code>和<code>DELETED</code>表的触发器的虚拟表。 </p>
+<p>SQL Server使用这些表来捕获<code>事件发生之前</code>和<code>之后</code>修改行的数据。</p>
+<p>下表显示了<code>INSERTED</code>和<code>DELETED</code>表每个事件之前和之后的内容：</p>
+<table>
+<thead>
+<tr>
+<th>DML事件</th>
+<th>INSERTED表持有</th>
+<th>DELETED表持有</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INSERT</td>
+<td>要插入的行</td>
+<td>空</td>
+</tr>
+<tr>
+<td>UPDATE</td>
+<td>更新修改的新行</td>
+<td>更新修改的现有行</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>空</td>
+<td>要删除的行</td>
+</tr>
+</tbody></table>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="创建一张新表，用于存放Student表的插入与删除操作的日志信息"><a href="#创建一张新表，用于存放Student表的插入与删除操作的日志信息" class="headerlink" title="创建一张新表，用于存放Student表的插入与删除操作的日志信息"></a>创建一张新表，用于存放Student表的插入与删除操作的日志信息</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> Student_logs(</span><br><span class="line">    change_id <span class="type">INT</span> <span class="keyword">IDENTITY</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    change_date DATETIME <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    Sno <span class="type">char</span>(<span class="number">9</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    Sname <span class="type">char</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    Ssex <span class="type">char</span>(<span class="number">2</span>),</span><br><span class="line">    Sage <span class="type">smallint</span>,</span><br><span class="line">    Sdept <span class="type">char</span>(<span class="number">20</span>),</span><br><span class="line">    operation <span class="type">char</span>(<span class="number">3</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">CHECK</span>(operation<span class="operator">=</span><span class="string">&#x27;INS&#x27;</span> <span class="keyword">OR</span> operation<span class="operator">=</span><span class="string">&#x27;DEL&#x27;</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建触发器-1"><a href="#创建触发器-1" class="headerlink" title="创建触发器"></a>创建触发器</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trg_student_logs</span><br><span class="line"><span class="keyword">ON</span> Student</span><br><span class="line">AFTER <span class="keyword">INSERT</span>,<span class="keyword">DELETE</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> Student_logs(</span><br><span class="line">Sno,Sname,Ssex,Sage,Sdept,operation</span><br><span class="line">)</span><br><span class="line"><span class="keyword">SELECT</span> GETDATE(),Sno,Sname,Ssex,Sage,Sdept,<span class="string">&#x27;INS&#x27;</span> <span class="keyword">FROM</span> INSERTED</span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line"><span class="keyword">SELECT</span> GETDATE(),Sno,Sname,Ssex,Sage,Sdept,<span class="string">&#x27;DEL&#x27;</span> <span class="keyword">FROM</span> DELETED</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823140407373.png" alt="image-20220823140407373"></p>
+<h2 id="INSTEAD-OF触发器"><a href="#INSTEAD-OF触发器" class="headerlink" title="INSTEAD OF触发器"></a><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-instead-of-trigger.html">INSTEAD OF触发器</a></h2><p><code>INSTEAD OF</code>触发器是一种触发器，用于跳过对表或视图的<a target="_blank" rel="noopener" href="http://www.yiibai.com/sqlserver/sql-server-insert.html">INSERT</a>，<a target="_blank" rel="noopener" href="http://www.yiibai.com/sqlserver/sql-server-delete.html">DELETE</a>或<a target="_blank" rel="noopener" href="http://www.yiibai.com/sqlserver/sql-server-update.html">UPDATE</a>语句，并执行触发器中定义的其他语句。根本不会发生实际的插入，删除或更新操作。</p>
+<p>换句话说，<code>INSTEAD OF</code>触发器会跳过<code>DML</code>语句并执行其他语句。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> [schema_name.] trigger_name</span><br><span class="line"><span class="keyword">ON</span> &#123;table_name <span class="operator">|</span> view_name &#125;</span><br><span class="line">INSTEAD <span class="keyword">OF</span> &#123;[<span class="keyword">INSERT</span>] [,] [<span class="keyword">UPDATE</span>] [,] [<span class="keyword">DELETE</span>] &#125;</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line">&#123;sql_statements&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<ul>
+<li>首先，在<code>CREATE TRIGGER</code>子句中指定触发器的名称以及触发器所属的模式的名称。</li>
+<li>其次，指定触发器关联的表或视图的名称。</li>
+<li>第三，指定触发器将在<code>INSTEAD OF</code>子句中触发的事件，如<code>INSERT</code>，<code>DELETE</code>或<code>UPDATE</code>。 可以调用触发器以响应一个或多个事件。</li>
+<li>第四，将触发器主体放在<code>AS</code>关键字之后。 触发器的主体可能包含一个或多个Transact-SQL语句。</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>使用<code>INSTEAD OF</code>触发器的典型示例是覆盖视图上的插入，更新或删除操作。</p>
+<p>假设，应用程序需要将新品牌插入到<code>production.brands</code>表中。 但是，在插入到<code>production.brands</code>表之前，新品牌应存储在另一个名为<code>production.brand_approvals</code>的表中以供批准。</p>
+<p>为此，需要为应用程序创建名为<code>production.vw_brands</code>的视图以插入新品牌。 如果将品牌插入到视图中，则会触发<code>INSTEAD OF</code>触发器以将品牌插入到<code>production.brand_approvals</code>表中。</p>
+<p><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-instead-of-trigger.html">具体演示请见原文</a></p>
+<h2 id="DDL触发器"><a href="#DDL触发器" class="headerlink" title="DDL触发器"></a><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-ddl-trigger.html">DDL触发器</a></h2><p>SQL Server DDL触发器响应服务器或数据库事件而不是表数据修改。 这些事件由Transact-SQL语句创建，通常以以下关键字之一：<code>CREATE</code>，<code>ALTER</code>，<code>DROP</code>，<code>GRANT</code>，<code>DENY</code>，<code>REVOKE</code>或<code>UPDATE STATISTICS</code>开头。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trigger_name</span><br><span class="line"><span class="keyword">ON</span> &#123; DATABASE <span class="operator">|</span>  <span class="keyword">ALL</span> SERVER&#125;</span><br><span class="line">[<span class="keyword">WITH</span> ddl_trigger_option]</span><br><span class="line"><span class="keyword">FOR</span> &#123;event_type <span class="operator">|</span> event_group &#125;</span><br><span class="line"><span class="keyword">AS</span> &#123;sql_statement&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<ul>
+<li><code>trigger_name</code> - 在<code>CREATE TRIGGER</code>关键字后指定用户定义的触发器名称。 请注意，不必为DDL触发器指定模式，因为它与实际的数据库表或视图无关。</li>
+<li><code>DATABASE | ALL SERVER</code> - 如果触发器响应数据库范围的事件，则使用<code>DATABASE</code>;如果触发器响应服务器范围的事件，则使用<code>ALL SERVER</code>。</li>
+<li><code>ddl_trigger_option</code> - 用于指定<code>ENCRYPTION</code>和&#x2F;或<code>EXECUTE AS</code>子句。 <code>ENCRYPTION</code>加密触发器的定义。 <code>EXECUTE AS</code>定义执行触发器的安全上下文。</li>
+<li><code>event_type | event_group</code> - 表示导致触发器触发的DDL事件，例如，<code>CREATE_TABLE</code>，<code>ALTER_TABLE</code>等。</li>
+<li><code>event_group</code>是一组<code>event_type</code>事件，例如<code>DDL_TABLE_EVENTS</code>。</li>
+<li>触发器可以订阅一个或多个事件或事件组。</li>
+</ul>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>DDL触发器在以下情况下很有用：</p>
+<ul>
+<li>记录数据库模式中的更改。</li>
+<li>防止对数据库模式进行某些特定更改。</li>
+<li>响应数据库模式的更改。</li>
+</ul>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><p><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-ddl-trigger.html">见原文</a></p>
+<h2 id="禁用触发器"><a href="#禁用触发器" class="headerlink" title="禁用触发器"></a><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-disable-trigger.html">禁用触发器</a></h2><p>有时，为了进行故障排除或数据恢复，可能需要暂时禁用触发器。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DISABLE <span class="keyword">TRIGGER</span> [schema_name.][trigger_name] </span><br><span class="line"><span class="keyword">ON</span> [object_name <span class="operator">|</span> DATABASE <span class="operator">|</span> <span class="keyword">ALL</span> SERVER]</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<ul>
+<li>首先，指定触发器所属的模式名称以及<code>DISABLE TRIGGER</code>关键字后要禁用的触发器的名称。</li>
+<li>其次，如果触发器是DML触发器，请指定触发器绑定的表名或视图。 如果触发器是DDL数据库范围的触发器，则使用<code>DATABASE</code>;如果触发器是DDL服务器范围的触发器，则使用<code>ALL SERVER</code>。</li>
+</ul>
+<h3 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h3><p>创建一个简单的显示信息的触发器，然后禁止它。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> prt_stu</span><br><span class="line"><span class="keyword">ON</span> Student</span><br><span class="line">INSTEAD <span class="keyword">OF</span> <span class="keyword">INSERT</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line">PRINT &quot;禁止插入！&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823145015026.png" alt="image-20220823145015026"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823145026560.png" alt="image-20220823145026560"></p>
+<p>禁止该触发器</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DISABLE <span class="keyword">TRIGGER</span> prt_stu</span><br><span class="line"><span class="keyword">ON</span> Student</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823145638707.png" alt="image-20220823145638707"></p>
+<p>成功禁用了！</p>
+<h2 id="启用触发器"><a href="#启用触发器" class="headerlink" title="启用触发器"></a><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-enable-trigger.html">启用触发器</a></h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENABLE <span class="keyword">TRIGGER</span> [schema_name.][trigger_name] </span><br><span class="line"><span class="keyword">ON</span> [object_name <span class="operator">|</span> DATABASE <span class="operator">|</span> <span class="keyword">ALL</span> SERVER]</span><br></pre></td></tr></table></figure>
+
+<p><strong>实例</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENABLE <span class="keyword">TRIGGER</span> prt_stu</span><br><span class="line"><span class="keyword">ON</span> Student</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823150520259.png" alt="image-20220823150520259"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823150530615.png" alt="image-20220823150530615"></p>
+<p>成功启用！</p>
+<h2 id="查看触发器定义"><a href="#查看触发器定义" class="headerlink" title="查看触发器定义"></a><a target="_blank" rel="noopener" href="https://www.yiibai.com/sqlserver/sql-server-view-trigger-definition.html">查看触发器定义</a></h2><h3 id="通过从系统视图查询获取触发器定义"><a href="#通过从系统视图查询获取触发器定义" class="headerlink" title="通过从系统视图查询获取触发器定义"></a>通过从系统视图查询获取触发器定义</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    definition   </span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    sys.sql_modules  </span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line">    object_id <span class="operator">=</span> OBJECT_ID(<span class="string">&#x27;[trigger_name]&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823151126772.png" alt="image-20220823151126772"></p>
+<h3 id="使用OBJECT-DEFINITION函数获取触发器定义"><a href="#使用OBJECT-DEFINITION函数获取触发器定义" class="headerlink" title="使用OBJECT_DEFINITION函数获取触发器定义"></a>使用OBJECT_DEFINITION函数获取触发器定义</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    OBJECT_DEFINITION (</span><br><span class="line">        OBJECT_ID(</span><br><span class="line">            <span class="string">&#x27;[trigger_name]&#x27;</span></span><br><span class="line">        )</span><br><span class="line">    ) <span class="keyword">AS</span> trigger_definition;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823152149157.png" alt="image-20220823152149157"></p>
+<p><strong>结果不全，因为我设置了“查询选项”每列最多256字符。</strong></p>
+<h3 id="使用sp-helptext存储过程获取触发器定义"><a href="#使用sp-helptext存储过程获取触发器定义" class="headerlink" title="使用sp_helptext存储过程获取触发器定义"></a>使用sp_helptext存储过程获取触发器定义</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXEC</span> sp_helptext <span class="string">&#x27;[trigger_name]&#x27;</span> ;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823152457404.png" alt="image-20220823152457404"></p>
+<h3 id="使用SSMS获取触发器定义"><a href="#使用SSMS获取触发器定义" class="headerlink" title="使用SSMS获取触发器定义"></a>使用SSMS获取触发器定义</h3><p>在图形化界面中找到对应的触发器，右键点击修改。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823152635789.png" alt="image-20220823152635789"></p>
+<h2 id="列出所有触发器"><a href="#列出所有触发器" class="headerlink" title="列出所有触发器"></a>列出所有触发器</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  </span><br><span class="line">    name,</span><br><span class="line">    is_instead_of_trigger</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    sys.triggers  </span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line">    type <span class="operator">=</span> <span class="string">&#x27;TR&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220823153032804.png" alt="image-20220823153032804"></p>
+<h2 id="删除触发器"><a href="#删除触发器" class="headerlink" title="删除触发器"></a>删除触发器</h2><h3 id="DROP-TRIGGER语句用于从数据库中删除一个或多个触发器"><a href="#DROP-TRIGGER语句用于从数据库中删除一个或多个触发器" class="headerlink" title="DROP TRIGGER语句用于从数据库中删除一个或多个触发器"></a><code>DROP TRIGGER</code>语句用于从数据库中删除一个或多个触发器</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> [ IF <span class="keyword">EXISTS</span> ] [schema_name.]trigger_name [ ,...n ];</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<ul>
+<li><code>IF EXISTS</code>仅在已经存在的情况下有条件地移除触发器。</li>
+<li><code>schema_name</code>是DML触发器所属的模式名称。</li>
+<li><code>trigger_name</code>是将要删除的触发器的名称。</li>
+</ul>
+<p>如果要一次删除多个触发器，则需要用逗号分隔触发器。</p>
+<hr>
+<h3 id="要删除一个或多个DDL触发器"><a href="#要删除一个或多个DDL触发器" class="headerlink" title="要删除一个或多个DDL触发器"></a>要删除一个或多个<code>DDL触发器</code></h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> [ IF <span class="keyword">EXISTS</span> ] trigger_name [ ,...n ]   </span><br><span class="line"><span class="keyword">ON</span> &#123; DATABASE <span class="operator">|</span> <span class="keyword">ALL</span> SERVER &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<ul>
+<li><code>DATABASE</code>表示DDL触发器的范围适用于当前数据库。</li>
+<li><code>ALL SERVER</code>指示DDL触发器的范围适用于当前服务器。</li>
+</ul>
+<h3 id="要删除LOGON事件触发器"><a href="#要删除LOGON事件触发器" class="headerlink" title="要删除LOGON事件触发器"></a>要删除<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/sql/relational-databases/triggers/logon-triggers?view=sql-server-ver16"><code>LOGON</code>事件触发器</a></h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> [ IF <span class="keyword">EXISTS</span> ] trigger_name [ ,...n ]   </span><br><span class="line"><span class="keyword">ON</span> <span class="keyword">ALL</span> SERVER;</span><br></pre></td></tr></table></figure>
+
+<p><strong>请注意，当删除表时，与表关联的所有触发器也会自动删除。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lptexas.top">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lptexas.top/posts/1160719361/">https://lptexas.top/posts/1160719361/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lptexas.top" target="_blank">Lptexas</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/windows/">windows</a><a class="post-meta__tags" href="/tags/sql-server/">sql server</a><a class="post-meta__tags" href="/tags/T-SQL/">T-SQL</a></div><div class="post_share"><div class="social-share" data-image="https://lptexas.top/img/post/SQL-Server.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://lptexas.top/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/wechat.jpg" alt="Wechat"/></a><div class="post-qr-code-desc">Wechat</div></li><li class="reward-item"><a href="https://lptexas.top/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/alipay.jpg" alt="Alipay"/></a><div class="post-qr-code-desc">Alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/841489559/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/SQL-Server.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">sql server数据库操作part6</div></div></a></div><div class="next-post pull-right"><a href="/posts/276533368/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/kodbox.png" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">在arm64架构下搭建Kodbox私有云</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/893769870/" title="sql server数据库操作part2"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/SQL-Server.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-11</div><div class="title">sql server数据库操作part2</div></div></a></div><div><a href="/posts/1111681048/" title="sql server数据库操作part3"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/SQL-Server.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-12</div><div class="title">sql server数据库操作part3</div></div></a></div><div><a href="/posts/3693510075/" title="sql server数据库操作part4"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/SQL-Server.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-13</div><div class="title">sql server数据库操作part4</div></div></a></div><div><a href="/posts/2871086381/" title="sql server数据库操作part5"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/SQL-Server.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-16</div><div class="title">sql server数据库操作part5</div></div></a></div><div><a href="/posts/841489559/" title="sql server数据库操作part6"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/SQL-Server.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">sql server数据库操作part6</div></div></a></div><div><a href="/posts/2890697012/" title="sql server数据库操作part1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/SQL-Server.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-11</div><div class="title">sql server数据库操作part1</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">前端|后端|运维</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Asucanyh-cn"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a target="_blank" rel="noopener" href="https://asucanyh-cn.github.io/">外链请使用asucanyh-cn.github.io ������</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">创建触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E8%99%9A%E6%8B%9F%E8%A1%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">触发器的虚拟表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-number">1.2.</span> <span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E5%BC%A0%E6%96%B0%E8%A1%A8%EF%BC%8C%E7%94%A8%E4%BA%8E%E5%AD%98%E6%94%BEStudent%E8%A1%A8%E7%9A%84%E6%8F%92%E5%85%A5%E4%B8%8E%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E7%9A%84%E6%97%A5%E5%BF%97%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.1.</span> <span class="toc-text">创建一张新表，用于存放Student表的插入与删除操作的日志信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%A7%A6%E5%8F%91%E5%99%A8-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">创建触发器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#INSTEAD-OF%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">INSTEAD OF触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.4.</span> <span class="toc-text">DDL触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">1.4.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%81%E7%94%A8%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.5.</span> <span class="toc-text">禁用触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B-2"><span class="toc-number">1.5.1.</span> <span class="toc-text">实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E7%94%A8%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.6.</span> <span class="toc-text">启用触发器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A7%A6%E5%8F%91%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="toc-number">1.7.</span> <span class="toc-text">查看触发器定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E4%BB%8E%E7%B3%BB%E7%BB%9F%E8%A7%86%E5%9B%BE%E6%9F%A5%E8%AF%A2%E8%8E%B7%E5%8F%96%E8%A7%A6%E5%8F%91%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="toc-number">1.7.1.</span> <span class="toc-text">通过从系统视图查询获取触发器定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8OBJECT-DEFINITION%E5%87%BD%E6%95%B0%E8%8E%B7%E5%8F%96%E8%A7%A6%E5%8F%91%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="toc-number">1.7.2.</span> <span class="toc-text">使用OBJECT_DEFINITION函数获取触发器定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8sp-helptext%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E8%8E%B7%E5%8F%96%E8%A7%A6%E5%8F%91%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="toc-number">1.7.3.</span> <span class="toc-text">使用sp_helptext存储过程获取触发器定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8SSMS%E8%8E%B7%E5%8F%96%E8%A7%A6%E5%8F%91%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="toc-number">1.7.4.</span> <span class="toc-text">使用SSMS获取触发器定义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E6%89%80%E6%9C%89%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.8.</span> <span class="toc-text">列出所有触发器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.9.</span> <span class="toc-text">删除触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DROP-TRIGGER%E8%AF%AD%E5%8F%A5%E7%94%A8%E4%BA%8E%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.9.1.</span> <span class="toc-text">DROP TRIGGER语句用于从数据库中删除一个或多个触发器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%81%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AADDL%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.9.2.</span> <span class="toc-text">要删除一个或多个DDL触发器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%81%E5%88%A0%E9%99%A4LOGON%E4%BA%8B%E4%BB%B6%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="toc-number">1.9.3.</span> <span class="toc-text">要删除LOGON事件触发器</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1975607171/" title="Vue2学习笔记Part3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part3"/></a><div class="content"><a class="title" href="/posts/1975607171/" title="Vue2学习笔记Part3">Vue2学习笔记Part3</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2031351995/" title="在手机上使用MAA一键长草"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/arknights.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="在手机上使用MAA一键长草"/></a><div class="content"><a class="title" href="/posts/2031351995/" title="在手机上使用MAA一键长草">在手机上使用MAA一键长草</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/46558997/" title="Vue2学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/46558997/" title="Vue2学习笔记Part2">Vue2学习笔记Part2</a><time datetime="2023-08-05T16:00:00.000Z" title="发表于 2023-08-06 00:00:00">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2315174609/" title="Nodejs学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/nodejs.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Nodejs学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/2315174609/" title="Nodejs学习笔记Part2">Nodejs学习笔记Part2</a><time datetime="2023-07-14T16:00:00.000Z" title="发表于 2023-07-15 00:00:00">2023-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/3146662735/" title="Webpack前端项目工程化"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/webpack.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Webpack前端项目工程化"/></a><div class="content"><a class="title" href="/posts/3146662735/" title="Webpack前端项目工程化">Webpack前端项目工程化</a><time datetime="2023-07-13T16:00:00.000Z" title="发表于 2023-07-14 00:00:00">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://lptexas.top/img/post/SQL-Server.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/web-info/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff0000">蜀</span>
+<span style="color:#ca7900">I</span>
+<span style="color:#48ab18">C</span>
+<span style="color:#2720ac">P</span>
+<span style="color:#9b17ae">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff0000">20</span>
+<span style="color:#ca7900">22</span>
+<span style="color:#48ab18">01</span>
+<span style="color:#2720ac">84</span>
+<span style="color:#2778ac">59</span>
+<span style="color:#f40428">号</span>
+<span style="color:ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

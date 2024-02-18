@@ -1,0 +1,681 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Linux磁盘管理part1 | Lptexas</title><meta name="keywords" content="Centos,Shell,Linux,磁盘管理"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="Linux磁盘存储的经典描述 磁盘要放入计算机且被Linux系统识别，到可以使用磁盘存储数据，过程如下：    1. 磁盘要存数据，相当于人盖房子             2. 磁盘要分区后才能够存储数据，相当于房子改好了，需要隔断分出卧室，厨房，卫生间等区域             3. 磁盘分区完成后，还得格式化后才能使用，且创建文件系统后才可以存储数据，相当于家里得装修后才能开始住人，不同的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux磁盘管理part1">
+<meta property="og:url" content="https://lptexas.top/posts/2891465825/index.html">
+<meta property="og:site_name" content="Lptexas">
+<meta property="og:description" content="Linux磁盘存储的经典描述 磁盘要放入计算机且被Linux系统识别，到可以使用磁盘存储数据，过程如下：    1. 磁盘要存数据，相当于人盖房子             2. 磁盘要分区后才能够存储数据，相当于房子改好了，需要隔断分出卧室，厨房，卫生间等区域             3. 磁盘分区完成后，还得格式化后才能使用，且创建文件系统后才可以存储数据，相当于家里得装修后才能开始住人，不同的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://asucanyh-cn.github.io/img/post/gawr_gura_8.jpg">
+<meta property="article:published_time" content="2022-07-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-18T02:59:54.116Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="Centos">
+<meta property="article:tag" content="Shell">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="磁盘管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://asucanyh-cn.github.io/img/post/gawr_gura_8.jpg"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="https://lptexas.top/posts/2891465825/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"X2KMQ66BV4","apiKey":"60d9b2dacd397575e8f5f26f9fb23e6c","indexName":"prod_HEXO_SEARCH","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux磁盘管理part1',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-18 10:59:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/function.min.css"></script><link rel="stylesheet" href="/css/hexoAdmonition.css"><script type="text/javascript" src="/js/banf12.js"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Lptexas" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://lptexas.top/img/post/gawr_gura_8.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lptexas</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux磁盘管理part1<a class="post-edit-link" href="https://github.com/asucanyh-cn/blog-source/edit/main/source/_posts/Linux磁盘管理part1.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-29T16:00:00.000Z" title="发表于 2022-07-30 00:00:00">2022-07-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-18T02:59:54.116Z" title="更新于 2024-02-18 10:59:54">2024-02-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux磁盘管理part1"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Linux磁盘存储的经典描述"><a href="#Linux磁盘存储的经典描述" class="headerlink" title="Linux磁盘存储的经典描述"></a>Linux磁盘存储的经典描述</h1><blockquote>
+<p>磁盘要放入计算机且被Linux系统识别，到可以使用磁盘存储数据，过程如下： </p>
+</blockquote>
+<ol>
+<li><p>磁盘要存数据，相当于人盖房子 </p>
+</li>
+<li><p>磁盘要分区后才能够存储数据，相当于房子改好了，需要隔断分出卧室，厨房，卫生间等区域 </p>
+</li>
+<li><p>磁盘分区完成后，还得格式化后才能使用，且创建文件系统后才可以存储数据，相当于家里得装修后才能开始住人，不同的文件系统相当于不同的装修风格 </p>
+</li>
+<li><p>磁盘分区，格式化，创建文件系统后，还得进行挂载到不同的文件夹，才能存放数据，相当于房子还得安装门、窗，才能和外界通信，进出</p>
+</li>
+</ol>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/image-20220730075146306.png" alt="image-20220730075146306"></p>
+<h1 id="机械硬盘内部原理"><a href="#机械硬盘内部原理" class="headerlink" title="机械硬盘内部原理"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/coslay/article/details/42215409">机械硬盘内部原理</a></h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><code>扇区</code>（sector）是硬盘的最小单位0.5kb&#x3D;512Bytes；</p>
+<p>多个连续的扇区称为<code>块</code>（block）8个扇区，4kb大小（Linux）；</p>
+<p>将物理相邻的若干个扇区称为了一个<code>簇</code>（windows）。</p>
+<hr>
+<p>在Linux系统中，<code>规定</code>：</p>
+<p>一个block只能存放一个文件的内容，因此文件占用的空间大小，只能是block的整数倍。</p>
+<hr>
+<h1 id="计算机单位"><a href="#计算机单位" class="headerlink" title="计算机单位"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/niguang09/article/details/6673465">计算机单位</a></h1><h2 id="容量单位"><a href="#容量单位" class="headerlink" title="容量单位"></a>容量单位</h2><blockquote>
+<p>对于计算机而言，只认识二进制</p>
+</blockquote>
+<p>1 byte（字节） &#x3D; 8 bit（位）</p>
+<p>……</p>
+<h2 id="查询大小的命令"><a href="#查询大小的命令" class="headerlink" title="查询大小的命令"></a>查询大小的命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">du</span> -h ./*</span><br><span class="line"><span class="built_in">ls</span> -hl </span><br></pre></td></tr></table></figure>
+
+<h1 id="常见的文件系统"><a href="#常见的文件系统" class="headerlink" title="常见的文件系统"></a>常见的文件系统</h1><h2 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h2><p>fat16 fat32 最早的Windows系统文件系统，缺点是单个文件不能超过2GB；</p>
+<p>NTFS文件系统，支持文件加密，采用日志形式的文件系统，详细的记录磁盘读写的系统；</p>
+<p>exfat 文件系统，新式的文件系统，单个文件支持16GB大小，能够在Windows和linux、macos中同时识别</p>
+<h1 id="磁盘转速与平均寻道时间"><a href="#磁盘转速与平均寻道时间" class="headerlink" title="磁盘转速与平均寻道时间"></a>磁盘转速与平均寻道时间</h1><blockquote>
+<p>磁盘RPM，硬盘盘片在一分钟内能够完成的最大旋转数。</p>
+</blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38847308">5400和7200是哪里来的？</a></strong></p>
+<p><strong>5400转一定比7200转慢吗？</strong></p>
+<p>以送报为例：</p>
+<ol>
+<li>相同密度的小区</li>
+</ol>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/80/v2-3c99df6ad491f7fbfd2b53519d8b2a4d_720w.jpg"></p>
+<p>电动车比自行车快</p>
+<ol start="2">
+<li>住宅十分稀疏与紧凑</li>
+</ol>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-6e3dc3860d9d7c421f5cad4705353680_720w.jpg"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/80/v2-c2e842b224b84f21eb1af94439fec8bd_720w.jpg"></p>
+<p>自行车虽慢但容易配送，效率更高</p>
+<h1 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h1><h2 id="分区编辑器"><a href="#分区编辑器" class="headerlink" title="分区编辑器"></a>分区编辑器</h2><blockquote>
+<p>partion editor</p>
+</blockquote>
+<p>在Linux中，使用<code>fdisk</code>命令对硬盘进行分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">用法：</span><br><span class="line"> fdisk [选项] &lt;磁盘&gt;    更改分区表</span><br><span class="line"> fdisk [选项] -l &lt;磁盘&gt; 列出分区表</span><br><span class="line"> fdisk -s &lt;分区&gt;        给出分区大小(块数)</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line"> -b &lt;大小&gt;             扇区大小(512、1024、2048或4096)</span><br><span class="line"> -c[=&lt;模式&gt;]           兼容模式：“dos”或“nondos”(默认)</span><br><span class="line"> -h                    打印此帮助文本</span><br><span class="line"> -u[=&lt;单位&gt;]           显示单位：“cylinders”(柱面)或“sectors”(扇区，默认)</span><br><span class="line"> -v                    打印程序版本</span><br><span class="line"> -C &lt;数字&gt;             指定柱面数</span><br><span class="line"> -H &lt;数字&gt;             指定磁头数</span><br><span class="line"> -S &lt;数字&gt;             指定每个磁道的扇区数</span><br></pre></td></tr></table></figure>
+
+<h2 id="mbr分区"><a href="#mbr分区" class="headerlink" title="mbr分区"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/zt_xcyk/article/details/53669383">mbr分区</a></h2><blockquote>
+<p>master  boot record，主分区引导记录</p>
+</blockquote>
+<p>关注：硬盘容量受限制，最大2T</p>
+<h2 id="gbt分区"><a href="#gbt分区" class="headerlink" title="gbt分区"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/dzhongjie/article/details/112325468">gbt分区</a></h2><blockquote>
+<p>现在大多的硬盘分区表都是gpt分区表</p>
+</blockquote>
+<p>优点：容量不受限制、分区个数没有限制、自带磁盘保护机制</p>
+<h2 id="分区流程"><a href="#分区流程" class="headerlink" title="分区流程"></a>分区流程</h2><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/image-20220730092002511.png" alt="image-20220730092002511"></p>
+<ul>
+<li>主分区，primary partition</li>
+<li>拓展分区，extended partition<ul>
+<li>逻辑分区</li>
+</ul>
+</li>
+</ul>
+<p> <strong>Linux一切皆文件，磁盘设备在系统中也以文件形式展现</strong></p>
+<p><strong><a target="_blank" rel="noopener" href="https://www.initroot.com/tutorial/linuxbasic/1_install/linuxdevicefile.html#:~:text=%E5%9C%A8%E5%AE%9E%E4%BD%93%E7%89%A9%E7%90%86linux%E4%B8%BB%E6%9C%BA%E4%B8%ADSATA%E6%8E%A5%E5%8F%A3%E7%A1%AC%E7%9B%98%E8%AE%BE%E5%A4%87%E7%9A%84%E6%96%87%E4%BB%B6%E5%90%8D%E4%B8%BA%2Fdev%2Fsd%20%5Ba-d%5D%E3%80%82,%E5%A6%82%E6%9E%9C%E6%98%AFlinux%E4%B8%BB%E6%9C%BA%E4%B8%BA%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%BF%E7%94%A8%E7%9A%84%E8%99%9A%E6%8B%9F%E6%8E%A5%E5%8F%A3VirtIO%E7%A3%81%E7%9B%98%E8%AE%BE%E5%A4%87%EF%BC%8C%20%E8%99%9A%E6%8B%9F%E7%A3%81%E7%9B%98%E8%AE%BE%E5%A4%87%E6%96%87%E4%BB%B6%E5%90%8D%E4%B8%BA%2Fdev%2Fvd%20%5Ba-p%5D%21">linux常见设备文件名</a></strong></p>
+<table>
+<thead>
+<tr>
+<th>设备</th>
+<th>文件名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SCSI&#x2F;SATA&#x2F;USB接口硬盘驱动器或U盘</td>
+<td>&#x2F;dev&#x2F;sd[a-p]</td>
+</tr>
+<tr>
+<td>IDE接口硬盘驱动器(已逐步被SATA接口取代)</td>
+<td>&#x2F;dev&#x2F;hd[a-d]</td>
+</tr>
+<tr>
+<td>虚拟机内的Virt I&#x2F;O设备</td>
+<td>&#x2F;dev&#x2F;vd[a-p]</td>
+</tr>
+<tr>
+<td>软盘驱动器</td>
+<td>&#x2F;dev&#x2F;fd[0-7]</td>
+</tr>
+<tr>
+<td>打印机</td>
+<td>&#x2F;dev&#x2F;lp[0-2] (25针串口) &#x2F;dev&#x2F;usb&#x2F;lp[0-15] (USB接口)</td>
+</tr>
+<tr>
+<td>鼠标</td>
+<td>&#x2F;dev&#x2F;input&#x2F;mouse[0-15] (通用) &#x2F;dev&#x2F;psaux (PS&#x2F;2接口) &#x2F;dev&#x2F;mouse (当前鼠标)</td>
+</tr>
+<tr>
+<td>CDROM&#x2F;DVDROM</td>
+<td>&#x2F;dev&#x2F;scd[0-1] (通用) &#x2F;dev&#x2F;sr[0-1] (通用,CentOS较常见) &#x2F;dev&#x2F;cdrom (当前CDROM)</td>
+</tr>
+<tr>
+<td>磁带机</td>
+<td>&#x2F;dev&#x2F;ht0 (IDE接口) &#x2F;dev&#x2F;st0 (SATA&#x2F;SCSI接口) &#x2F;dev&#x2F;tape (当前磁带)</td>
+</tr>
+</tbody></table>
+<h2 id="分区类型"><a href="#分区类型" class="headerlink" title="分区类型"></a>分区类型</h2><blockquote>
+<p>硬盘设备，在Linux中会被识别为</p>
+</blockquote>
+<p>&#x2F;dev&#x2F;sda 第一块硬盘名</p>
+<p>​		格式化分区</p>
+<p>​		主分区		&#x2F;dev&#x2F;sda1</p>
+<p>​		拓展分区		&#x2F;dev&#x2F;sda2</p>
+<p>​					逻辑分区		&#x2F;dev&#x2F;sda5或者&#x2F;dev&#x2F;sda6 …</p>
+<p>&#x2F;dev&#x2F;sdb 第二块硬盘名</p>
+<blockquote>
+<p>系统默认将1~4留给主分区和拓展分区</p>
+</blockquote>
+<ul>
+<li>主分区1*（星号代表引导分区）</li>
+<li>主分区2</li>
+<li>主分区3</li>
+<li>主分区4（extended）<ul>
+<li>逻辑分区n</li>
+</ul>
+</li>
+</ul>
+<h2 id="分区命令"><a href="#分区命令" class="headerlink" title="分区命令"></a>分区命令</h2><h3 id="fdisk命令"><a href="#fdisk命令" class="headerlink" title="fdisk命令"></a>fdisk命令</h3><blockquote>
+<p>针对小于2TB的磁盘分区</p>
+</blockquote>
+<p>这里跳过了新加入一块硬盘，我使用的是vware虚拟机，大家可以自行添加，我就不做演示了。</p>
+<h4 id="查看分区信息"><a href="#查看分区信息" class="headerlink" title="查看分区信息"></a>查看分区信息</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/image-20220730094413174.png" alt="image-20220730094413174"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk -l</span></span><br><span class="line">磁盘 /dev/sda：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x0009d23b</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200    41943039    19921920   8e  Linux LVM</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br></pre></td></tr></table></figure>
+
+<p><strong>以下是对新加入的硬盘&#x2F;dev&#x2F;sdb进行操作</strong></p>
+<h4 id="开始分区"><a href="#开始分区" class="headerlink" title="开始分区"></a>开始分区</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<h4 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# fdisk /dev/sdb</span><br><span class="line">欢迎使用 fdisk (util-linux 2.23.2)。</span><br><span class="line"></span><br><span class="line">更改将停留在内存中，直到您决定将更改写入磁盘。</span><br><span class="line">使用写入命令前请三思。</span><br><span class="line"></span><br><span class="line">Device does not contain a recognized partition table</span><br><span class="line">使用磁盘标识符 0x2ad371ed 创建新的 DOS 磁盘标签。</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>从上发现，使用的是DOS磁盘标签，说明是采用mbr分区</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：m</span><br><span class="line">命令操作</span><br><span class="line">   a   toggle a bootable flag</span><br><span class="line">   b   edit bsd disklabel</span><br><span class="line">   c   toggle the dos compatibility flag</span><br><span class="line">   d   delete a partition</span><br><span class="line">   g   create a new empty GPT partition table</span><br><span class="line">   G   create an IRIX (SGI) partition table</span><br><span class="line">   l   list known partition types</span><br><span class="line">   m   <span class="built_in">print</span> this menu</span><br><span class="line">   n   add a new partition</span><br><span class="line">   o   create a new empty DOS partition table</span><br><span class="line">   p   <span class="built_in">print</span> the partition table</span><br><span class="line">   q   quit without saving changes</span><br><span class="line">   s   create a new empty Sun disklabel</span><br><span class="line">   t   change a partition<span class="string">&#x27;s system id</span></span><br><span class="line"><span class="string">   u   change display/entry units</span></span><br><span class="line"><span class="string">   v   verify the partition table</span></span><br><span class="line"><span class="string">   w   write table to disk and exit</span></span><br><span class="line"><span class="string">   x   extra functionality (experts only)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">命令(输入 m 获取帮助)：</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="p-打印现有分区表"><a href="#p-打印现有分区表" class="headerlink" title="p 打印现有分区表"></a>p 打印现有分区表</h4><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：p</span><br><span class="line">磁盘 /dev/sdb：21.5 GB,<span class="number"> 21474836480 </span>字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of<span class="number"> 1 </span>*<span class="number"> 512 </span>=<span class="number"> 512 </span>bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 /<span class="number"> 512 </span>字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 /<span class="number"> 512 </span>字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x2ad371ed</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>n 添加新的分区，分区类型：</p>
+<p>p  主分区</p>
+<p>e  拓展分区</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：n</span><br><span class="line">Partition <span class="built_in">type</span>:</span><br><span class="line">   p   primary (0 primary, 0 extended, 4 free)</span><br><span class="line">   e   extended</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Select (default p): p</span><br><span class="line">分区号 (1-4，默认 1)：</span><br><span class="line">起始 扇区 (2048-41943039，默认为 2048)：</span><br><span class="line">将使用默认值 2048</span><br></pre></td></tr></table></figure>
+
+<h4 id="设置分区大小"><a href="#设置分区大小" class="headerlink" title="设置分区大小"></a>设置分区大小</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Last 扇区, +扇区 or +size&#123;K,M,G&#125; (2048-41943039，默认为 41943039)：+256M</span><br><span class="line">分区 1 已设置为 Linux 类型，大小设为 256 MiB</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询分区表1"><a href="#查询分区表1" class="headerlink" title="查询分区表1"></a>查询分区表1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：p</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x2ad371ed</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048      526335      262144   83  Linux</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建一个拓展分区"><a href="#创建一个拓展分区" class="headerlink" title="创建一个拓展分区"></a>创建一个拓展分区</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048      526335      262144   83  Linux</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：n</span><br><span class="line">Partition <span class="built_in">type</span>:</span><br><span class="line">   p   primary (1 primary, 0 extended, 3 free)</span><br><span class="line">   e   extended</span><br><span class="line">Select (default p): e</span><br><span class="line">分区号 (2-4，默认 2)：</span><br><span class="line">起始 扇区 (526336-41943039，默认为 526336)：</span><br><span class="line">Last 扇区, +扇区 or +size&#123;K,M,G&#125; (526336-41943039，默认为 41943039)：</span><br><span class="line">将使用默认值 41943039</span><br><span class="line">分区 2 已设置为 Extended 类型，大小设为 19.8 GiB</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到创建拓展分区时，默认的起始分区是526336，和第一个分区是相邻的。</p>
+<h4 id="再次打印"><a href="#再次打印" class="headerlink" title="再次打印"></a>再次打印</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：p</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x2ad371ed</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048      526335      262144   83  Linux</span><br><span class="line">/dev/sdb2          526336    41943039    20708352    5  Extended</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+
+<h4 id="再输入n"><a href="#再输入n" class="headerlink" title="再输入n"></a>再输入n</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：n</span><br><span class="line">Partition <span class="built_in">type</span>:</span><br><span class="line">   p   primary (1 primary, 1 extended, 2 free)</span><br><span class="line">   l   logical (numbered from 5)</span><br><span class="line">Select (default p):</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到，free（空闲分区）还剩下2个。</p>
+<h4 id="在拓展分区中，创建逻辑分区"><a href="#在拓展分区中，创建逻辑分区" class="headerlink" title="在拓展分区中，创建逻辑分区"></a>在拓展分区中，创建逻辑分区</h4><blockquote>
+<p>l</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Select (default p): l</span><br><span class="line">添加逻辑分区 5</span><br><span class="line">起始 扇区 (528384-41943039，默认为 528384)：</span><br><span class="line">将使用默认值 528384</span><br><span class="line">Last 扇区, +扇区 or +size&#123;K,M,G&#125; (528384-41943039，默认为 41943039)：+10GB</span><br><span class="line">分区 5 已设置为 Linux 类型，大小设为 9.3 GiB</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：p</span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x2ad371ed</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048      526335      262144   83  Linux</span><br><span class="line">/dev/sdb2          526336    41943039    20708352    5  Extended</span><br><span class="line">/dev/sdb5          528384    20060159     9765888   83  Linux</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+
+<h4 id="继续创建逻辑分区"><a href="#继续创建逻辑分区" class="headerlink" title="继续创建逻辑分区"></a>继续创建逻辑分区</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：n</span><br><span class="line">Partition <span class="built_in">type</span>:</span><br><span class="line">   p   primary (1 primary, 1 extended, 2 free)</span><br><span class="line">   l   logical (numbered from 5)</span><br><span class="line">Select (default p): l</span><br><span class="line">添加逻辑分区 6</span><br><span class="line">起始 扇区 (20062208-41943039，默认为 20062208)：</span><br><span class="line">将使用默认值 20062208</span><br><span class="line">Last 扇区, +扇区 or +size&#123;K,M,G&#125; (20062208-41943039，默认为 41943039)：</span><br><span class="line">将使用默认值 41943039</span><br><span class="line">分区 6 已设置为 Linux 类型，大小设为 10.4 GiB</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：</span><br></pre></td></tr></table></figure>
+
+<h4 id="最后，正式写入"><a href="#最后，正式写入" class="headerlink" title="最后，正式写入"></a>最后，正式写入</h4><blockquote>
+<p>w</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">命令(输入 m 获取帮助)：w</span><br><span class="line">The partition table has been altered!</span><br><span class="line"></span><br><span class="line">Calling ioctl() to re-read partition table.</span><br><span class="line">正在同步磁盘。</span><br></pre></td></tr></table></figure>
+
+<p>在为输入w正式写入之前，分区表是写在内存中的。</p>
+<h4 id="查询分区表2"><a href="#查询分区表2" class="headerlink" title="查询分区表2"></a>查询分区表2</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk -l</span></span><br><span class="line"></span><br><span class="line">磁盘 /dev/sda：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x0009d23b</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200    41943039    19921920   8e  Linux LVM</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x2ad371ed</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048      526335      262144   83  Linux</span><br><span class="line">/dev/sdb2          526336    41943039    20708352    5  Extended</span><br><span class="line">/dev/sdb5          528384    20060159     9765888   83  Linux</span><br><span class="line">/dev/sdb6        20062208    41943039    10940416   83  Linux</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除分区，并确认写入"><a href="#删除分区，并确认写入" class="headerlink" title="删除分区，并确认写入"></a>删除分区，并确认写入</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># fdisk /dev/sdb</span></span><br><span class="line">欢迎使用 fdisk (util-linux 2.23.2)。</span><br><span class="line"></span><br><span class="line">更改将停留在内存中，直到您决定将更改写入磁盘。</span><br><span class="line">使用写入命令前请三思。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)：d</span><br><span class="line">分区号 (1,2,5,6，默认 6)：</span><br></pre></td></tr></table></figure>
+
+<p>直接回车，在输入d，直至删除所有分区。</p>
+<p>默认是从后往前删。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">分区号 (1,2,5,6，默认 6)：</span><br><span class="line">分区 6 已删除</span><br><span class="line">分区号 (1,2,5，默认 5)：</span><br><span class="line">分区 5 已删除</span><br><span class="line">分区号 (1,2，默认 2)：</span><br><span class="line">分区 2 已删除</span><br><span class="line">已选择分区 1</span><br><span class="line">分区 1 已删除</span><br><span class="line">命令(输入 m 获取帮助)：d</span><br><span class="line">No partition is defined yet!</span><br><span class="line">命令(输入 m 获取帮助)：w</span><br><span class="line">The partition table has been altered!</span><br><span class="line"></span><br><span class="line">Calling ioctl() to re-read partition table.</span><br><span class="line">正在同步磁盘。</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询分区表3"><a href="#查询分区表3" class="headerlink" title="查询分区表3"></a>查询分区表3</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x2ad371ed</span><br><span class="line"></span><br><span class="line">   设备 Boot      Start         End      Blocks   Id  System</span><br><span class="line">[root@localhost ~]<span class="comment"># fdisk -l|grep sd</span></span><br><span class="line">磁盘 /dev/sda：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200    41943039    19921920   8e  Linux LVM</span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br></pre></td></tr></table></figure>
+
+<h3 id="parted命令"><a href="#parted命令" class="headerlink" title="parted命令"></a>parted命令</h3><blockquote>
+<p>针对超过2TB的磁盘分区</p>
+</blockquote>
+<h4 id="开始分区-1"><a href="#开始分区-1" class="headerlink" title="开始分区"></a>开始分区</h4><blockquote>
+<p>parted &lt;磁盘&gt;</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># parted /dev/sdb</span></span><br><span class="line">GNU Parted 3.1</span><br><span class="line">使用 /dev/sdb</span><br><span class="line">Welcome to GNU Parted! Type <span class="string">&#x27;help&#x27;</span> to view a list of commands.</span><br><span class="line">(parted)</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看命令列表"><a href="#查看命令列表" class="headerlink" title="查看命令列表"></a>查看命令列表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">(parted) <span class="built_in">help</span></span><br><span class="line">  align-check TYPE N                        check partition N <span class="keyword">for</span> TYPE(min|opt)</span><br><span class="line">        alignment</span><br><span class="line">  <span class="built_in">help</span> [COMMAND]                           <span class="built_in">print</span> general <span class="built_in">help</span>, or <span class="built_in">help</span> on</span><br><span class="line">        COMMAND</span><br><span class="line">  mklabel,mktable LABEL-TYPE               create a new disklabel (partition</span><br><span class="line">        table)</span><br><span class="line">  mkpart PART-TYPE [FS-TYPE] START END     make a partition</span><br><span class="line">  name NUMBER NAME                         name partition NUMBER as NAME</span><br><span class="line">  <span class="built_in">print</span> [devices|free|list,all|NUMBER]     display the partition table,</span><br><span class="line">        available devices, free space, all found partitions, or a particular</span><br><span class="line">        partition</span><br><span class="line">  quit                                     <span class="built_in">exit</span> program</span><br><span class="line">  rescue START END                         rescue a lost partition near START</span><br><span class="line">        and END</span><br><span class="line"></span><br><span class="line">  resizepart NUMBER END                    resize partition NUMBER</span><br><span class="line">  <span class="built_in">rm</span> NUMBER                                delete partition NUMBER</span><br><span class="line">  <span class="keyword">select</span> DEVICE                            choose the device to edit</span><br><span class="line">  disk_set FLAG STATE                      change the FLAG on selected device</span><br><span class="line">  disk_toggle [FLAG]                       toggle the state of FLAG on selected</span><br><span class="line">        device</span><br><span class="line">  <span class="built_in">set</span> NUMBER FLAG STATE                    change the FLAG on partition NUMBER</span><br><span class="line">  toggle [NUMBER [FLAG]]                   toggle the state of FLAG on partition</span><br><span class="line">        NUMBER</span><br><span class="line">  unit UNIT                                <span class="built_in">set</span> the default unit to UNIT</span><br><span class="line">  version                                  display the version number and</span><br><span class="line">        copyright information of GNU Parted</span><br><span class="line">(parted)</span><br></pre></td></tr></table></figure>
+
+<h4 id="更改磁盘分区表类型"><a href="#更改磁盘分区表类型" class="headerlink" title="更改磁盘分区表类型"></a>更改磁盘分区表类型</h4><blockquote>
+<p>mkabel gpt</p>
+</blockquote>
+<p>我们从上文知道，sdb硬盘是<code>mbr</code>分区类型的，这里我们就改为<code>gbt</code>分区类型。</p>
+<blockquote>
+<p>这条命令很危险，只能对新的硬盘操作！！</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(parted) mklabel gpt</span><br><span class="line">警告: The existing disk label on /dev/sdb will be destroyed and all data on this</span><br><span class="line">disk will be lost. Do you want to <span class="built_in">continue</span>?</span><br><span class="line">是/Yes/否/No? <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="查询分区表4"><a href="#查询分区表4" class="headerlink" title="查询分区表4"></a>查询分区表4</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(parted) p</span><br><span class="line">Model: VMware, VMware Virtual S (scsi)</span><br><span class="line">Disk /dev/sdb: 21.5GB</span><br><span class="line">Sector size (logical/physical): 512B/512B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags:</span><br><span class="line"></span><br><span class="line">Number  Start  End  Size  File system  Name  标志</span><br><span class="line"></span><br><span class="line">(parted)</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，分区类型成功改为gpt</p>
+<h4 id="创建主分区"><a href="#创建主分区" class="headerlink" title="创建主分区"></a>创建主分区</h4><blockquote>
+<p>gpt分区类型是没有拓展分区的！</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(parted) mkpart primary 0 500</span><br><span class="line">警告: The resulting partition is not properly aligned <span class="keyword">for</span> best performance.</span><br><span class="line">忽略/Ignore/放弃/Cancel? Ignore</span><br><span class="line">(parted) p</span><br><span class="line">Model: VMware, VMware Virtual S (scsi)</span><br><span class="line">Disk /dev/sdb: 21.5GB</span><br><span class="line">Sector size (logical/physical): 512B/512B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags:</span><br><span class="line"></span><br><span class="line">Number  Start   End    Size   File system  Name     标志</span><br><span class="line"> 1      17.4kB  500MB  500MB               primary</span><br><span class="line"></span><br><span class="line">(parted)</span><br></pre></td></tr></table></figure>
+
+<p>0 表示从0开始</p>
+<p>500 表示500MB</p>
+<h4 id="创建逻辑分区"><a href="#创建逻辑分区" class="headerlink" title="创建逻辑分区"></a>创建逻辑分区</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(parted) mkpart logical 501 10000</span><br><span class="line">(parted) p</span><br><span class="line">Model: VMware, VMware Virtual S (scsi)</span><br><span class="line">Disk /dev/sdb: 21.5GB</span><br><span class="line">Sector size (logical/physical): 512B/512B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags:</span><br><span class="line"></span><br><span class="line">Number  Start   End     Size    File system  Name     标志</span><br><span class="line"> 1      17.4kB  500MB   500MB                primary</span><br><span class="line"> 2      501MB   10.0GB  9499MB               logical</span><br><span class="line"></span><br><span class="line">(parted)</span><br></pre></td></tr></table></figure>
+
+<h4 id="输入q退出，并查询分区情况"><a href="#输入q退出，并查询分区情况" class="headerlink" title="输入q退出，并查询分区情况"></a>输入q退出，并查询分区情况</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(parted) q</span><br><span class="line">信息: You may need to update /etc/fstab.</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># ls /dev/sdb*</span></span><br><span class="line">/dev/sdb  /dev/sdb1  /dev/sdb2</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看见，以及成功分出两个分区</p>
+<h4 id="使用fdisk查询看看"><a href="#使用fdisk查询看看" class="headerlink" title="使用fdisk查询看看"></a>使用fdisk查询看看</h4><blockquote>
+<p>fdisk -l</p>
+<p>这里截取部分信息</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">WARNING: fdisk GPT support is currently new, and therefore <span class="keyword">in</span> an experimental phase. Use at your own discretion.</span><br><span class="line"></span><br><span class="line">磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区</span><br><span class="line">Units = 扇区 of 1 * 512 = 512 bytes</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：gpt</span><br><span class="line">Disk identifier: 05387D9B-5B59-469F-BBEC-BD5FC44CC203</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#         Start          End    Size  Type            Name</span></span><br><span class="line"> 1           34       976562  476.8M  Microsoft basic primary</span><br><span class="line"> 2       978944     19531775    8.9G  Microsoft basic logical</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="重读分区表"><a href="#重读分区表" class="headerlink" title="重读分区表"></a>重读分区表</h3><blockquote>
+<p>partprobe命令也可以通过重启机器实现</p>
+</blockquote>
+<p>centos5或者以前可以使用此命令，用于重读分区表。</p>
+<p>当删除文件后，仍然占用磁盘空间，是应为磁盘分区表米有更新，需要重启分区表。</p>
+<h3 id="刷新内核认知"><a href="#刷新内核认知" class="headerlink" title="刷新内核认知"></a>刷新内核认知</h3><blockquote>
+<p>partx -a命令</p>
+<p>在我们格式化磁盘后，习惯性执行</p>
+</blockquote>
+<p>这时内核就会新地认识这个分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># partx -a /dev/sdb</span></span><br><span class="line">partx: /dev/sdb: error adding partitions 1-2</span><br><span class="line">partx: /dev/sdb: error adding partitions 5-6</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lptexas.top">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lptexas.top/posts/2891465825/">https://lptexas.top/posts/2891465825/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lptexas.top" target="_blank">Lptexas</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Centos/">Centos</a><a class="post-meta__tags" href="/tags/Shell/">Shell</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/">磁盘管理</a></div><div class="post_share"><div class="social-share" data-image="https://asucanyh-cn.github.io/img/post/gawr_gura_8.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://lptexas.top/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/wechat.jpg" alt="Wechat"/></a><div class="post-qr-code-desc">Wechat</div></li><li class="reward-item"><a href="https://lptexas.top/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/alipay.jpg" alt="Alipay"/></a><div class="post-qr-code-desc">Alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/24401782/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_7.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">禁止右键及F12等事件</div></div></a></div><div class="next-post pull-right"><a href="/posts/1947245734/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_9.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hexo访问速度优化</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/894506459/" title="Linux磁盘管理part2"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_jaws_okdol0928.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-31</div><div class="title">Linux磁盘管理part2</div></div></a></div><div><a href="/posts/3694309614/" title="Linux磁盘管理part3"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_and_lappland_arknights_drawn_by_brank_zalan.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-02</div><div class="title">Linux磁盘管理part3</div></div></a></div><div><a href="/posts/1112941901/" title="Linux磁盘管理part4"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_veilrain.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-02</div><div class="title">Linux磁盘管理part4</div></div></a></div><div><a href="/posts/2872410232/" title="Linux磁盘管理part5"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_a0lp.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-03</div><div class="title">Linux磁盘管理part5</div></div></a></div><div><a href="/posts/1947245734/" title="Hexo访问速度优化"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-30</div><div class="title">Hexo访问速度优化</div></div></a></div><div><a href="/posts/3381118550/" title="Linux进程管理part1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/texas_lappland_lappland_and_koshea_arknights_drawn_by_meng_ziya__sampl.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-04</div><div class="title">Linux进程管理part1</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">前端|后端|运维</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Asucanyh-cn"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a target="_blank" rel="noopener" href="https://asucanyh-cn.github.io/">外链请使用asucanyh-cn.github.io ������</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E7%A3%81%E7%9B%98%E5%AD%98%E5%82%A8%E7%9A%84%E7%BB%8F%E5%85%B8%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">Linux磁盘存储的经典描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%BA%E6%A2%B0%E7%A1%AC%E7%9B%98%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">机械硬盘内部原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">基本概念</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8D%95%E4%BD%8D"><span class="toc-number">3.</span> <span class="toc-text">计算机单位</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E9%87%8F%E5%8D%95%E4%BD%8D"><span class="toc-number">3.1.</span> <span class="toc-text">容量单位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="toc-number">3.2.</span> <span class="toc-text">查询大小的命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">4.</span> <span class="toc-text">常见的文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#windows"><span class="toc-number">4.1.</span> <span class="toc-text">windows</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E8%BD%AC%E9%80%9F%E4%B8%8E%E5%B9%B3%E5%9D%87%E5%AF%BB%E9%81%93%E6%97%B6%E9%97%B4"><span class="toc-number">5.</span> <span class="toc-text">磁盘转速与平均寻道时间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA"><span class="toc-number">6.</span> <span class="toc-text">磁盘分区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">6.1.</span> <span class="toc-text">分区编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mbr%E5%88%86%E5%8C%BA"><span class="toc-number">6.2.</span> <span class="toc-text">mbr分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gbt%E5%88%86%E5%8C%BA"><span class="toc-number">6.3.</span> <span class="toc-text">gbt分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E6%B5%81%E7%A8%8B"><span class="toc-number">6.4.</span> <span class="toc-text">分区流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.5.</span> <span class="toc-text">分区类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E5%91%BD%E4%BB%A4"><span class="toc-number">6.6.</span> <span class="toc-text">分区命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fdisk%E5%91%BD%E4%BB%A4"><span class="toc-number">6.6.1.</span> <span class="toc-text">fdisk命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%88%86%E5%8C%BA%E4%BF%A1%E6%81%AF"><span class="toc-number">6.6.1.1.</span> <span class="toc-text">查看分区信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E5%88%86%E5%8C%BA"><span class="toc-number">6.6.1.2.</span> <span class="toc-text">开始分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">6.6.1.3.</span> <span class="toc-text">执行结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#p-%E6%89%93%E5%8D%B0%E7%8E%B0%E6%9C%89%E5%88%86%E5%8C%BA%E8%A1%A8"><span class="toc-number">6.6.1.4.</span> <span class="toc-text">p 打印现有分区表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%88%86%E5%8C%BA%E5%A4%A7%E5%B0%8F"><span class="toc-number">6.6.1.5.</span> <span class="toc-text">设置分区大小</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%88%86%E5%8C%BA%E8%A1%A81"><span class="toc-number">6.6.1.6.</span> <span class="toc-text">查询分区表1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%8B%93%E5%B1%95%E5%88%86%E5%8C%BA"><span class="toc-number">6.6.1.7.</span> <span class="toc-text">创建一个拓展分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%8D%E6%AC%A1%E6%89%93%E5%8D%B0"><span class="toc-number">6.6.1.8.</span> <span class="toc-text">再次打印</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%8D%E8%BE%93%E5%85%A5n"><span class="toc-number">6.6.1.9.</span> <span class="toc-text">再输入n</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E6%8B%93%E5%B1%95%E5%88%86%E5%8C%BA%E4%B8%AD%EF%BC%8C%E5%88%9B%E5%BB%BA%E9%80%BB%E8%BE%91%E5%88%86%E5%8C%BA"><span class="toc-number">6.6.1.10.</span> <span class="toc-text">在拓展分区中，创建逻辑分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%A7%E7%BB%AD%E5%88%9B%E5%BB%BA%E9%80%BB%E8%BE%91%E5%88%86%E5%8C%BA"><span class="toc-number">6.6.1.11.</span> <span class="toc-text">继续创建逻辑分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%EF%BC%8C%E6%AD%A3%E5%BC%8F%E5%86%99%E5%85%A5"><span class="toc-number">6.6.1.12.</span> <span class="toc-text">最后，正式写入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%88%86%E5%8C%BA%E8%A1%A82"><span class="toc-number">6.6.1.13.</span> <span class="toc-text">查询分区表2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%88%86%E5%8C%BA%EF%BC%8C%E5%B9%B6%E7%A1%AE%E8%AE%A4%E5%86%99%E5%85%A5"><span class="toc-number">6.6.1.14.</span> <span class="toc-text">删除分区，并确认写入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%88%86%E5%8C%BA%E8%A1%A83"><span class="toc-number">6.6.1.15.</span> <span class="toc-text">查询分区表3</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parted%E5%91%BD%E4%BB%A4"><span class="toc-number">6.6.2.</span> <span class="toc-text">parted命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E5%88%86%E5%8C%BA-1"><span class="toc-number">6.6.2.1.</span> <span class="toc-text">开始分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%91%BD%E4%BB%A4%E5%88%97%E8%A1%A8"><span class="toc-number">6.6.2.2.</span> <span class="toc-text">查看命令列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E8%A1%A8%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.6.2.3.</span> <span class="toc-text">更改磁盘分区表类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%88%86%E5%8C%BA%E8%A1%A84"><span class="toc-number">6.6.2.4.</span> <span class="toc-text">查询分区表4</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%BB%E5%88%86%E5%8C%BA"><span class="toc-number">6.6.2.5.</span> <span class="toc-text">创建主分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%80%BB%E8%BE%91%E5%88%86%E5%8C%BA"><span class="toc-number">6.6.2.6.</span> <span class="toc-text">创建逻辑分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%93%E5%85%A5q%E9%80%80%E5%87%BA%EF%BC%8C%E5%B9%B6%E6%9F%A5%E8%AF%A2%E5%88%86%E5%8C%BA%E6%83%85%E5%86%B5"><span class="toc-number">6.6.2.7.</span> <span class="toc-text">输入q退出，并查询分区情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8fdisk%E6%9F%A5%E8%AF%A2%E7%9C%8B%E7%9C%8B"><span class="toc-number">6.6.2.8.</span> <span class="toc-text">使用fdisk查询看看</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%AF%BB%E5%88%86%E5%8C%BA%E8%A1%A8"><span class="toc-number">6.6.3.</span> <span class="toc-text">重读分区表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B7%E6%96%B0%E5%86%85%E6%A0%B8%E8%AE%A4%E7%9F%A5"><span class="toc-number">6.6.4.</span> <span class="toc-text">刷新内核认知</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1975607171/" title="Vue2学习笔记Part3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part3"/></a><div class="content"><a class="title" href="/posts/1975607171/" title="Vue2学习笔记Part3">Vue2学习笔记Part3</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2031351995/" title="在手机上使用MAA一键长草"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/arknights.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="在手机上使用MAA一键长草"/></a><div class="content"><a class="title" href="/posts/2031351995/" title="在手机上使用MAA一键长草">在手机上使用MAA一键长草</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/46558997/" title="Vue2学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/46558997/" title="Vue2学习笔记Part2">Vue2学习笔记Part2</a><time datetime="2023-08-05T16:00:00.000Z" title="发表于 2023-08-06 00:00:00">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2315174609/" title="Nodejs学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/nodejs.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Nodejs学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/2315174609/" title="Nodejs学习笔记Part2">Nodejs学习笔记Part2</a><time datetime="2023-07-14T16:00:00.000Z" title="发表于 2023-07-15 00:00:00">2023-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/3146662735/" title="Webpack前端项目工程化"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/webpack.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Webpack前端项目工程化"/></a><div class="content"><a class="title" href="/posts/3146662735/" title="Webpack前端项目工程化">Webpack前端项目工程化</a><time datetime="2023-07-13T16:00:00.000Z" title="发表于 2023-07-14 00:00:00">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://lptexas.top/img/post/gawr_gura_8.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/web-info/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff0000">蜀</span>
+<span style="color:#ca7900">I</span>
+<span style="color:#48ab18">C</span>
+<span style="color:#2720ac">P</span>
+<span style="color:#9b17ae">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff0000">20</span>
+<span style="color:#ca7900">22</span>
+<span style="color:#48ab18">01</span>
+<span style="color:#2720ac">84</span>
+<span style="color:#2778ac">59</span>
+<span style="color:#f40428">号</span>
+<span style="color:ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
