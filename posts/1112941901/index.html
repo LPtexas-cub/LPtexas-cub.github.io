@@ -1,0 +1,525 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Linux磁盘管理part4 | Lptexas</title><meta name="keywords" content="Centos,Shell,Linux,磁盘管理,mount"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="文件系统挂载原理  挂载通常是将一个存储设备挂载到另一个已经存在的文件夹中，访问这个文件夹，就是访问该存储设备的内容了。  在Linux下，设备未挂载前无法使用，未挂在时设备文件无法写入和读取，我们需要在Linux打开一个“入口”，即挂载点（Linux上的一个文件夹），用于对接该设备，实现挂载。     一个新的磁盘插入到机器后，分区，格式化文件系统（ntfs,ext3,ext4,xfs…），此时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux磁盘管理part4">
+<meta property="og:url" content="https://lptexas.top/posts/1112941901/index.html">
+<meta property="og:site_name" content="Lptexas">
+<meta property="og:description" content="文件系统挂载原理  挂载通常是将一个存储设备挂载到另一个已经存在的文件夹中，访问这个文件夹，就是访问该存储设备的内容了。  在Linux下，设备未挂载前无法使用，未挂在时设备文件无法写入和读取，我们需要在Linux打开一个“入口”，即挂载点（Linux上的一个文件夹），用于对接该设备，实现挂载。     一个新的磁盘插入到机器后，分区，格式化文件系统（ntfs,ext3,ext4,xfs…），此时">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lptexas.top/img/post/lappland_arknights_drawn_by_veilrain.png">
+<meta property="article:published_time" content="2022-08-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-18T02:59:54.116Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="Centos">
+<meta property="article:tag" content="Shell">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="磁盘管理">
+<meta property="article:tag" content="mount">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lptexas.top/img/post/lappland_arknights_drawn_by_veilrain.png"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="https://lptexas.top/posts/1112941901/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"P2ZV0B43D6","apiKey":"f12489b76b57b857a0c03a13554bffc8","indexName":"prod_HEXO_SEARCH","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux磁盘管理part4',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-18 10:59:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/function.min.css"></script><link rel="stylesheet" href="/css/hexoAdmonition.css"><script type="text/javascript" src="/js/banf12.js"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Lptexas" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://lptexas.top/img/post/lappland_arknights_drawn_by_veilrain.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lptexas</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux磁盘管理part4<a class="post-edit-link" href="https://github.com/asucanyh-cn/blog-source/edit/main/source/_posts/Linux磁盘管理part4.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-01T16:00:00.000Z" title="发表于 2022-08-02 00:00:00">2022-08-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-18T02:59:54.116Z" title="更新于 2024-02-18 10:59:54">2024-02-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux磁盘管理part4"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="文件系统挂载原理"><a href="#文件系统挂载原理" class="headerlink" title="文件系统挂载原理"></a>文件系统挂载原理</h1><p><code> 挂载</code>通常是将一个存储设备挂载到另一个已经存在的文件夹中，访问这个文件夹，就是访问该存储设备的内容了。</p>
+<p>在Linux下，设备未挂载前无法使用，未挂在时设备文件无法写入和读取，我们需要在Linux打开一个“入口”，即挂载点（Linux上的一个文件夹），用于对接该设备，实现挂载。</p>
+<hr>
+<p>一个新的磁盘插入到机器后，分区，格式化文件系统（ntfs,ext3,ext4,xfs…），此时还未挂载分区，分区还仅仅是一个封闭空间，无法读写，针对分区和Linux文件夹，合并，关联，挂载，即可通过访问被挂载文件夹看到磁盘内的数据了。</p>
+<h1 id="mount命令"><a href="#mount命令" class="headerlink" title="mount命令"></a>mount命令</h1><blockquote>
+<p>mount命令能够将指定的文件系统挂载到特定的目录上</p>
+</blockquote>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mount [-lhV]</span><br><span class="line">mount -a [选项]</span><br><span class="line">mount [选项] [--<span class="built_in">source</span>] &lt;源&gt; | [--target] &lt;目录&gt;</span><br><span class="line">mount [选项] &lt;源&gt; &lt;目录&gt;</span><br><span class="line">mount &lt;操作&gt; &lt;挂载点&gt; [&lt;目标&gt;]</span><br></pre></td></tr></table></figure>
+
+<h2 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-a, --all               挂载 fstab 中的所有文件系统</span><br><span class="line">-c, --no-canonicalize   不对路径规范化</span><br><span class="line">-f, --fake              空运行；跳过 mount(2) 系统调用</span><br><span class="line">-F, --fork              对每个设备禁用 fork(和 -a 选项一起使用)</span><br><span class="line">-T, --fstab &lt;路径&gt;      /etc/fstab 的替代文件</span><br><span class="line">-h, --<span class="built_in">help</span>              显示此帮助并退出</span><br><span class="line">-i, --internal-only     不调用 mount.&lt;类型&gt; 助手程序</span><br><span class="line">-l, --show-labels       列出所有带有指定标签的挂载</span><br><span class="line">-n, --no-mtab           不写 /etc/mtab</span><br><span class="line">-o, --options &lt;列表&gt;    挂载选项列表，以英文逗号分隔</span><br><span class="line">-O, --test-opts &lt;列表&gt;  限制文件系统集合(和 -a 选项一起使用)</span><br><span class="line">-r, --read-only         以只读方式挂载文件系统(同 -o ro)</span><br><span class="line">-t, --types &lt;列表&gt;      限制文件系统类型集合</span><br><span class="line">    --<span class="built_in">source</span> &lt;源&gt;       指明源(路径、标签、uuid)</span><br><span class="line">    --target &lt;目标&gt;     指明挂载点</span><br><span class="line">-v, --verbose           打印当前进行的操作</span><br><span class="line">-V, --version           显示版本信息并退出</span><br><span class="line">-w, --rw, --read-write  以读写方式挂载文件系统(默认)</span><br><span class="line"></span><br><span class="line">-h, --<span class="built_in">help</span>     显示此帮助并退出</span><br><span class="line">-V, --version  输出版本信息并退出</span><br></pre></td></tr></table></figure>
+
+<h3 id="mount-o参数详解"><a href="#mount-o参数详解" class="headerlink" title="mount -o参数详解"></a>mount -o参数详解</h3><ul>
+<li>async 以异步的方式处理文件系统IO，加速希尔，数据不会同步写入磁盘，而是写入一个缓冲区，提高系统新能，损失数据安全性</li>
+<li>sync 所有IO操作同步处理，数据同步写入到磁盘，性能较弱，提高数据读写的安全性</li>
+<li>atime&#x2F;noatime 文件访问时，是否修改时间戳，能够提升磁盘IO石压速度</li>
+<li>auto&#x2F;noauto 可以通过-a参数自动挂载，不自动挂载</li>
+<li>defaults 这个默认参数，涵盖rw,suid,dev,exec,auto,nousr,async等等参数</li>
+<li>exec&#x2F;noexec 是否允许挂载点内的可执行命令，使用noexec提升磁盘安全性</li>
+<li>ro 只读</li>
+<li>rw 读写</li>
+</ul>
+<hr>
+<p>对于centos7新出现的mount选项有</p>
+<ul>
+<li>att2 磁盘上存储内联拓展属性，提升磁盘性能</li>
+<li>inode64 允许在文件系统的任意位置创建inode</li>
+<li>noquota 强制关闭文件系统的限额功能</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/dev/sda1 on /boot <span class="built_in">type</span> xfs (rw,relatime,seclabel,attr2,inode64,noquota)</span><br></pre></td></tr></table></figure>
+
+<h1 id="mount实操"><a href="#mount实操" class="headerlink" title="mount实操"></a>mount实操</h1><h2 id="查看挂载情况"><a href="#查看挂载情况" class="headerlink" title="查看挂载情况"></a>查看挂载情况</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># df -hT</span></span><br><span class="line">文件系统                类型      容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                devtmpfs  899M     0  899M    0% /dev</span><br><span class="line">tmpfs                   tmpfs     910M     0  910M    0% /dev/shm</span><br><span class="line">tmpfs                   tmpfs     910M  9.6M  901M    2% /run</span><br><span class="line">tmpfs                   tmpfs     910M     0  910M    0% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/centos-root xfs        17G  2.6G   15G   15% /</span><br><span class="line">/dev/sda1               xfs      1014M  189M  826M   19% /boot</span><br><span class="line">tmpfs                   tmpfs     182M     0  182M    0% /run/user/0</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="将-dev-sdb3挂载到-mnt"><a href="#将-dev-sdb3挂载到-mnt" class="headerlink" title="将/dev/sdb3挂载到/mnt"></a>将<code>/dev/sdb3</code>挂载到<code>/mnt</code></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lsblk -f</span></span><br><span class="line">NAME   FSTYPE   LABEL          UUID                                   MOUNTPOINT</span><br><span class="line">sda</span><br><span class="line">├─sda1 xfs                     7fdc921b-f892-4c21-8f87-97f26f936673   /boot</span><br><span class="line">└─sda2 LVM2_mem                LYVzwm-oAOF-Uxwx-m6tO-Ocrx-D64J-wvpb3G</span><br><span class="line">  ├─centos-root</span><br><span class="line">       xfs                     745e580c-314d-4419-b634-97ea40c4ee49   /</span><br><span class="line">  └─centos-swap</span><br><span class="line">       swap                    dbb971fd-25ea-43d9-b515-87fd10cba0de   [SWAP]</span><br><span class="line">sdb</span><br><span class="line">├─sdb1 ext4                    2ddcc1b2-2acf-4011-8c1b-1ee2858775d7</span><br><span class="line">├─sdb2 xfs                     af6080aa-49e9-4319-a1a7-d0da302cdd01</span><br><span class="line">└─sdb3</span><br><span class="line">sr0    iso9660  CentOS 7 x86_64</span><br><span class="line">                               2018-11-25-21-21-31-00</span><br></pre></td></tr></table></figure>
+
+<p>通过查看分区文件系统类型发现，sdb3并未进行格式化系统类型！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mount /dev/sdb3 /mnt</span></span><br><span class="line">mount: /dev/sdb3 写保护，将以只读方式挂载</span><br><span class="line">mount: 未知的文件系统类型“(null)”</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="将-dev-sdb3进行格式化文件系统类型为xfs"><a href="#将-dev-sdb3进行格式化文件系统类型为xfs" class="headerlink" title="将/dev/sdb3进行格式化文件系统类型为xfs"></a>将<code>/dev/sdb3</code>进行格式化文件系统类型为<code>xfs</code></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mkfs.xfs /dev/sdb3</span></span><br><span class="line">meta-data=/dev/sdb3              isize=512    agcount=4, agsize=700351 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0, sparse=0</span><br><span class="line">data     =                       bsize=4096   blocks=2801403, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal <span class="built_in">log</span>           bsize=4096   blocks=2560, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =none                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">[root@localhost ~]<span class="comment"># lsblk -f</span></span><br><span class="line">NAME   FSTYPE   LABEL          UUID                                   MOUNTPOINT</span><br><span class="line">sda</span><br><span class="line">├─sda1 xfs                     7fdc921b-f892-4c21-8f87-97f26f936673   /boot</span><br><span class="line">└─sda2 LVM2_mem                LYVzwm-oAOF-Uxwx-m6tO-Ocrx-D64J-wvpb3G</span><br><span class="line">  ├─centos-root</span><br><span class="line">       xfs                     745e580c-314d-4419-b634-97ea40c4ee49   /</span><br><span class="line">  └─centos-swap</span><br><span class="line">       swap                    dbb971fd-25ea-43d9-b515-87fd10cba0de   [SWAP]</span><br><span class="line">sdb</span><br><span class="line">├─sdb1 ext4                    2ddcc1b2-2acf-4011-8c1b-1ee2858775d7</span><br><span class="line">├─sdb2 xfs                     af6080aa-49e9-4319-a1a7-d0da302cdd01</span><br><span class="line">└─sdb3 xfs                     a2c0eae1-c538-4213-a97e-2f7e50153a19</span><br><span class="line">sr0    iso9660  CentOS 7 x86_64</span><br><span class="line">                               2018-11-25-21-21-31-00</span><br></pre></td></tr></table></figure>
+
+<p>成功格式化！</p>
+<hr>
+<h2 id="再次挂载"><a href="#再次挂载" class="headerlink" title="再次挂载"></a>再次挂载</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mount /dev/sdb3 /mnt</span></span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>无提示是最好的提示！</p>
+<hr>
+<h2 id="查看挂载情况-1"><a href="#查看挂载情况-1" class="headerlink" title="查看挂载情况"></a>查看挂载情况</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># df -hT</span></span><br><span class="line">文件系统                类型      容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                devtmpfs  899M     0  899M    0% /dev</span><br><span class="line">tmpfs                   tmpfs     910M     0  910M    0% /dev/shm</span><br><span class="line">tmpfs                   tmpfs     910M  9.6M  901M    2% /run</span><br><span class="line">tmpfs                   tmpfs     910M     0  910M    0% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/centos-root xfs        17G  2.6G   15G   15% /</span><br><span class="line">/dev/sda1               xfs      1014M  189M  826M   19% /boot</span><br><span class="line">tmpfs                   tmpfs     182M     0  182M    0% /run/user/0</span><br><span class="line">/dev/sdb3               xfs        11G   33M   11G    1% /mnt</span><br></pre></td></tr></table></figure>
+
+<p>第10行我们发现成功将磁盘挂载！</p>
+<hr>
+<h2 id="使用挂载后的磁盘"><a href="#使用挂载后的磁盘" class="headerlink" title="使用挂载后的磁盘"></a>使用挂载后的磁盘</h2><p>切换至<code>/mnt</code>目录下，生成一个大文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /mnt</span><br><span class="line"><span class="built_in">echo</span> &#123;1..99999&#125; &gt; big.txt</span><br><span class="line"><span class="built_in">echo</span> &#123;1..99999&#125; &gt;&gt; big.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cd /mnt</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># echo &#123;1..99999&#125; &gt; big.txt</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># echo &#123;1..99999&#125; &gt;&gt; big.txt</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># du -h *</span></span><br><span class="line">1.6M    big.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="取消挂载"><a href="#取消挂载" class="headerlink" title="取消挂载"></a>取消挂载</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount &lt;挂载点&gt;或者&lt;设备&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意！</p>
+<p>取消挂载前必须没有人正在使用！</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment">#  umount /mnt</span></span><br><span class="line">umount: /mnt：目标忙。</span><br><span class="line">        (有些情况下通过 lsof(8) 或 fuser(1) 可以</span><br><span class="line">         找到有关使用该设备的进程的有用信息)</span><br></pre></td></tr></table></figure>
+
+<p>上面取消挂载失败，是因为我们正处在&#x2F;mnt目录中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment"># cd /</span></span><br><span class="line">[root@localhost /]<span class="comment">#  umount /mnt</span></span><br></pre></td></tr></table></figure>
+
+<p>取消成功！</p>
+<h2 id="以只读形式挂载-x2F-dev-x2F-sdb3"><a href="#以只读形式挂载-x2F-dev-x2F-sdb3" class="headerlink" title="以只读形式挂载&#x2F;dev&#x2F;sdb3"></a>以只读形式挂载&#x2F;dev&#x2F;sdb3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost /]<span class="comment"># mount -o ro /dev/sdb3 /mnt</span></span><br><span class="line">[root@localhost /]<span class="comment"># cd /mnt/</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># ls</span></span><br><span class="line">big.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;big.txt&quot;</span> [<span class="built_in">readonly</span>] 2L, 1177776C</span><br></pre></td></tr></table></figure>
+
+<p>挂载成功且能够读取big.txt但不能修改！</p>
+<h2 id="尝试创建新文件"><a href="#尝试创建新文件" class="headerlink" title="尝试创建新文件"></a>尝试创建新文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment"># touch test</span></span><br><span class="line"><span class="built_in">touch</span>: 无法创建<span class="string">&quot;test&quot;</span>: 只读文件系统</span><br></pre></td></tr></table></figure>
+
+<h2 id="禁止挂载的设备执行二进制文件"><a href="#禁止挂载的设备执行二进制文件" class="headerlink" title="禁止挂载的设备执行二进制文件"></a>禁止挂载的设备执行二进制文件</h2><blockquote>
+<p>先将sdb3取消挂载</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount /mnt</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>再执行挂载</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -o noexec /dev/sdb3 /mnt</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>创建一个简单脚本</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment"># vi test.sh</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># cat test.sh</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Test&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行脚本</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mnt]<span class="comment"># . test.sh</span></span><br><span class="line">Test</span><br><span class="line">[root@localhost mnt]<span class="comment"># bash test.sh</span></span><br><span class="line">Test</span><br><span class="line"><span class="comment">#######</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># ./test.sh</span></span><br><span class="line">-bash: ./test.sh: 权限不够</span><br><span class="line">[root@localhost mnt]<span class="comment"># chmod +x test.sh</span></span><br><span class="line">[root@localhost mnt]<span class="comment"># ls -l</span></span><br><span class="line">总用量 1156</span><br><span class="line">-rw-r--r--. 1 root root 1177776 8月   2 11:18 big.txt</span><br><span class="line">-rwxr-xr-x. 1 root root      24 8月   2 12:08 test.sh</span><br><span class="line">[root@localhost mnt]<span class="comment"># ./test.sh</span></span><br><span class="line">-bash: ./test.sh: 权限不够</span><br></pre></td></tr></table></figure>
+
+<p>我们发现使用 <code>.</code>或<code>bash</code> 方式能够成功执行<code>test.sh</code>，但无法直接<code>./test.sh</code>执行文件，就算赋予了执行权限也不能执行！这就是<code>noexec</code>的作用！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lptexas.top">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lptexas.top/posts/1112941901/">https://lptexas.top/posts/1112941901/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lptexas.top" target="_blank">Lptexas</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Centos/">Centos</a><a class="post-meta__tags" href="/tags/Shell/">Shell</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/">磁盘管理</a><a class="post-meta__tags" href="/tags/mount/">mount</a></div><div class="post_share"><div class="social-share" data-image="https://lptexas.top/img/post/lappland_arknights_drawn_by_veilrain.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://lptexas.top/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/wechat.jpg" alt="Wechat"/></a><div class="post-qr-code-desc">Wechat</div></li><li class="reward-item"><a href="https://lptexas.top/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/alipay.jpg" alt="Alipay"/></a><div class="post-qr-code-desc">Alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/894506459/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_jaws_okdol0928.png" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux磁盘管理part2</div></div></a></div><div class="next-post pull-right"><a href="/posts/3694309614/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_and_lappland_arknights_drawn_by_brank_zalan.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linux磁盘管理part3</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2891465825/" title="Linux磁盘管理part1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/gawr_gura_8.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-30</div><div class="title">Linux磁盘管理part1</div></div></a></div><div><a href="/posts/894506459/" title="Linux磁盘管理part2"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_jaws_okdol0928.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-31</div><div class="title">Linux磁盘管理part2</div></div></a></div><div><a href="/posts/3694309614/" title="Linux磁盘管理part3"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_and_lappland_arknights_drawn_by_brank_zalan.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-02</div><div class="title">Linux磁盘管理part3</div></div></a></div><div><a href="/posts/2872410232/" title="Linux磁盘管理part5"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_a0lp.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-03</div><div class="title">Linux磁盘管理part5</div></div></a></div><div><a href="/posts/1947245734/" title="Hexo访问速度优化"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-30</div><div class="title">Hexo访问速度优化</div></div></a></div><div><a href="/posts/3381118550/" title="Linux进程管理part1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/texas_lappland_lappland_and_koshea_arknights_drawn_by_meng_ziya__sampl.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-04</div><div class="title">Linux进程管理part1</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">前端|后端|运维</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Asucanyh-cn"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a target="_blank" rel="noopener" href="https://asucanyh-cn.github.io/">外链请使用asucanyh-cn.github.io 😘</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8C%82%E8%BD%BD%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">文件系统挂载原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mount%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">mount命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E9%A1%B9"><span class="toc-number">2.2.</span> <span class="toc-text">选项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mount-o%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-number">2.2.1.</span> <span class="toc-text">mount -o参数详解</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mount%E5%AE%9E%E6%93%8D"><span class="toc-number">3.</span> <span class="toc-text">mount实操</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%8C%82%E8%BD%BD%E6%83%85%E5%86%B5"><span class="toc-number">3.1.</span> <span class="toc-text">查看挂载情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86-dev-sdb3%E6%8C%82%E8%BD%BD%E5%88%B0-mnt"><span class="toc-number">3.2.</span> <span class="toc-text">将&#x2F;dev&#x2F;sdb3挂载到&#x2F;mnt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86-dev-sdb3%E8%BF%9B%E8%A1%8C%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B%E4%B8%BAxfs"><span class="toc-number">3.3.</span> <span class="toc-text">将&#x2F;dev&#x2F;sdb3进行格式化文件系统类型为xfs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E6%AC%A1%E6%8C%82%E8%BD%BD"><span class="toc-number">3.4.</span> <span class="toc-text">再次挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%8C%82%E8%BD%BD%E6%83%85%E5%86%B5-1"><span class="toc-number">3.5.</span> <span class="toc-text">查看挂载情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%82%E8%BD%BD%E5%90%8E%E7%9A%84%E7%A3%81%E7%9B%98"><span class="toc-number">3.6.</span> <span class="toc-text">使用挂载后的磁盘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%96%E6%B6%88%E6%8C%82%E8%BD%BD"><span class="toc-number">3.7.</span> <span class="toc-text">取消挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E5%8F%AA%E8%AF%BB%E5%BD%A2%E5%BC%8F%E6%8C%82%E8%BD%BD-x2F-dev-x2F-sdb3"><span class="toc-number">3.8.</span> <span class="toc-text">以只读形式挂载&#x2F;dev&#x2F;sdb3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%9D%E8%AF%95%E5%88%9B%E5%BB%BA%E6%96%B0%E6%96%87%E4%BB%B6"><span class="toc-number">3.9.</span> <span class="toc-text">尝试创建新文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%81%E6%AD%A2%E6%8C%82%E8%BD%BD%E7%9A%84%E8%AE%BE%E5%A4%87%E6%89%A7%E8%A1%8C%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-number">3.10.</span> <span class="toc-text">禁止挂载的设备执行二进制文件</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1975607171/" title="Vue2学习笔记Part3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part3"/></a><div class="content"><a class="title" href="/posts/1975607171/" title="Vue2学习笔记Part3">Vue2学习笔记Part3</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2031351995/" title="在手机上使用MAA一键长草"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/arknights.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="在手机上使用MAA一键长草"/></a><div class="content"><a class="title" href="/posts/2031351995/" title="在手机上使用MAA一键长草">在手机上使用MAA一键长草</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/46558997/" title="Vue2学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/46558997/" title="Vue2学习笔记Part2">Vue2学习笔记Part2</a><time datetime="2023-08-05T16:00:00.000Z" title="发表于 2023-08-06 00:00:00">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2315174609/" title="Nodejs学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/nodejs.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Nodejs学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/2315174609/" title="Nodejs学习笔记Part2">Nodejs学习笔记Part2</a><time datetime="2023-07-14T16:00:00.000Z" title="发表于 2023-07-15 00:00:00">2023-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2614050479/" title="Vue2学习笔记Part1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part1"/></a><div class="content"><a class="title" href="/posts/2614050479/" title="Vue2学习笔记Part1">Vue2学习笔记Part1</a><time datetime="2023-07-13T16:00:00.000Z" title="发表于 2023-07-14 00:00:00">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://lptexas.top/img/post/lappland_arknights_drawn_by_veilrain.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/web-info/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff0000">蜀</span>
+<span style="color:#ca7900">I</span>
+<span style="color:#48ab18">C</span>
+<span style="color:#2720ac">P</span>
+<span style="color:#9b17ae">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff0000">20</span>
+<span style="color:#ca7900">22</span>
+<span style="color:#48ab18">01</span>
+<span style="color:#2720ac">84</span>
+<span style="color:#2778ac">59</span>
+<span style="color:#f40428">号</span>
+<span style="color:ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

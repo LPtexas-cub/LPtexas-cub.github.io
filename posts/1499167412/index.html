@@ -1,0 +1,642 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Linu网络基础part2 | Lptexas</title><meta name="keywords" content="Centos,Shell"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="route命令 什么是路由?  计算机之间的数据传输必须经过网络，网络可以直接连接两台计算机，也可以通过一个一个的节点去连接。路由可以理解为互联网的中转站，网络中的数据包就是通过哦一个一个的路由转发到目的地。  路由分类 静态和动态路由  Linux机器上配置的都是静态路由，由运维人民通过route命令去管理。  动态路由无需人为干预，由路由器、交换机自动分配规则而来。  route命令 rout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linu网络基础part2">
+<meta property="og:url" content="https://lptexas.top/posts/1499167412/index.html">
+<meta property="og:site_name" content="Lptexas">
+<meta property="og:description" content="route命令 什么是路由?  计算机之间的数据传输必须经过网络，网络可以直接连接两台计算机，也可以通过一个一个的节点去连接。路由可以理解为互联网的中转站，网络中的数据包就是通过哦一个一个的路由转发到目的地。  路由分类 静态和动态路由  Linux机器上配置的都是静态路由，由运维人民通过route命令去管理。  动态路由无需人为干预，由路由器、交换机自动分配规则而来。  route命令 rout">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lptexas.top/img/post/v2-7a2f7e98441362fb4c48bd796eae5c21_720w.jpg">
+<meta property="article:published_time" content="2022-08-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-18T02:59:54.116Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="Centos">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lptexas.top/img/post/v2-7a2f7e98441362fb4c48bd796eae5c21_720w.jpg"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="https://lptexas.top/posts/1499167412/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"P2ZV0B43D6","apiKey":"f12489b76b57b857a0c03a13554bffc8","indexName":"prod_HEXO_SEARCH","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linu网络基础part2',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-18 10:59:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/function.min.css"></script><link rel="stylesheet" href="/css/hexoAdmonition.css"><script type="text/javascript" src="/js/banf12.js"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Lptexas" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://lptexas.top/img/post/v2-7a2f7e98441362fb4c48bd796eae5c21_720w.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lptexas</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linu网络基础part2<a class="post-edit-link" href="https://github.com/asucanyh-cn/blog-source/edit/main/source/_posts/Linux网络基础part2.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-06T16:00:00.000Z" title="发表于 2022-08-07 00:00:00">2022-08-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-18T02:59:54.116Z" title="更新于 2024-02-18 10:59:54">2024-02-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>15分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linu网络基础part2"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="route命令"><a href="#route命令" class="headerlink" title="route命令"></a><a target="_blank" rel="noopener" href="https://linux.cmsblogs.cn/c/route.html">route命令</a></h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/410628521">什么是路由?</a></p>
+</blockquote>
+<p>计算机之间的数据传输必须经过网络，网络可以直接连接两台计算机，也可以通过一个一个的节点去连接。路由可以理解为互联网的中转站，网络中的数据包就是通过哦一个一个的路由转发到目的地。</p>
+<h2 id="路由分类"><a href="#路由分类" class="headerlink" title="路由分类"></a>路由分类</h2><blockquote>
+<p><code>静态</code>和<code>动态</code>路由</p>
+</blockquote>
+<p>Linux机器上配置的都是静态路由，由运维人民通过route命令去管理。</p>
+<p>动态路由无需人为干预，由路由器、交换机自动分配规则而来。</p>
+<h2 id="route命令-1"><a href="#route命令-1" class="headerlink" title="route命令"></a>route命令</h2><blockquote>
+<p><strong>route命令</strong>可以对路由表进行操作</p>
+</blockquote>
+<p>用来显示并设置Linux内核中的网络路由表，route命令设置的路由主要是静态路由。要实现两个不同的子网之间的通信，需要一台连接两个网络的路由器，或者同时位于两个网络的网关来实现。</p>
+<p>在Linux系统中设置路由通常是为了解决以下问题：该Linux系统在一个局域网中，局域网中有一个网关，能够让机器访问Internet，那么就需要将这台机器的ip地址设置为Linux机器的默认路由。要注意的是，直接在命令行下执行route命令来添加路由，不会永久保存，当网卡重启或者机器重启之后，该路由就失效了；可以在<code>/etc/rc.local</code>中添加route命令来保证该路由设置永久有效。</p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route [option] [参数]</span><br></pre></td></tr></table></figure>
+
+<h2 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-A：设置地址类型；</span><br><span class="line">-C：打印将Linux核心的路由缓存；</span><br><span class="line">-v：详细信息模式；</span><br><span class="line">-n：不执行DNS反向查找，直接显示数字形式的IP地址；</span><br><span class="line">-e：netstat格式显示路由表；</span><br><span class="line">-net：到一个网络的路由表；</span><br><span class="line">-host：到一个主机的路由表。</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Add：增加指定的路由记录；</span><br><span class="line">Del：删除指定的路由记录；</span><br><span class="line">Target：目的网络或目的主机；</span><br><span class="line">gw：设置默认网关；</span><br><span class="line">mss：设置TCP的最大区块长度（MSS），单位MB；</span><br><span class="line">window：指定通过路由表的TCP连接的TCP窗口大小；</span><br><span class="line">dev：路由记录所表示的网络接口。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# route --help</span><br><span class="line">Usage: route [-nNvee] [-FC] [&lt;AF&gt;]           List kernel routing tables</span><br><span class="line">       route [-v] [-FC] &#123;add|del|flush&#125; ...  Modify routing table for AF.</span><br><span class="line"></span><br><span class="line">       route &#123;-h|--help&#125; [&lt;AF&gt;]              Detailed usage syntax for specified AF.</span><br><span class="line">       route &#123;-V|--version&#125;                  Display version/author and exit.</span><br><span class="line"></span><br><span class="line">        -v, --verbose            be verbose</span><br><span class="line">        -n, --numeric            don&#x27;t resolve names</span><br><span class="line">        -e, --extend             display other/more information</span><br><span class="line">        -F, --fib                display Forwarding Information Base (default)</span><br><span class="line">        -C, --cache              display routing cache instead of FIB</span><br><span class="line"></span><br><span class="line">  &lt;AF&gt;=Use -4, -6, &#x27;-A &lt;af&gt;&#x27; or &#x27;--&lt;af&gt;&#x27;; default: inet</span><br><span class="line">  List of possible address families (which support routing):</span><br><span class="line">    inet (DARPA Internet) inet6 (IPv6) ax25 (AMPR AX.25)</span><br><span class="line">    netrom (AMPR NET/ROM) ipx (Novell IPX) ddp (Appletalk DDP)</span><br><span class="line">    x25 (CCITT X.25)</span><br></pre></td></tr></table></figure>
+
+<h2 id="路由命令案例"><a href="#路由命令案例" class="headerlink" title="路由命令案例"></a>路由命令案例</h2><h3 id="查看路由表信息"><a href="#查看路由表信息" class="headerlink" title="查看路由表信息"></a>查看路由表信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# route</span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">default         gateway         0.0.0.0         UG    100    0        0 ens33</span><br><span class="line">192.168.41.0    0.0.0.0         255.255.255.0   U     100    0        0 ens33</span><br></pre></td></tr></table></figure>
+
+<p>加上<code>-n</code>参数，将<code>default</code>，<code>gateway</code>显示出具体的<code>值</code>。</p>
+<p>（即不进行DNS解析的路由表查看）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route -n</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# route -n</span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">0.0.0.0         192.168.41.2    0.0.0.0         UG    100    0        0 ens33</span><br><span class="line">192.168.41.0    0.0.0.0         255.255.255.0   U     100    0        0 ens33</span><br></pre></td></tr></table></figure>
+
+<h4 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h4><ul>
+<li>Destination：网络号，network；</li>
+<li>Gateway：网关地址，网络是通过该IP出口，如果显示0.0.0.0的IP表示该路由信息，是从本机转发出去的；</li>
+<li>Genmask：子网掩码地址的表示，IP地址配合子网掩码才是一个完整的网络信息；</li>
+<li>Flags：路由标记，表当前的网络状态<ul>
+<li>U：up运行状态</li>
+<li>G：表示这是一个网关路由器</li>
+<li>H：表示这个网关是一个主机</li>
+<li>！：表示这个路由已经被禁止</li>
+</ul>
+</li>
+</ul>
+<h3 id="删除默认路由"><a href="#删除默认路由" class="headerlink" title="删除默认路由"></a>删除默认路由</h3><blockquote>
+<p>default</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route del default</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加网关地址"><a href="#添加网关地址" class="headerlink" title="添加网关地址"></a>添加网关地址</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">route add default gw &lt;网关ip&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="IP命令"><a href="#IP命令" class="headerlink" title="IP命令"></a><a target="_blank" rel="noopener" href="https://linux.cmsblogs.cn/c/ip.html">IP命令</a></h1><blockquote>
+<p>ip命令是iproute软件包中的强大网络管理工具。</p>
+</blockquote>
+<h2 id="ip命令案例"><a href="#ip命令案例" class="headerlink" title="ip命令案例"></a>ip命令案例</h2><h3 id="查看网络设备信息"><a href="#查看网络设备信息" class="headerlink" title="查看网络设备信息"></a>查看网络设备信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip address show</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">简写</span></span><br><span class="line">ip a</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ip address show</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:28:0f:b1 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.41.100/24 brd 192.168.41.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::101b:ff83:d95:16/64 scope link noprefixroute</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<h4 id="指定设备ens33"><a href="#指定设备ens33" class="headerlink" title="指定设备ens33"></a>指定设备<code>ens33</code></h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip link show dev ens33</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ip link show dev ens33</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:28:0f:b1 brd ff:ff:ff:ff:ff:ff</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示详细的数据包收发信息"><a href="#显示详细的数据包收发信息" class="headerlink" title="显示详细的数据包收发信息"></a>显示详细的数据包收发信息</h4><blockquote>
+<p>加<code>-s</code>参数</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip -s link show dev ens33</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ip -s link show dev ens33</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:28:0f:b1 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    RX: bytes  packets  errors  dropped overrun mcast</span><br><span class="line">    625634     8994     0       0       0       0</span><br><span class="line">    TX: bytes  packets  errors  dropped carrier collsns</span><br><span class="line">    5411590    16327    0       0       0       0</span><br></pre></td></tr></table></figure>
+
+<h3 id="关闭-x2F-激活网络设备"><a href="#关闭-x2F-激活网络设备" class="headerlink" title="关闭&#x2F;激活网络设备"></a>关闭&#x2F;激活网络设备</h3><h4 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h4><blockquote>
+<p>作用和使用<code>ifconfig &lt;网络设备&gt; down</code>相同</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip link set &lt;网络设备&gt; down </span><br></pre></td></tr></table></figure>
+
+<h4 id="激活"><a href="#激活" class="headerlink" title="激活"></a>激活</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip link set &lt;网络设备&gt; up</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改网卡MAC信息"><a href="#修改网卡MAC信息" class="headerlink" title="修改网卡MAC信息"></a>修改网卡MAC信息</h3><blockquote>
+<p>都是类似<code>ifconfig</code>的</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip link set ens33 address &lt;MAC地址&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加-x2F-删除ip地址"><a href="#添加-x2F-删除ip地址" class="headerlink" title="添加&#x2F;删除ip地址"></a>添加&#x2F;删除ip地址</h3><blockquote>
+<p>删除，将<code>add</code>改为<code>del</code>即可</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip address add &lt;ip&gt;/&lt;子网掩码位数&gt; dev &lt;网络设备&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ip address add 192.168.41.132/24 dev ens33</span><br><span class="line">您在 /var/spool/mail/root 中有新邮件</span><br><span class="line">[root@localhost ~]# ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:28:0f:b1 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.41.100/24 brd 192.168.41.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet 192.168.41.132/24 scope global secondary ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::101b:ff83:d95:16/64 scope link noprefixroute</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">[root@localhost ~]# ping 192.168.41.132</span><br><span class="line">PING 192.168.41.132 (192.168.41.132) 56(84) bytes of data.</span><br><span class="line">64 bytes from 192.168.41.132: icmp_seq=1 ttl=64 time=0.030 ms</span><br><span class="line">64 bytes from 192.168.41.132: icmp_seq=2 ttl=64 time=0.036 ms</span><br><span class="line">^C</span><br><span class="line">--- 192.168.41.132 ping statistics ---</span><br><span class="line">2 packets transmitted, 2 received, 0% packet loss, time 999ms</span><br><span class="line">rtt min/avg/max/mdev = 0.030/0.033/0.036/0.003 ms</span><br></pre></td></tr></table></figure>
+
+<p><code>ping</code> 添加的ip发现可以ping通！</p>
+<p>使用<code>label</code>参数还可以给添加的ip添加别名</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip address add 192.168.41.133/24 dev ens33 label ens33:1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ip address add 192.168.41.133/24 dev ens33 label ens33:1</span><br><span class="line">[root@localhost ~]# ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:28:0f:b1 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.41.100/24 brd 192.168.41.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet 192.168.41.132/24 scope global secondary ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet 192.168.41.133/24 scope global secondary ens33:1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::101b:ff83:d95:16/64 scope link noprefixroute</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<h3 id="通过ip命令查看路由表"><a href="#通过ip命令查看路由表" class="headerlink" title="通过ip命令查看路由表"></a>通过ip命令查看路由表</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip route</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ip route</span><br><span class="line">default via 192.168.41.2 dev ens33 proto static metric 100</span><br><span class="line">192.168.41.0/24 dev ens33 proto kernel scope link src 192.168.41.100 metric 100</span><br></pre></td></tr></table></figure>
+
+<h4 id="ip检查arp缓存"><a href="#ip检查arp缓存" class="headerlink" title="ip检查arp缓存"></a>ip检查arp缓存</h4><blockquote>
+<p>显示网络邻居信息</p>
+<p>检查MAC地址信息</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip neighbour</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ip neighbour</span><br><span class="line">192.168.41.2 dev ens33 lladdr 00:50:56:fb:e5:4c STALE</span><br><span class="line">192.168.41.1 dev ens33 lladdr 00:50:56:c0:00:08 REACHABLE</span><br></pre></td></tr></table></figure>
+
+<p>还可以直接通过<code>arp命令</code>查看arp缓存</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# arp</span><br><span class="line">Address                  HWtype  HWaddress           Flags Mask            Iface</span><br><span class="line">gateway                  ether   00:50:56:fb:e5:4c   C                     ens33</span><br><span class="line">192.168.41.1             ether   00:50:56:c0:00:08   C                     ens33</span><br></pre></td></tr></table></figure>
+
+<p>取消主机名解析</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -n</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# arp -n</span><br><span class="line">Address                  HWtype  HWaddress           Flags Mask            Iface</span><br><span class="line">192.168.41.2             ether   00:50:56:fb:e5:4c   C                     ens33</span><br><span class="line">192.168.41.1             ether   00:50:56:c0:00:08   C                     ens33</span><br></pre></td></tr></table></figure>
+
+<h1 id="netstat命令"><a href="#netstat命令" class="headerlink" title="netstat命令"></a><a target="_blank" rel="noopener" href="https://linux.cmsblogs.cn/c/netstat.html">netstat命令</a></h1><blockquote>
+<p>显示网络连接情况，路由表信息，端口状态等等信息</p>
+</blockquote>
+<h2 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat [option]</span><br></pre></td></tr></table></figure>
+
+<h2 id="选项-1"><a href="#选项-1" class="headerlink" title="选项"></a>选项</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-a或--all：显示所有连线中的Socket；</span><br><span class="line">-A&lt;网络类型&gt;或--&lt;网络类型&gt;：列出该网络类型连线中的相关地址；</span><br><span class="line">-c或--continuous：持续列出网络状态；</span><br><span class="line">-C或--cache：显示路由器配置的快取信息；</span><br><span class="line">-e或--extend：显示网络其他相关信息；</span><br><span class="line">-F或--fib：显示FIB；</span><br><span class="line">-g或--groups：显示多重广播功能群组组员名单；</span><br><span class="line">-h或--help：在线帮助；</span><br><span class="line">-i或--interfaces：显示网络界面信息表单；</span><br><span class="line">-l或--listening：显示监控中的服务器的Socket；</span><br><span class="line">-M或--masquerade：显示伪装的网络连线；</span><br><span class="line">-n或--numeric：直接使用ip地址，而不通过域名服务器；</span><br><span class="line">-N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称；</span><br><span class="line">-o或--timers：显示计时器；</span><br><span class="line">-p或--programs：显示正在使用Socket的程序识别码和程序名称；</span><br><span class="line">-r或--route：显示Routing Table；</span><br><span class="line">-s或--statistice：显示网络工作信息统计表；</span><br><span class="line">-t或--tcp：显示TCP传输协议的连线状况；</span><br><span class="line">-u或--udp：显示UDP传输协议的连线状况；</span><br><span class="line">-v或--verbose：显示指令执行过程；</span><br><span class="line">-V或--version：显示版本信息；</span><br><span class="line">-w或--raw：显示RAW传输协议的连线状况；</span><br><span class="line">-x或--unix：此参数的效果和指定&quot;-A unix&quot;参数相同；</span><br><span class="line">--ip或--inet：此参数的效果和指定&quot;-A inet&quot;参数相同。</span><br></pre></td></tr></table></figure>
+
+<h2 id="netstat命令案例"><a href="#netstat命令案例" class="headerlink" title="netstat命令案例"></a>netstat命令案例</h2><h3 id="查看所有的网络连接情况"><a href="#查看所有的网络连接情况" class="headerlink" title="查看所有的网络连接情况"></a>查看所有的网络连接情况</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -an</span><br></pre></td></tr></table></figure>
+
+<p>由于显示结果过多，这里只展示一部分</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-8-centos ~]# netstat -an</span><br><span class="line">Active Internet connections (servers and established)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:21              0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:443             0.0.0.0:*               LISTEN</span><br><span class="line">tcp        0      0 10.0.4.8:39810          101.91.61.154:9988      ESTABLISHED</span><br><span class="line">tcp        0      0 10.0.4.8:38550          169.254.0.138:8086      ESTABLISHED</span><br><span class="line">tcp        0     64 10.0.4.8:22             60.255.73.42:15384      ESTABLISHE</span><br></pre></td></tr></table></figure>
+
+<h4 id="常见字段解释"><a href="#常见字段解释" class="headerlink" title="常见字段解释"></a>常见字段解释</h4><ul>
+<li>Proto ：嵌套字所用协议；</li>
+<li>Recv-Q ：连接该嵌套字的用户，还未拷贝的字节数；</li>
+<li>Send-Q ：远程主机还未确认的字节数；</li>
+<li>Local Address：套接字本地地址和端口号；</li>
+<li>Foreign Address  ：套接字的远程主机地址和端口号；       </li>
+<li>State：套接字的运行情况，Listen表示监听中。（<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44256848/article/details/120880433">12种状态详解</a>）<ul>
+<li>常见状态即CONNECTED连接状态。在原模式中没有状态，在用户数据报协议中也经常没有状态，于是状态列可以空出来。若有状态，通常取值为：[4]</li>
+<li>LISTEN侦听来自远方的TCP端口的连接请求[4]</li>
+<li>SYN-SENT在发送连接请求后等待匹配的连接请求[4]</li>
+<li>SYN-RECEIVED在收到和发送一个连接请求后等待对方对连接请求的确认[4]</li>
+<li>ESTABLISHED代表一个打开的连接[4]</li>
+<li>FIN-WAIT-1等待远程TCP连接中断请求，或先前的连接中断请求的确认[4]</li>
+<li>FIN-WAIT-2从远程TCP等待连接中断请求[4]</li>
+<li>CLOSE-WAIT等待从本地用户发来的连接中断请求[4]</li>
+<li>CLOSING等待远程TCP对连接中断的确认[4]</li>
+<li>LAST-ACK等待原来的发向远程TCP的连接中断请求的确认[4]</li>
+<li>TIME-WAIT等待足够的时间以确保远程TCP接收到连接中断请求的确认[4]</li>
+<li>CLOSED没有任何连接状态[4]</li>
+<li>UNKNOWN套接字状态未知</li>
+</ul>
+</li>
+</ul>
+<h3 id="常用参数组合"><a href="#常用参数组合" class="headerlink" title="常用参数组合"></a>常用参数组合</h3><h4 id="查看正在运行的端口情况"><a href="#查看正在运行的端口情况" class="headerlink" title="查看正在运行的端口情况"></a>查看正在运行的端口情况</h4><blockquote>
+<p>在<code>ss命令</code>中同样适用</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-tunlp</span><br></pre></td></tr></table></figure>
+
+<p>-t，tcp连接情况</p>
+<p>-u，udp连接情况</p>
+<p>-n，不进行dns解析</p>
+<p>-l，正在监听中的套接字情况</p>
+<p>-p，显示进程和进程名情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -tunlp</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-8-centos ~]# netstat -tunlp</span><br><span class="line">Active Internet connections (only servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      19760/nginx: master</span><br><span class="line">tcp        0      0 0.0.0.0:21              0.0.0.0:*               LISTEN      5709/pure-ftpd (SER</span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1342/sshd</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看路由表信息-1"><a href="#查看路由表信息-1" class="headerlink" title="查看路由表信息"></a>查看路由表信息</h4><blockquote>
+<p>等同于<code>route</code>&#x2F;<code>ip route</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -rn</span><br></pre></td></tr></table></figure>
+
+<p>-r </p>
+<p>-n</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-8-centos ~]# netstat -rn</span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface</span><br><span class="line">0.0.0.0         10.0.4.1        0.0.0.0         UG        0 0          0 eth0</span><br><span class="line">10.0.4.0        0.0.0.0         255.255.252.0   U         0 0          0 eth0</span><br><span class="line">169.254.0.0     0.0.0.0         255.255.0.0     U         0 0          0 eth0</span><br></pre></td></tr></table></figure>
+
+<h4 id="显示网络的接口情况"><a href="#显示网络的接口情况" class="headerlink" title="显示网络的接口情况"></a>显示网络的接口情况</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -i</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-8-centos ~]# netstat -i</span><br><span class="line">Kernel Interface table</span><br><span class="line">Iface             MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg</span><br><span class="line">eth0             1500 33714997      0      0 0      39153872      0      0      0 BMRU</span><br><span class="line">lo              65536    39481      0      0 0         39481      0      0      0 LRU</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="字段解释"><a href="#字段解释" class="headerlink" title="字段解释"></a>字段解释</h5><ul>
+<li>Iface :网络接口名称</li>
+<li>MTU:Maximum Trasmission Unit 最大传输单元</li>
+<li>Met: Metric，度量值 , 供某些操作系统用，用于计算一条路由的成本</li>
+<li>RX-OK :接收时，正确的数据包数。</li>
+<li>RX-ERR :接收时，产生错误的数据包数。</li>
+<li>RX-DRP :接收时，丢弃的数据包数。</li>
+<li>RX-OVR :接收时，由于过速（在数据传输中，由于接收设备不能接收按照发送速率传送来的数据而使数据丢失）而丢失的数据包数。</li>
+<li>TX-OK :发送时，正确的数据包数。</li>
+<li>TX-ERR :发送时，产生错误的数据包数。</li>
+<li>TX-DRP :发送时，丢弃的数据包数。</li>
+<li>TX-OVR :发送时，由于过速而丢失的数据包数。</li>
+<li>Flg ：标志。<ul>
+<li>B 已经设置了一个广播地址。</li>
+<li>L 该接口是一个回送设备。（回环地址）</li>
+<li>M 接收所有数据包（混乱模式）。</li>
+<li>N 避免跟踪。</li>
+<li>O 在该接口上，禁用ARP。</li>
+<li>P 这是一个点到点链接。</li>
+<li>R 接口正在运行。</li>
+<li>U 接口处于“活动”状态。</li>
+</ul>
+</li>
+</ul>
+<h4 id="查看服务器监听"><a href="#查看服务器监听" class="headerlink" title="查看服务器监听"></a>查看服务器监听</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">netstat -tunlp |grep 33066</span><br><span class="line">netstat -tunlp |grep 80</span><br><span class="line">netstat -tunlp |grep 443</span><br><span class="line">netstat -tunlp |grep &lt;常用端口&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="ss命令"><a href="#ss命令" class="headerlink" title="ss命令"></a><a target="_blank" rel="noopener" href="https://linux.cmsblogs.cn/c/ss.html">ss命令</a></h1><blockquote>
+<p>centos7出现的，可能需要安装iproute工具包。</p>
+</blockquote>
+<blockquote>
+<p>和<code>netstat命令</code>用法相同</p>
+<p>比 netstat 好用的socket统计信息，iproute2 包附带的另一个工具，允许你查询 socket 的有关统计信息</p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install iproute -y</span><br></pre></td></tr></table></figure>
+
+<h2 id="ss命令案例"><a href="#ss命令案例" class="headerlink" title="ss命令案例"></a>ss命令案例</h2><h3 id="查看服务器监听-1"><a href="#查看服务器监听-1" class="headerlink" title="查看服务器监听"></a>查看服务器监听</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -tunlp|grep &lt;常见端口&gt;</span><br></pre></td></tr></table></figure>
+
+<p>…</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lptexas.top">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lptexas.top/posts/1499167412/">https://lptexas.top/posts/1499167412/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lptexas.top" target="_blank">Lptexas</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Centos/">Centos</a><a class="post-meta__tags" href="/tags/Shell/">Shell</a></div><div class="post_share"><div class="social-share" data-image="https://lptexas.top/img/post/v2-7a2f7e98441362fb4c48bd796eae5c21_720w.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://lptexas.top/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/wechat.jpg" alt="Wechat"/></a><div class="post-qr-code-desc">Wechat</div></li><li class="reward-item"><a href="https://lptexas.top/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/alipay.jpg" alt="Alipay"/></a><div class="post-qr-code-desc">Alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/3226610446/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/network.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linu网络基础part1</div></div></a></div><div class="next-post pull-right"><a href="/posts/777800226/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/ssh.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linu网络基础part3</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/1947245734/" title="Hexo访问速度优化"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-30</div><div class="title">Hexo访问速度优化</div></div></a></div><div><a href="/posts/2891465825/" title="Linux磁盘管理part1"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/gawr_gura_8.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-30</div><div class="title">Linux磁盘管理part1</div></div></a></div><div><a href="/posts/894506459/" title="Linux磁盘管理part2"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_jaws_okdol0928.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-31</div><div class="title">Linux磁盘管理part2</div></div></a></div><div><a href="/posts/3694309614/" title="Linux磁盘管理part3"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_and_lappland_arknights_drawn_by_brank_zalan.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-02</div><div class="title">Linux磁盘管理part3</div></div></a></div><div><a href="/posts/1112941901/" title="Linux磁盘管理part4"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_veilrain.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-02</div><div class="title">Linux磁盘管理part4</div></div></a></div><div><a href="/posts/2872410232/" title="Linux磁盘管理part5"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/lappland_arknights_drawn_by_a0lp.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-03</div><div class="title">Linux磁盘管理part5</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">前端|后端|运维</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Asucanyh-cn"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a target="_blank" rel="noopener" href="https://asucanyh-cn.github.io/">外链请使用asucanyh-cn.github.io 😘</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#route%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">route命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">路由分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#route%E5%91%BD%E4%BB%A4-1"><span class="toc-number">1.2.</span> <span class="toc-text">route命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E9%A1%B9"><span class="toc-number">1.4.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-number">1.5.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%91%BD%E4%BB%A4%E6%A1%88%E4%BE%8B"><span class="toc-number">1.6.</span> <span class="toc-text">路由命令案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%B7%AF%E7%94%B1%E8%A1%A8%E4%BF%A1%E6%81%AF"><span class="toc-number">1.6.1.</span> <span class="toc-text">查看路由表信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">参数解析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.6.2.</span> <span class="toc-text">删除默认路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%BD%91%E5%85%B3%E5%9C%B0%E5%9D%80"><span class="toc-number">1.6.3.</span> <span class="toc-text">添加网关地址</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">IP命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%91%BD%E4%BB%A4%E6%A1%88%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">ip命令案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.1.</span> <span class="toc-text">查看网络设备信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E8%AE%BE%E5%A4%87ens33"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">指定设备ens33</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E8%AF%A6%E7%BB%86%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8C%85%E6%94%B6%E5%8F%91%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">显示详细的数据包收发信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD-x2F-%E6%BF%80%E6%B4%BB%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87"><span class="toc-number">2.1.2.</span> <span class="toc-text">关闭&#x2F;激活网络设备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%97%AD"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">关闭</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BF%80%E6%B4%BB"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">激活</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1MAC%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.3.</span> <span class="toc-text">修改网卡MAC信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0-x2F-%E5%88%A0%E9%99%A4ip%E5%9C%B0%E5%9D%80"><span class="toc-number">2.1.4.</span> <span class="toc-text">添加&#x2F;删除ip地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87ip%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E8%B7%AF%E7%94%B1%E8%A1%A8"><span class="toc-number">2.1.5.</span> <span class="toc-text">通过ip命令查看路由表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ip%E6%A3%80%E6%9F%A5arp%E7%BC%93%E5%AD%98"><span class="toc-number">2.1.5.1.</span> <span class="toc-text">ip检查arp缓存</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#netstat%E5%91%BD%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">netstat命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95-1"><span class="toc-number">3.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E9%A1%B9-1"><span class="toc-number">3.2.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netstat%E5%91%BD%E4%BB%A4%E6%A1%88%E4%BE%8B"><span class="toc-number">3.3.</span> <span class="toc-text">netstat命令案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E7%9A%84%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E6%83%85%E5%86%B5"><span class="toc-number">3.3.1.</span> <span class="toc-text">查看所有的网络连接情况</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%AD%97%E6%AE%B5%E8%A7%A3%E9%87%8A"><span class="toc-number">3.3.1.1.</span> <span class="toc-text">常见字段解释</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E7%BB%84%E5%90%88"><span class="toc-number">3.3.2.</span> <span class="toc-text">常用参数组合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%83%85%E5%86%B5"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">查看正在运行的端口情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%B7%AF%E7%94%B1%E8%A1%A8%E4%BF%A1%E6%81%AF-1"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">查看路由表信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%8E%A5%E5%8F%A3%E6%83%85%E5%86%B5"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">显示网络的接口情况</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E8%A7%A3%E9%87%8A"><span class="toc-number">3.3.2.3.1.</span> <span class="toc-text">字段解释</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%91%E5%90%AC"><span class="toc-number">3.3.2.4.</span> <span class="toc-text">查看服务器监听</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ss%E5%91%BD%E4%BB%A4"><span class="toc-number">4.</span> <span class="toc-text">ss命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">4.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ss%E5%91%BD%E4%BB%A4%E6%A1%88%E4%BE%8B"><span class="toc-number">4.2.</span> <span class="toc-text">ss命令案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%91%E5%90%AC-1"><span class="toc-number">4.2.1.</span> <span class="toc-text">查看服务器监听</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1975607171/" title="Vue2学习笔记Part3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part3"/></a><div class="content"><a class="title" href="/posts/1975607171/" title="Vue2学习笔记Part3">Vue2学习笔记Part3</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2031351995/" title="在手机上使用MAA一键长草"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/arknights.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="在手机上使用MAA一键长草"/></a><div class="content"><a class="title" href="/posts/2031351995/" title="在手机上使用MAA一键长草">在手机上使用MAA一键长草</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/46558997/" title="Vue2学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/46558997/" title="Vue2学习笔记Part2">Vue2学习笔记Part2</a><time datetime="2023-08-05T16:00:00.000Z" title="发表于 2023-08-06 00:00:00">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2315174609/" title="Nodejs学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/nodejs.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Nodejs学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/2315174609/" title="Nodejs学习笔记Part2">Nodejs学习笔记Part2</a><time datetime="2023-07-14T16:00:00.000Z" title="发表于 2023-07-15 00:00:00">2023-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2614050479/" title="Vue2学习笔记Part1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part1"/></a><div class="content"><a class="title" href="/posts/2614050479/" title="Vue2学习笔记Part1">Vue2学习笔记Part1</a><time datetime="2023-07-13T16:00:00.000Z" title="发表于 2023-07-14 00:00:00">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://lptexas.top/img/post/v2-7a2f7e98441362fb4c48bd796eae5c21_720w.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/web-info/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff0000">蜀</span>
+<span style="color:#ca7900">I</span>
+<span style="color:#48ab18">C</span>
+<span style="color:#2720ac">P</span>
+<span style="color:#9b17ae">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff0000">20</span>
+<span style="color:#ca7900">22</span>
+<span style="color:#48ab18">01</span>
+<span style="color:#2720ac">84</span>
+<span style="color:#2778ac">59</span>
+<span style="color:#f40428">号</span>
+<span style="color:ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

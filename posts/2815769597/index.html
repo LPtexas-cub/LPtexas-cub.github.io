@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>重装Termux | Lptexas</title><meta name="keywords" content="Termux,kali"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="工具箱处理  1. 换源  2. 授权读写存储权限  3. 清空顶部欢迎语  4. 更新可用软件包以及已安装软件包  文件准备 在Home目录下，根据需要准备下列文件。  frp客户端配置文件 frpc.ini文件  1   vi $HOME&#x2F;frpc.ini   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17   #frpc.ini [common] toke">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重装Termux">
+<meta property="og:url" content="https://lptexas.top/posts/2815769597/index.html">
+<meta property="og:site_name" content="Lptexas">
+<meta property="og:description" content="工具箱处理  1. 换源  2. 授权读写存储权限  3. 清空顶部欢迎语  4. 更新可用软件包以及已安装软件包  文件准备 在Home目录下，根据需要准备下列文件。  frp客户端配置文件 frpc.ini文件  1   vi $HOME&#x2F;frpc.ini   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17   #frpc.ini [common] toke">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://asucanyh-cn.github.io/img/post/Kali-Linux.jpg">
+<meta property="article:published_time" content="2022-12-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-18T02:59:54.128Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="Termux">
+<meta property="article:tag" content="kali">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://asucanyh-cn.github.io/img/post/Kali-Linux.jpg"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="https://lptexas.top/posts/2815769597/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"P2ZV0B43D6","apiKey":"f12489b76b57b857a0c03a13554bffc8","indexName":"prod_HEXO_SEARCH","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '重装Termux',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-18 10:59:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/function.min.css"></script><link rel="stylesheet" href="/css/hexoAdmonition.css"><script type="text/javascript" src="/js/banf12.js"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Lptexas" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://asucanyh-cn.github.io/img/post/Kali-Linux.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lptexas</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">重装Termux<a class="post-edit-link" href="https://github.com/asucanyh-cn/blog-source/edit/main/source/_posts/重装Termux.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-09T16:00:00.000Z" title="发表于 2022-12-10 00:00:00">2022-12-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-18T02:59:54.128Z" title="更新于 2024-02-18 10:59:54">2024-02-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="重装Termux"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="工具箱处理"><a href="#工具箱处理" class="headerlink" title="工具箱处理"></a>工具箱处理</h1><ol>
+<li>换源</li>
+<li>授权读写存储权限</li>
+<li>清空顶部欢迎语</li>
+<li>更新可用软件包以及已安装软件包</li>
+</ol>
+<h1 id="文件准备"><a href="#文件准备" class="headerlink" title="文件准备"></a>文件准备</h1><blockquote>
+<p>在Home目录下，根据需要准备下列文件。</p>
+</blockquote>
+<h2 id="frp客户端配置文件"><a href="#frp客户端配置文件" class="headerlink" title="frp客户端配置文件"></a>frp客户端配置文件</h2><blockquote>
+<p><code>frpc.ini</code>文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi $HOME/frpc.ini</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">frpc.ini</span></span><br><span class="line">[common]</span><br><span class="line">token = </span><br><span class="line">admin_addr = 127.0.0.1</span><br><span class="line">admin_port = 7400</span><br><span class="line">admin_user =</span><br><span class="line">admin_pwd = </span><br><span class="line">server_addr = </span><br><span class="line">server_port = </span><br><span class="line">authentication_method = token</span><br><span class="line">authenticate_new_work_conns = true</span><br><span class="line">tls_enable = true</span><br><span class="line">[ssh]</span><br><span class="line">type=tcp</span><br><span class="line">local_ip=127.0.0.1</span><br><span class="line">local_port=8022</span><br><span class="line">remote_port=6000</span><br></pre></td></tr></table></figure>
+
+<h2 id="frp客户端运行脚本"><a href="#frp客户端运行脚本" class="headerlink" title="frp客户端运行脚本"></a>frp客户端运行脚本</h2><blockquote>
+<p><code>start_frpc.sh</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi start_frpc.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">nohup /data/data/com.termux/files/usr/bin/frpc \</span><br><span class="line">-c /data/data/com.termux/files/home/.frpc/frpc.ini \</span><br><span class="line">&amp;&gt;$HOME/.frpc/frpc.log &amp;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x start_frpc.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="nginx配置文件夹"><a href="#nginx配置文件夹" class="headerlink" title="nginx配置文件夹"></a>nginx配置文件夹</h2><blockquote>
+<p>位于</p>
+<p><code>/data/data/com.termux/files/usr/etc/</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">~ $ ls -l /data/data/com.termux/files/usr/etc/nginx/</span><br><span class="line">total 40</span><br><span class="line">-rw------- 1 u0_a187 u0_a187 1077 Nov 13 21:32 fastcgi.conf</span><br><span class="line">-rw------- 1 u0_a187 u0_a187 1007 Nov 13 21:32 fastcgi_params</span><br><span class="line">-rw------- 1 u0_a187 u0_a187 2837 Nov 13 21:32 koi-utf</span><br><span class="line">-rw------- 1 u0_a187 u0_a187 2223 Nov 13 21:32 koi-win</span><br><span class="line">-rw------- 1 u0_a187 u0_a187 5349 Nov 13 21:32 mime.types</span><br><span class="line">-rw------- 1 u0_a187 u0_a187 2746 Nov 13 21:32 nginx.conf</span><br><span class="line">-rw------- 1 u0_a187 u0_a187  636 Nov 13 21:32 scgi_params</span><br><span class="line">-rw------- 1 u0_a187 u0_a187  664 Nov 13 21:32 uwsgi_params</span><br><span class="line">-rw------- 1 u0_a187 u0_a187 3610 Nov 13 21:32 win-utf</span><br></pre></td></tr></table></figure>
+
+<h2 id="php-fpm配置文件"><a href="#php-fpm配置文件" class="headerlink" title="php-fpm配置文件"></a>php-fpm配置文件</h2><blockquote>
+<p>用于启动php网页项目。</p>
+<p><code>www.conf</code></p>
+</blockquote>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">vim</span> www.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[www]</span><br><span class="line">pm = static</span><br><span class="line">user = root</span><br><span class="line">group = root</span><br><span class="line">listen = /data/data/com.termux/files/usr/var/run/php-fpm.sock</span><br><span class="line">listen.owner = root</span><br><span class="line">listen.group = root</span><br><span class="line">pm.max_children = 50</span><br><span class="line">pm.start_servers = 20</span><br><span class="line">pm.min_spare_servers = 10</span><br><span class="line">pm.max_spare_servers = 35</span><br></pre></td></tr></table></figure>
+
+<h2 id="vnc命令文件"><a href="#vnc命令文件" class="headerlink" title="vnc命令文件"></a>vnc命令文件</h2><blockquote>
+<p>vnc命令为一个脚本，由kali内置。我们需要对其做些修改。</p>
+<ul>
+<li>添加<code>--localhost=no</code>参数</li>
+<li>添加<code>--geometry=1920x1080</code>参数</li>
+</ul>
+<p>该命令位于<code>kali-arm64/usr/bin/</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi vnc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">vnc_start() &#123;</span><br><span class="line">    if [ ! -f ~/.vnc/passwd ]; then</span><br><span class="line">        vnc_passwd</span><br><span class="line">    fi</span><br><span class="line">    USR=$(whoami)</span><br><span class="line">    if [ $USR = &quot;root&quot; ]; then</span><br><span class="line">        SCR=:1</span><br><span class="line">    else</span><br><span class="line">        SCR=:2</span><br><span class="line">    fi</span><br><span class="line">    export USER=$USR; LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libgcc_s.so.1 nohup vncserver $SCR --geometry 1280x720  --localhost no  &gt;/dev/null 2&gt;&amp;1 &lt;/dev/null</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vnc_stop() &#123;</span><br><span class="line">    vncserver -kill :1</span><br><span class="line">    vncserver -kill :2</span><br><span class="line">    return $?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vnc_passwd() &#123;</span><br><span class="line">    vncpasswd</span><br><span class="line">    return $?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vnc_status() &#123;</span><br><span class="line">    session_list=$(vncserver -list)</span><br><span class="line">    if [[ $session_list == *&quot;590&quot;* ]]; then</span><br><span class="line">        echo &quot;$session_list&quot;</span><br><span class="line">    else</span><br><span class="line">        echo &quot;there is nothing to list :)&quot;</span><br><span class="line">        echo &quot;you can start a new session by &lt;&lt; vnc start &gt;&gt;&quot;</span><br><span class="line">    fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vnc_kill() &#123;</span><br><span class="line">    pkill Xtigervnc</span><br><span class="line">    return $?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">    start)</span><br><span class="line">        vnc_start</span><br><span class="line">        ;;</span><br><span class="line">    stop)</span><br><span class="line">        vnc_stop</span><br><span class="line">        ;;</span><br><span class="line">    status)</span><br><span class="line">        vnc_status</span><br><span class="line">        ;;</span><br><span class="line">    kill)</span><br><span class="line">        vnc_kill</span><br><span class="line">        ;;</span><br><span class="line">    *)</span><br><span class="line">        echo &quot;[!] invalid input&quot;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x vnc</span><br></pre></td></tr></table></figure>
+
+<h2 id="kali源文件"><a href="#kali源文件" class="headerlink" title="kali源文件"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/fingue/article/details/127096363">kali源文件</a></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi sources.list</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">kali官方源</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">deb http://http.kali.org/kali kali-rolling main non-free contrib</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">阿里源</span></span><br><span class="line">deb http://mirrors.aliyun.com/kali kali-rolling main non-free contrib</span><br><span class="line">deb-src http://mirrors.aliyun.com/kali kali-rolling main non-free contrib</span><br></pre></td></tr></table></figure>
+
+<h2 id="chromium配置文件"><a href="#chromium配置文件" class="headerlink" title="chromium配置文件"></a>chromium配置文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi default-flags</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">新增</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">A <span class="built_in">set</span> of <span class="built_in">command</span> line flags that we want to <span class="built_in">set</span> by default.</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Do not hide any extensions <span class="keyword">in</span> the about:extensions dialog</span></span><br><span class="line">export CHROMIUM_FLAGS=&quot;$CHROMIUM_FLAGS --show-component-extension-options&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Don<span class="string">&#x27;t use the GPU blacklist (bug #802933)</span></span></span><br><span class="line">export CHROMIUM_FLAGS=&quot;$CHROMIUM_FLAGS --ignore-gpu-blacklist&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Run as root Kali</span></span></span><br><span class="line">export CHROMIUM_FLAGS=&quot;$CHROMIUM_FLAGS --password-store=detect --no-sandbox --user-data-dir&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">Disable Chromium security features for web app testing</span></span></span><br><span class="line">export CHROMIUM_FLAGS=&quot;$CHROMIUM_FLAGS --disable-web-security&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="命令行操作"><a href="#命令行操作" class="headerlink" title="命令行操作"></a>命令行操作</h1><h2 id="软件包相关"><a href="#软件包相关" class="headerlink" title="软件包相关"></a>软件包相关</h2><blockquote>
+<p>Termux中执行</p>
+</blockquote>
+<ol>
+<li>订阅其他存储库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">订阅其他存储库:</span><br><span class="line"></span><br><span class="line"> * Root:     pkg install root-repo</span><br><span class="line"> * Unstable: pkg install unstable-repo</span><br><span class="line"> * X11:      pkg install x11-repo</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装vi&#x2F;vim文本编辑器工具</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkg install vim-gtk -y</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>kali中执行</p>
+</blockquote>
+<ol>
+<li>换源</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv kali-arm64/etc/apt/sources.list kali-arm64/etc/apt/sources.list.old</span><br><span class="line">mv sources.list kali-arm64/etc/apt/</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="服务类操作"><a href="#服务类操作" class="headerlink" title="服务类操作"></a>服务类操作</h2><h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><ol start="3">
+<li>新建<code>.frps</code>文件夹</li>
+</ol>
+<blockquote>
+<p>用于放置frp服务相关文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir .frpc</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>安装frp服务</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkg install frp -y</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>放入配置文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv frpc.ini .frpc</span><br></pre></td></tr></table></figure>
+
+<h2 id="网页相关"><a href="#网页相关" class="headerlink" title="网页相关"></a>网页相关</h2><h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkg install nginx -y</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>放入配置文件</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm -rf  /data/data/com.termux/files/usr/etc/nginx</span><br><span class="line">mv nginx  /data/data/com.termux/files/usr/etc/</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>启动服务</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="php-fpm"><a href="#php-fpm" class="headerlink" title="php-fpm"></a>php-fpm</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pkg install php-fpm -y</span><br><span class="line">rm -rf  /data/data/com.termux/files/usr/etc/php-fpm.d/www.conf</span><br><span class="line">mv www.conf /data/data/com.termux/files/usr/etc/php-fpm.d/</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>启动服务</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo php-fpm -R</span><br></pre></td></tr></table></figure>
+
+<h1 id="系统类操作"><a href="#系统类操作" class="headerlink" title="系统类操作"></a>系统类操作</h1><h2 id="安装kali"><a href="#安装kali" class="headerlink" title="安装kali"></a><a target="_blank" rel="noopener" href="https://asucanyh-cn.github.io/posts/2650170792/#%E5%AE%89%E8%A3%85kali">安装kali</a></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -LO https://raw.githubusercontent.com/Hax4us/Nethunter-In-Termux/master/kalinethunter</span><br><span class="line">chmod +x kalinethunter</span><br><span class="line">./kalinethunter</span><br></pre></td></tr></table></figure>
+
+<h2 id="kali换源"><a href="#kali换源" class="headerlink" title="kali换源"></a>kali换源</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv kali-arm64/etc/apt/source.list kali-arm64/etc/apt/source.list.old</span><br><span class="line">mv ~/source.list kali-arm64/etc/apt/</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置VNC"><a href="#配置VNC" class="headerlink" title="配置VNC"></a><a href="https://lptexas.top/posts/2650170792/#%E5%AE%89%E8%A3%85Tiger-VNC%E6%9C%8D%E5%8A%A1%E7%AB%AF">配置VNC</a></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv kali-arm64/usr/bin/vnc kali-arm64/usr/bin/vnc.old #不删除文件，以作备份</span><br><span class="line">mv vnc kali-arm64/usr/bin/</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>tips:如果出现<code>$&#39;\r&#39;</code>错误，请尝试使用vi命令编辑文件，按ESC进入命令模式，输入<code>: set ff=unix</code>。</p>
+</blockquote>
+<h3 id="配置浏览器"><a href="#配置浏览器" class="headerlink" title="配置浏览器"></a><a href="https://lptexas.top/posts/3837171917/">配置浏览器</a></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install chromium -y</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv kali-arm64/etc/chromium.d/default-flags kali-arm64/etc/chromium.d/default-flags.old</span><br><span class="line">mv default-flags kali-arm64/etc/chromium.d/</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装输入法"><a href="#安装输入法" class="headerlink" title="安装输入法"></a>安装输入法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">kali中执行</span></span><br><span class="line">apt-get install fcitx</span><br><span class="line">apt-get install fcitx-googlepinyin</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>重启Termux &#x3D; “reboot”</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">termux中执行</span></span><br><span class="line">kill termux</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>重新进入kali</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">打开fcitx应用，任务栏会出现个键盘</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">右键键盘，选择配置，添加<span class="string">&quot;Google Pinyin&quot;</span>。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/googlepinyin.png" alt="image-20221210134346648"></p>
+<blockquote>
+<p>使用方法</p>
+</blockquote>
+<p><code>Ctrl+SPACE</code>切换键盘</p>
+<p><code>Shift</code>切换中英文</p>
+<h2 id="远程连接"><a href="#远程连接" class="headerlink" title="远程连接"></a>远程连接</h2><blockquote>
+<p>3389</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">kali</span>  </span><br><span class="line">service xrdp restart </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="切换桌面"><a href="#切换桌面" class="headerlink" title="切换桌面"></a>切换桌面</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38963246/article/details/117773304">参考资料</a></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-alternatives --config x-session-manager</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="环境类"><a href="#环境类" class="headerlink" title="环境类"></a>环境类</h1><h2 id="lsb-base"><a href="#lsb-base" class="headerlink" title="lsb-base"></a>lsb-base</h2><blockquote>
+<p>transitional package for Linux Standard Base init script functionality.</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install lsb-base -y</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lptexas.top">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lptexas.top/posts/2815769597/">https://lptexas.top/posts/2815769597/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lptexas.top" target="_blank">Lptexas</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Termux/">Termux</a><a class="post-meta__tags" href="/tags/kali/">kali</a></div><div class="post_share"><div class="social-share" data-image="https://asucanyh-cn.github.io/img/post/Kali-Linux.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://lptexas.top/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/wechat.jpg" alt="Wechat"/></a><div class="post-qr-code-desc">Wechat</div></li><li class="reward-item"><a href="https://lptexas.top/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/alipay.jpg" alt="Alipay"/></a><div class="post-qr-code-desc">Alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/3837171917/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/Google-Chrome-Kali-Linux.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Kali arm64架构安装Chromium</div></div></a></div><div class="next-post pull-right"><a href="/posts/1700668930/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/Kali-RDC.png" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用RDC连接Linux</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/937264636/" title="Android部署原生Docker"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/androidwithdocker.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-20</div><div class="title">Android部署原生Docker</div></div></a></div><div><a href="/posts/1970583601/" title="Termux安装Ubuntu等操作系统的过程记录"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/linux.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-28</div><div class="title">Termux安装Ubuntu等操作系统的过程记录</div></div></a></div><div><a href="/posts/3920477481/" title="废物利用让你的旧手机变成一台服务器"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-31</div><div class="title">废物利用让你的旧手机变成一台服务器</div></div></a></div><div><a href="/posts/1700668930/" title="使用RDC连接Linux"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/Kali-RDC.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-10</div><div class="title">使用RDC连接Linux</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">前端|后端|运维</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Asucanyh-cn"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a target="_blank" rel="noopener" href="https://asucanyh-cn.github.io/">外链请使用asucanyh-cn.github.io 😘</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E7%AE%B1%E5%A4%84%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">工具箱处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">文件准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#frp%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.</span> <span class="toc-text">frp客户端配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#frp%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">frp客户端运行脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">2.3.</span> <span class="toc-text">nginx配置文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php-fpm%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">php-fpm配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vnc%E5%91%BD%E4%BB%A4%E6%96%87%E4%BB%B6"><span class="toc-number">2.5.</span> <span class="toc-text">vnc命令文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kali%E6%BA%90%E6%96%87%E4%BB%B6"><span class="toc-number">2.6.</span> <span class="toc-text">kali源文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chromium%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.7.</span> <span class="toc-text">chromium配置文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="toc-number">3.</span> <span class="toc-text">命令行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%9B%B8%E5%85%B3"><span class="toc-number">3.1.</span> <span class="toc-text">软件包相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%B1%BB%E6%93%8D%E4%BD%9C"><span class="toc-number">3.2.</span> <span class="toc-text">服务类操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="toc-number">3.2.1.</span> <span class="toc-text">内网穿透</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E7%9B%B8%E5%85%B3"><span class="toc-number">3.3.</span> <span class="toc-text">网页相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx"><span class="toc-number">3.3.1.</span> <span class="toc-text">nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php-fpm"><span class="toc-number">3.3.2.</span> <span class="toc-text">php-fpm</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">系统类操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85kali"><span class="toc-number">4.1.</span> <span class="toc-text">安装kali</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kali%E6%8D%A2%E6%BA%90"><span class="toc-number">4.2.</span> <span class="toc-text">kali换源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEVNC"><span class="toc-number">4.2.1.</span> <span class="toc-text">配置VNC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number">4.2.2.</span> <span class="toc-text">配置浏览器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%BE%93%E5%85%A5%E6%B3%95"><span class="toc-number">4.2.3.</span> <span class="toc-text">安装输入法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">4.3.</span> <span class="toc-text">远程连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E6%A1%8C%E9%9D%A2"><span class="toc-number">4.4.</span> <span class="toc-text">切换桌面</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E7%B1%BB"><span class="toc-number">5.</span> <span class="toc-text">环境类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#lsb-base"><span class="toc-number">5.1.</span> <span class="toc-text">lsb-base</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1975607171/" title="Vue2学习笔记Part3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part3"/></a><div class="content"><a class="title" href="/posts/1975607171/" title="Vue2学习笔记Part3">Vue2学习笔记Part3</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2031351995/" title="在手机上使用MAA一键长草"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/arknights.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="在手机上使用MAA一键长草"/></a><div class="content"><a class="title" href="/posts/2031351995/" title="在手机上使用MAA一键长草">在手机上使用MAA一键长草</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/46558997/" title="Vue2学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/46558997/" title="Vue2学习笔记Part2">Vue2学习笔记Part2</a><time datetime="2023-08-05T16:00:00.000Z" title="发表于 2023-08-06 00:00:00">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2315174609/" title="Nodejs学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/nodejs.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Nodejs学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/2315174609/" title="Nodejs学习笔记Part2">Nodejs学习笔记Part2</a><time datetime="2023-07-14T16:00:00.000Z" title="发表于 2023-07-15 00:00:00">2023-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2614050479/" title="Vue2学习笔记Part1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part1"/></a><div class="content"><a class="title" href="/posts/2614050479/" title="Vue2学习笔记Part1">Vue2学习笔记Part1</a><time datetime="2023-07-13T16:00:00.000Z" title="发表于 2023-07-14 00:00:00">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://asucanyh-cn.github.io/img/post/Kali-Linux.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://asucanyh-cn.github.io/img/web-info/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff0000">蜀</span>
+<span style="color:#ca7900">I</span>
+<span style="color:#48ab18">C</span>
+<span style="color:#2720ac">P</span>
+<span style="color:#9b17ae">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff0000">20</span>
+<span style="color:#ca7900">22</span>
+<span style="color:#48ab18">01</span>
+<span style="color:#2720ac">84</span>
+<span style="color:#2778ac">59</span>
+<span style="color:#f40428">号</span>
+<span style="color:ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
