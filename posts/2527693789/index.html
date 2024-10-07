@@ -1,0 +1,578 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Hexo Butterfly主题美化 | 小狼的学习笔记</title><meta name="keywords" content="Hexo,Butterfly"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="Hexo美化教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo Butterfly主题美化">
+<meta property="og:url" content="https://lptexas.top/posts/2527693789/index.html">
+<meta property="og:site_name" content="小狼的学习笔记">
+<meta property="og:description" content="Hexo美化教程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fastly.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/index.jpg">
+<meta property="article:published_time" content="2022-07-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-18T02:59:54.116Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Butterfly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fastly.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/index.jpg"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="https://lptexas.top/posts/2527693789/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hexo Butterfly主题美化',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-18 10:59:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/function.min.css"></script><link rel="stylesheet" href="/css/hexoAdmonition.css"><script type="text/javascript" src="/js/banf12.js"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="小狼的学习笔记" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://fastly.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/index.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">小狼的学习笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hexo Butterfly主题美化<a class="post-edit-link" href="https://github.com/LPtexas-cub/BlogSourceCode/edit/main/source/_posts/Hexo Butterfly主题美化.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-12T16:00:00.000Z" title="发表于 2022-07-13 00:00:00">2022-07-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-18T02:59:54.116Z" title="更新于 2024-02-18 10:59:54">2024-02-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Hexo/">Hexo</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hexo Butterfly主题美化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h1><h1 id="修改鼠标样式"><a href="#修改鼠标样式" class="headerlink" title="修改鼠标样式"></a>修改鼠标样式</h1><p>进入&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;目录</p>
+<p>新建mouse.css文件，写入：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">cursor</span>: <span class="built_in">url</span>(<span class="string">https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/img/default.cur</span>),</span><br><span class="line">        default;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span>,</span><br><span class="line"><span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">cursor</span>: <span class="built_in">url</span>(<span class="string">https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/img/pointer.cur</span>),</span><br><span class="line">        default;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进入&#x2F;themes&#x2F;butterfly&#x2F;目录</p>
+<p>在_config.yml文件中，Inject处的head:项中添加</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- &lt;link <span class="attribute">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attribute">href</span>=<span class="string">&quot;/css/mouse.css&quot;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>即可。</p>
+<hr>
+<h1 id="为Hexo拓展社交图标"><a href="#为Hexo拓展社交图标" class="headerlink" title="为Hexo拓展社交图标"></a>为Hexo拓展社交图标</h1><p><em>以Butterfly主题为例</em></p>
+<p>Hexo Butterfly本身使用Font Awesome库中的图标，但其中不包括中国大陆许多应用，如B站，知乎等等。</p>
+<p>链接：<a target="_blank" rel="noopener" href="http://www.fontawesome.com.cn/faicons/">Font Awesome图标库</a></p>
+<p>使用方法：直接在social: 列表中添加，<strong>冒号前</strong>为“class“属性值，<strong>冒号后</strong>为跳转链接，**||**后为。<a target="_blank" rel="noopener" href="http://www.fontawesome.com.cn/examples/">参考案例</a></p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># social settings (社交圖標設置)</span></span><br><span class="line"><span class="meta"># formal:</span></span><br><span class="line"><span class="meta">#   icon: link || the description</span></span><br><span class="line">social:</span><br><span class="line">   fab fa-github: https:<span class="comment">//github.com/XXX || Github</span></span><br><span class="line">   fab fa-qq: tencent:<span class="comment">//message/?uin=XXX||QQ</span></span><br><span class="line">   iconfont icon-zhihu-circle-fill: https:<span class="comment">//www.zhihu.com/people/XXX||知乎</span></span><br><span class="line">   fa fa-envelope: mailto:XXX@outlook.com || Email</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>因此我们可以使用**<a target="_blank" rel="noopener" href="https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2">阿里iconfont图标</a>**，为我们Butterfly主题拓展一些国内常用的社交图标。</p>
+<p>使用方法：</p>
+<ol>
+<li><p>首先进入<a target="_blank" rel="noopener" href="https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2">官网</a>注册，登录；</p>
+</li>
+<li><p>搜索找到自己需要的图标后（以知乎为例），点击添加到购物车（鼠标放在图标上会有一个购物车图标）；</p>
+</li>
+<li><p>再点击主页右上角的购物车图标，可以看到自己选的图标，然后点击“添加至项目”（没有项目就新建一个）；</p>
+</li>
+<li><p>在主页上方点击“资源管理”进入我的项目中；</p>
+</li>
+<li><p>点击“下载到本地”；</p>
+</li>
+<li><p>将下载好的文件发送到&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;目录下，解压，修改文件夹名为iconfont（压缩包里的文件都放在这个文件夹里）；</p>
+</li>
+<li><p>进入&#x2F;themes&#x2F;butterfly&#x2F;目录下，修改_config.yml文件中的Inject项（使用__config.butterfly.yml配置文件的同学直接修改这个文件就行）</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Inject</span></span><br><span class="line"><span class="comment"># Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)</span></span><br><span class="line"><span class="comment"># 插入代码到头部 &lt;/head&gt; 之前 和 底部 &lt;/body&gt; 之前</span></span><br><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">    # - &lt;link <span class="attribute">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attribute">href</span>=<span class="string">&quot;/xxx.css&quot;</span>&gt;</span><br><span class="line">  bottom:</span><br><span class="line">    # - &lt;script <span class="attribute">src</span>=<span class="string">&quot;xxxx&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在head:处添加引用我们下载好的文件（注意换行和空格！）</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- &lt;link <span class="attribute">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attribute">href</span>=<span class="string">&quot;/css/iconfont/iconfont.css&quot;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以直接复制下方代码</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Inject</span></span><br><span class="line"><span class="comment"># Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)</span></span><br><span class="line"><span class="comment"># 插入代码到头部 &lt;/head&gt; 之前 和 底部 &lt;/body&gt; 之前</span></span><br><span class="line">inject:</span><br><span class="line">  head:</span><br><span class="line">    - &lt;link <span class="attribute">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attribute">href</span>=<span class="string">&quot;/css/iconfont/iconfont.css&quot;</span>&gt;</span><br><span class="line">  bottom:</span><br><span class="line">    # - &lt;script <span class="attribute">src</span>=<span class="string">&quot;xxxx&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后，再修改同一文件中的social settings (社交圖標設置)项</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># social settings (社交圖標設置)</span></span><br><span class="line"><span class="meta"># formal:</span></span><br><span class="line"><span class="meta">#   icon: link || the description</span></span><br><span class="line"><span class="symbol">social:</span></span><br><span class="line">  <span class="meta"># fab fa-github: https:<span class="comment">//github.com/xxxxx || Github</span></span></span><br><span class="line">  <span class="meta"># fas fa-envelope: mailto:xxxxxx@gmail.com || Email</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我放出我自己的配置</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># social settings (社交圖標設置)</span></span><br><span class="line"><span class="meta"># formal:</span></span><br><span class="line"><span class="meta">#   icon: link || the description</span></span><br><span class="line">social:</span><br><span class="line">    iconfont icon-zhihu-circle-fill: https:<span class="comment">//www.zhihu.com/people/ashbell||知乎</span></span><br></pre></td></tr></table></figure>
+
+<p>social:处的iconfont为我们解压文件中的iconfont.css中的<strong>文件名</strong>，icon-zhihu-circle-fill为我们需要用的<strong>知乎</strong>的图标名，冒号后面内容前面也提过。</p>
+</li>
+<li><p>完成上述部分就实现了Hexo Butterfly的图标拓展</p>
+</li>
+</ol>
+<hr>
+<p>有强迫症的同学可能和我一样，发现自己添加的图标不会像主题自带的其它图标一样，当鼠标放在图标上时会有翻转的效果。那么如何能够实现这种翻转呢？</p>
+<p>我们只需要修改iconfont.css文件中的.iconfont{}</p>
+<p>​		原内容</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.iconfont</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&quot;iconfont&quot;</span> <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">  <span class="attribute">font-style</span>: normal;</span><br><span class="line">  -webkit-<span class="attribute">font-smoothing</span>: antialiased;</span><br><span class="line">  -moz-osx-<span class="attribute">font-smoothing</span>: grayscale;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		修改后</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.iconfont</span> &#123;</span><br><span class="line">    <span class="attribute">font-family</span>: <span class="string">&quot;iconfont&quot;</span> <span class="meta">!important</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">22px</span>;</span><br><span class="line">    <span class="attribute">font-style</span>: normal;</span><br><span class="line">    -webkit-<span class="attribute">font-smoothing</span>: antialiased;</span><br><span class="line">    -moz-osx-<span class="attribute">font-smoothing</span>: grayscale;</span><br><span class="line">    </span><br><span class="line">    <span class="attribute">font-variant</span>: normal;</span><br><span class="line">    <span class="attribute">display</span>: <span class="built_in">var</span>(--fa-display,inline-block);</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1</span>;</span><br><span class="line">    <span class="attribute">text-rendering</span>: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		修改完毕后重载一下Hexo即可。</p>
+<hr>
+<h1 id="插件篇"><a href="#插件篇" class="headerlink" title="插件篇"></a>插件篇</h1><h2 id="hexo-admonition"><a href="#hexo-admonition" class="headerlink" title="hexo-admonition"></a><a target="_blank" rel="noopener" href="https://github.com/lxl80/hexo-admonition">hexo-admonition</a></h2><blockquote>
+<p>Hexo 内容辅助插件，支持将类似 <a target="_blank" rel="noopener" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">reStructuredText</a> 的警告提示块添加到 Markdown 文档中。例如 note、warning、error 等提示块。</p>
+</blockquote>
+<div class="admonition note"><p class="admonition-title">Hexo-admonition 插件使用示例
+</p><p>这是基于 hexo-admonition 插件渲染的一条提示信息。类型为 note，并设置了自定义标题。</p>
+</div>
+
+<blockquote>
+<p>提示内容开头留 4 个空格，可以有多行，最后用空行结束此标记。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">!!! info 这是一个info示例</span><br><span class="line">    我是一段演示文本。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="hexo-auto-excerpt"><a href="#hexo-auto-excerpt" class="headerlink" title="hexo-auto-excerpt"></a><a target="_blank" rel="noopener" href="https://github.com/ashisherc/hexo-auto-excerpt">hexo-auto-excerpt</a></h2><blockquote>
+<p>自动添加<code>tag</code></p>
+</blockquote>
+<p>使用方法：</p>
+<p>手动加入<code>&lt;!-- more --&gt;</code>tag。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">title: Hexo Butterfly主题美化</span><br><span class="line">date:</span><br><span class="line">  2022-7-13</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">  -</span> &lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hexo-all-minifier"><a href="#Hexo-all-minifier" class="headerlink" title="Hexo-all-minifier"></a><a target="_blank" rel="noopener" href="https://github.com/chenzhutian/hexo-all-minifier">Hexo-all-minifier</a></h2><blockquote>
+<p>压缩css、js、html和images的插件。</p>
+</blockquote>
+<h2 id="hexo-blog-encrypt"><a href="#hexo-blog-encrypt" class="headerlink" title="hexo-blog-encrypt"></a><a target="_blank" rel="noopener" href="https://github.com/D0n9X1n/hexo-blog-encrypt">hexo-blog-encrypt</a></h2><blockquote>
+<p>加密文章的插件。</p>
+</blockquote>
+<h2 id="hexo-bilibili-bangumi"><a href="#hexo-bilibili-bangumi" class="headerlink" title="hexo-bilibili-bangumi"></a><a target="_blank" rel="noopener" href="https://github.com/HCLonely/hexo-bilibili-bangumi">hexo-bilibili-bangumi</a></h2><blockquote>
+<p>hexo 番剧页面插件，可选数据源：Bilibili, Bangumi</p>
+</blockquote>
+<h2 id="hexo-blogroll"><a href="#hexo-blogroll" class="headerlink" title="hexo-blogroll"></a><a target="_blank" rel="noopener" href="https://github.com/huiwang/hexo-blogroll">hexo-blogroll</a></h2><blockquote>
+<p>展示你最喜欢的几个博客的最新的几篇文章。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-blogroll --save</span><br></pre></td></tr></table></figure>
+
+<p>使用方法</p>
+<ol>
+<li>创建 <code>blogroll.json</code> 文件并放入<code>source/_data</code>目录</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;blogs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Another blog&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;feed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://another.blog/feed&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Yet another blog&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;feed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://yet.another.blog./feed&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建Blogroll页面</li>
+</ol>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Blogroll</span><br><span class="line"><span class="section">date: 2022-12-18 23:24:32</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">&#123;% blogroll 5 %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-github-calendar"><a href="#hexo-github-calendar" class="headerlink" title="hexo-github-calendar"></a><a target="_blank" rel="noopener" href="https://github.com/Zfour/hexo-github-calendar">hexo-github-calendar</a></h2><blockquote>
+<p>在博客中插入一个类似GitHub的活动日历。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-githubcalendar --save</span><br></pre></td></tr></table></figure>
+
+<p>在本目录_config.yml文件中添加（注意不是主题配置文件）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">github活动日历</span></span><br><span class="line">githubcalendar:</span><br><span class="line">  enable: true</span><br><span class="line">  enable_page: /</span><br><span class="line">  user: Asucanyh-cn</span><br><span class="line">  layout:</span><br><span class="line">    type: id</span><br><span class="line">    name: recent-posts</span><br><span class="line">    index: 0</span><br><span class="line">  githubcalendar_html: &#x27;&lt;div class=&quot;recent-post-item&quot; style=&quot;width:100%;height:auto;padding:10px;&quot;&gt;&lt;div id=&quot;github_loading&quot; style=&quot;width:10%;height:100%;margin:0 auto;display: block&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;  viewBox=&quot;0 0 50 50&quot; style=&quot;enable-background:new 0 0 50 50&quot; xml:space=&quot;preserve&quot;&gt;&lt;path fill=&quot;#d0d0d0&quot; d=&quot;M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z&quot; transform=&quot;rotate(275.098 25 25)&quot;&gt;&lt;animateTransform attributeType=&quot;xml&quot; attributeName=&quot;transform&quot; type=&quot;rotate&quot; from=&quot;0 25 25&quot; to=&quot;360 25 25&quot; dur=&quot;0.6s&quot; repeatCount=&quot;indefinite&quot;&gt;&lt;/animateTransform&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;&lt;div id=&quot;github_container&quot;&gt;&lt;/div&gt;&lt;/div&gt;&#x27;</span><br><span class="line">  pc_minheight: 280px</span><br><span class="line">  mobile_minheight: 0px</span><br><span class="line">  color: &quot;[&#x27;#ebedf0&#x27;, &#x27;#fdcdec&#x27;, &#x27;#fc9bd9&#x27;, &#x27;#fa6ac5&#x27;, &#x27;#f838b2&#x27;, &#x27;#f5089f&#x27;, &#x27;#c4067e&#x27;, &#x27;#92055e&#x27;, &#x27;#540336&#x27;, &#x27;#48022f&#x27;, &#x27;#30021f&#x27;]&quot;</span><br><span class="line">  api: xxx</span><br><span class="line">  calendar_js: https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.21/hexo_githubcalendar.js</span><br><span class="line">  plus_style: &quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Zfour/python_github_calendar_api">公共api被墙了，需要自己搭建api。</a></p>
+</blockquote>
+<h2 id="hexo-generator-feed"><a href="#hexo-generator-feed" class="headerlink" title="hexo-generator-feed"></a><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-generator-feed">hexo-generator-feed</a></h2><blockquote>
+<p>为hexo部署一个信息源页</p>
+</blockquote>
+<h2 id="hexo-algoliasearch"><a href="#hexo-algoliasearch" class="headerlink" title="hexo-algoliasearch"></a><a target="_blank" rel="noopener" href="https://github.com/LouisBarranqueiro/hexo-algoliasearch">hexo-algoliasearch</a></h2><blockquote>
+<p>algolias搜索引擎，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45173404/article/details/122861321">搭配教程使用。</a></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-algoliasearch --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-url-submission"><a href="#hexo-url-submission" class="headerlink" title="hexo-url-submission"></a><a target="_blank" rel="noopener" href="https://github.com/abnerwei/hexo-url-submission">hexo-url-submission</a></h2><blockquote>
+<p>自动提交链接至搜索引擎，用于提高被收录的效率。</p>
+</blockquote>
+<h2 id="hexo-generator-sitemap"><a href="#hexo-generator-sitemap" class="headerlink" title="hexo-generator-sitemap"></a><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-generator-sitemap">hexo-generator-sitemap</a></h2><blockquote>
+<p>生成网站地图</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置-config-yml"><a href="#配置-config-yml" class="headerlink" title="配置_config.yml"></a>配置<code>_config.yml</code></h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">sitemap:</span></span><br><span class="line">  <span class="attr">path:</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="string">sitemap.xml</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sitemap.txt</span></span><br><span class="line">  <span class="attr">template:</span> <span class="string">./sitemap_template.xml</span></span><br><span class="line">  <span class="attr">template_txt:</span> <span class="string">./sitemap_template.txt</span></span><br><span class="line">  <span class="attr">rel:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="排除页面"><a href="#排除页面" class="headerlink" title="排除页面"></a>排除页面</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: lorem ipsum</span><br><span class="line">date: 2020-01-02</span><br><span class="line"><span class="section">sitemap: false</span></span><br><span class="line"><span class="section">---</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-image-cloudflare"><a href="#hexo-image-cloudflare" class="headerlink" title="hexo-image-cloudflare"></a><a target="_blank" rel="noopener" href="https://github.com/njzjz/hexo-image-cloudflare">hexo-image-cloudflare</a></h2><blockquote>
+<p>使用Cloudflare去缓存图片</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo-image-cloudflare</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-steam-games"><a href="#hexo-steam-games" class="headerlink" title="hexo-steam-games"></a><a target="_blank" rel="noopener" href="https://github.com/HCLonely/hexo-steam-games">hexo-steam-games</a></h2><blockquote>
+<p>获取steam游戏库</p>
+</blockquote>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://cnhuazhu.gitee.io/2021/07/05/Hexo%E9%AD%94%E6%94%B9/Hexo%E9%BC%A0%E6%A0%87%E6%A0%B7%E5%BC%8F%E4%BF%AE%E6%94%B9/">Hexo鼠标样式修改</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43740362/article/details/113796473">Hexo使用阿里iconfont图标</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lptexas.top">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lptexas.top/posts/2527693789/">https://lptexas.top/posts/2527693789/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lptexas.top" target="_blank">小狼的学习笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/Butterfly/">Butterfly</a></div><div class="post_share"><div class="social-share" data-image="https://fastly.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/index.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/188891481/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura1.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Shell脚本学习 Day1</div></div></a></div><div class="next-post pull-right"><a href="/posts/2454393059/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura2.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Shell脚本学习 Day2</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/24401782/" title="禁止右键及F12等事件"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_7.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-29</div><div class="title">禁止右键及F12等事件</div></div></a></div><div><a href="/posts/4126765266/" title="部署Hexo框架并应用Butterfly主题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/cover/default_cover.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-13</div><div class="title">部署Hexo框架并应用Butterfly主题</div></div></a></div><div><a href="/posts/4116585224/" title="便捷化hexo发布脚本"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/shell.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-22</div><div class="title">便捷化hexo发布脚本</div></div></a></div><div><a href="/posts/1947245734/" title="Hexo访问速度优化"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/post/gawr_gura_9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-30</div><div class="title">Hexo访问速度优化</div></div></a></div><div><a href="/posts/2922098613/" title="认识Markdown编辑器"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/06/29/QYhoKwDUfAXZ8uM.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-30</div><div class="title">认识Markdown编辑器</div></div></a></div><div><a href="/posts/12839243/" title="一键部署Hexo环境以及恢复Blog数据"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/post/shell.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-27</div><div class="title">一键部署Hexo环境以及恢复Blog数据</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">前端|后端|运维</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LPtexas-cub"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a target="_blank" rel="noopener" href="https://LPtexas-cub.github.io/">Github Version</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">配置主题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%BC%A0%E6%A0%87%E6%A0%B7%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">修改鼠标样式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BAHexo%E6%8B%93%E5%B1%95%E7%A4%BE%E4%BA%A4%E5%9B%BE%E6%A0%87"><span class="toc-number">3.</span> <span class="toc-text">为Hexo拓展社交图标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E7%AF%87"><span class="toc-number">4.</span> <span class="toc-text">插件篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-admonition"><span class="toc-number">4.1.</span> <span class="toc-text">hexo-admonition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-auto-excerpt"><span class="toc-number">4.2.</span> <span class="toc-text">hexo-auto-excerpt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo-all-minifier"><span class="toc-number">4.3.</span> <span class="toc-text">Hexo-all-minifier</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-blog-encrypt"><span class="toc-number">4.4.</span> <span class="toc-text">hexo-blog-encrypt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-bilibili-bangumi"><span class="toc-number">4.5.</span> <span class="toc-text">hexo-bilibili-bangumi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-blogroll"><span class="toc-number">4.6.</span> <span class="toc-text">hexo-blogroll</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-github-calendar"><span class="toc-number">4.7.</span> <span class="toc-text">hexo-github-calendar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-generator-feed"><span class="toc-number">4.8.</span> <span class="toc-text">hexo-generator-feed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-algoliasearch"><span class="toc-number">4.9.</span> <span class="toc-text">hexo-algoliasearch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-url-submission"><span class="toc-number">4.10.</span> <span class="toc-text">hexo-url-submission</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-generator-sitemap"><span class="toc-number">4.11.</span> <span class="toc-text">hexo-generator-sitemap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-config-yml"><span class="toc-number">4.11.1.</span> <span class="toc-text">配置_config.yml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E9%99%A4%E9%A1%B5%E9%9D%A2"><span class="toc-number">4.11.2.</span> <span class="toc-text">排除页面</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-image-cloudflare"><span class="toc-number">4.12.</span> <span class="toc-text">hexo-image-cloudflare</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-steam-games"><span class="toc-number">4.13.</span> <span class="toc-text">hexo-steam-games</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1975607171/" title="Vue2学习笔记Part3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part3"/></a><div class="content"><a class="title" href="/posts/1975607171/" title="Vue2学习笔记Part3">Vue2学习笔记Part3</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2031351995/" title="在手机上使用MAA一键长草"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/arknights.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="在手机上使用MAA一键长草"/></a><div class="content"><a class="title" href="/posts/2031351995/" title="在手机上使用MAA一键长草">在手机上使用MAA一键长草</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/46558997/" title="Vue2学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/46558997/" title="Vue2学习笔记Part2">Vue2学习笔记Part2</a><time datetime="2023-08-05T16:00:00.000Z" title="发表于 2023-08-06 00:00:00">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2315174609/" title="Nodejs学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/nodejs.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Nodejs学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/2315174609/" title="Nodejs学习笔记Part2">Nodejs学习笔记Part2</a><time datetime="2023-07-14T16:00:00.000Z" title="发表于 2023-07-15 00:00:00">2023-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2614050479/" title="Vue2学习笔记Part1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part1"/></a><div class="content"><a class="title" href="/posts/2614050479/" title="Vue2学习笔记Part1">Vue2学习笔记Part1</a><time datetime="2023-07-13T16:00:00.000Z" title="发表于 2023-07-14 00:00:00">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://fastly.jsdelivr.net/gh/jerryc127/butterfly_cdn@2.1.0/top_img/index.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/web-info/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff00880">蜀</span>
+<span style="color:#ff00880">I</span>
+<span style="color:#ff00880">C</span>
+<span style="color:#ff00880">P</span>
+<span style="color:#ff00880">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff00880">20</span>
+<span style="color:#ff00880">22</span>
+<span style="color:#ff00880">01</span>
+<span style="color:#ff00880">84</span>
+<span style="color:#ff00880">59</span>
+<span style="color:#ff00880">号</span>
+<span style="color:#ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

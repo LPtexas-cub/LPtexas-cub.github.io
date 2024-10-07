@@ -1,0 +1,713 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>常用Hash算法 | 小狼的学习笔记</title><meta name="keywords" content="MD5,SHA-1"><meta name="author" content="Lptexas"><meta name="copyright" content="Lptexas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="edb0f3"><meta name="description" content="hash函数学习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用Hash算法">
+<meta property="og:url" content="https://lptexas.top/posts/139880178/index.html">
+<meta property="og:site_name" content="小狼的学习笔记">
+<meta property="og:description" content="hash函数学习。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://lptexas-cub.github.io/img/post/hash.png">
+<meta property="article:published_time" content="2022-11-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-04T08:15:56.680Z">
+<meta property="article:author" content="Lptexas">
+<meta property="article:tag" content="MD5">
+<meta property="article:tag" content="SHA-1">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://lptexas-cub.github.io/img/post/hash.png"><link rel="shortcut icon" href="https://lptexas.top/img/web-info/logo.jpg"><link rel="canonical" href="https://lptexas.top/posts/139880178/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"距离最近一次修改已经过去了","messageNext":"天了文章的内容可能已经过时，请注意辨别！"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b555","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '常用Hash算法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-04 16:15:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><!--include ./third-party/aplayer.pug--><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'edb0f3')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script src="/js/jquery.min.js"></script><link rel="stylesheet" href="/css/beautifly.css"><link rel="stylesheet" href="/css/iconfont/iconfont.css"><link rel="stylesheet" href="/css/function.min.css"></script><link rel="stylesheet" href="/css/hexoAdmonition.css"><script type="text/javascript" src="/js/banf12.js"></script><script>var _hmt = _hmt || [];(function(){var hm = document.createElement("script");hm.src="https://hm.baidu.com/hm.js?620b197f0a8f640c45f35a49041e7c3e";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script><meta name="baidu-site-verification" content="code-2fTRcAbDGe" /><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="小狼的学习笔记" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="onerror=null;src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('http://lptexas-cub.github.io/img/post/hash.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">小狼的学习笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/images/"><i class="fa-fw fas fa-images"></i><span> 图库</span></a></li><li><a class="site-page child" href="/collection/"><i class="fa-fw fa fa-globe"></i><span> 收藏</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-laptop"></i><span> 监控</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/server-android/"><i class="fa-fw fa fa-server"></i><span> AndroidSrv-Monitor</span></a></li><li><a class="site-page child" href="/server-minecraft-manager/"><i class="fa-fw fa fa-th-large"></i><span> MinecraftSrv-Penal</span></a></li><li><a class="site-page child" href="/frps-dashboard/"><i class="fa-fw fa fa-tachometer"></i><span> frp-dashboard</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/resume/"><i class="fa-fw fas fa-heart"></i><span> 简历</span></a></li><li><a class="site-page child" href="/schedule/"><i class="fa-fw fa fa-calendar"></i><span> 计划</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">常用Hash算法<a class="post-edit-link" href="https://github.com/LPtexas-cub/BlogSourceCode/edit/main/source/_posts/常用Hash算法.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-18T16:00:00.000Z" title="发表于 2022-11-19 00:00:00">2022-11-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-04T08:15:56.680Z" title="更新于 2024-10-04 16:15:56">2024-10-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="常用Hash算法"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Hash函数"><a href="#Hash函数" class="headerlink" title="Hash函数"></a>Hash函数</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>​    散列（Hash）函数，又称哈希函数或扎凑函数，是对不定长的输入产生定长输出的一种特殊函数，可以表达为h&#x3D;H(M)，M为消息，其长度不定，h被称为散列值、hash值、散列值或哈希值，长度一定，一般为128位或160位，如图1所示。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image001.png" alt="img"></p>
+<p>图1哈希函数</p>
+<h2 id="常见Hash算法"><a href="#常见Hash算法" class="headerlink" title="常见Hash算法"></a>常见Hash算法</h2><p>​    目前常用的Hash算法一般采用迭代型结构，这种结构的Hash函数已被证明是合理的。迭代型Hash函数的一般结构如图2所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image003.png" alt="img"></p>
+<p>图2Hash算法迭代型结构</p>
+<p>​    其中M&#x3D;Y0+Y1+…+YL-1，b为分组长度，n为输出的hash值长度，CVi是各级输出，CVL为Hash值。</p>
+<p>​    下面介绍几种Hash算法都采用这种迭代型结构。</p>
+<h2 id="MD5算法"><a href="#MD5算法" class="headerlink" title="MD5算法"></a>MD5算法</h2><p>​    MD5算法在产生摘要时，输入的信息可任意长，对输入按512位的分组为单位进行处理，处理后输出为128位的Hash值。</p>
+<h3 id="算法实例"><a href="#算法实例" class="headerlink" title="算法实例"></a>算法实例</h3><p>​    以明文“TheCaseOfmd5”为例，其16进制ASCII码为：5468652043617365204f66206d6435，转化为二进制为：10101000110100001100101001000000100001101100001011100110110010100100000010011110110011000100000011011010110010000110101，长度为119。</p>
+<h3 id="算法过程"><a href="#算法过程" class="headerlink" title="算法过程"></a>算法过程</h3><h4 id="第一步-消息填充"><a href="#第一步-消息填充" class="headerlink" title="第一步 消息填充"></a>第一步 消息填充</h4><p>使消息的长度比512的整数倍少64位。由于消息的长度为119，若要比512的整数倍少64位，则消息长度应为448，故需要填充1个“1”和328个“0”。又因为119&lt;264，故最后附上的64位为：0000000000000000000000000000000000000000000000000000000001110111。最终的消息长度&#x3D;119位原消息+329位0和1填充内容+64位原消息长度信息&#x3D;512位</p>
+<h4 id="第二步-初始化缓冲区"><a href="#第二步-初始化缓冲区" class="headerlink" title="第二步 初始化缓冲区"></a>第二步 初始化缓冲区</h4><p>缓冲区用32位的寄存器，初始存数以十六进制表示为：A&#x3D;0x12345678，B&#x3D;0x89ABCDEF，C&#x3D;0xFEDCBA98，D&#x3D;0x76543210。</p>
+<h4 id="第三步-HMD5­­运算"><a href="#第三步-HMD5­­运算" class="headerlink" title="第三步 HMD5­­运算"></a>第三步 HMD5­­运算</h4><p>以分组为单位对消息进行处理。本例中只有一个分组Y0，在Y0­组中需要经过压缩函数HMD5­­，其中包括4轮的处理过程。HMD5­­每轮的处理过程结构一样，但所用的逻辑函数不同，分别为F、G、H、I。每轮的输入为当前处理的消息分组Y0和缓冲区的当前值A、B、C、D，输出仍放在缓冲区中以产生新的A、B、C、D。每轮又要进行16步迭代运算，4轮共需64步完成。第四轮的输出与第一轮的输入相加得到最后的输出。如下图3、图4所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image005.png" alt="img"></p>
+<p>图3一个分组的Hmd5处理</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image007.png" alt="img"></p>
+<p>图4一步迭代</p>
+<p>表1逻辑函数</p>
+<table>
+<thead>
+<tr>
+<th>轮</th>
+<th>基本函数g</th>
+<th>g(b,c,d)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>F(b,c,d)</td>
+<td>(bÙc)Ú(b­-Ùd)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>G(b,c,d)</td>
+<td>(bÙd)Ú(cÙd-)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>H(b,c,d)</td>
+<td>bÅcÅd</td>
+</tr>
+<tr>
+<td>4</td>
+<td>I(b,c,d)</td>
+<td>cÅ(bÚd-)</td>
+</tr>
+</tbody></table>
+<p>表 2 512位分组中x[k]的使用顺序</p>
+<table>
+<thead>
+<tr>
+<th>轮</th>
+<th>使用顺序</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>x[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]</td>
+</tr>
+<tr>
+<td>2</td>
+<td>x[1,6,11,0,5,10,15,4,9,14,3,8,13,2,7,12]</td>
+</tr>
+<tr>
+<td>3</td>
+<td>x[5,8,11,14,1,4,7,10,13,0,3,6,9,12,15,2]</td>
+</tr>
+<tr>
+<td>4</td>
+<td>x[0,7,14,5,12,3,10,1,8,15,6,13,4,11,2,9]</td>
+</tr>
+</tbody></table>
+<p>表 3 从正弦函数构造的表T</p>
+<table>
+<thead>
+<tr>
+<th>0xD76AA478</th>
+<th>0xE8C7B756</th>
+<th>0x242070DB</th>
+<th>0xC1BDCEEE</th>
+<th>0xF57C0FAF</th>
+<th>0x4787C62A</th>
+<th>0xA8304613</th>
+<th>0xFD469501</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x698098D8</td>
+<td>0x8B44F7AF</td>
+<td>0xFFFF5BB1</td>
+<td>0x895CD7BE</td>
+<td>0x6B901122</td>
+<td>0xFD987193</td>
+<td>0xA679438E</td>
+<td>0x49B40821</td>
+</tr>
+<tr>
+<td>0xF61E2562</td>
+<td>0xC040B340</td>
+<td>0x265E5A51</td>
+<td>0xE9B6C7AA</td>
+<td>0xD62F105D</td>
+<td>0x02441453</td>
+<td>0xD8A1E681</td>
+<td>0xE7D3FBC8</td>
+</tr>
+<tr>
+<td>0x21E1CDE6</td>
+<td>0xC33707D6</td>
+<td>0xF4D50D87</td>
+<td>0x455A14ED</td>
+<td>0xA9E3E905</td>
+<td>0xFCEFA3F8</td>
+<td>0x676F02D9</td>
+<td>0x8D2A4C8A</td>
+</tr>
+<tr>
+<td>0xFFFA3942</td>
+<td>0x8771F681</td>
+<td>0x6D9D6122</td>
+<td>0xFDE5380C</td>
+<td>0xA4BEEA44</td>
+<td>0x4BDECFA9</td>
+<td>0xF6BB4B60</td>
+<td>0xBEBFBC70</td>
+</tr>
+<tr>
+<td>0x289B7EC6</td>
+<td>0xEAA127FA</td>
+<td>0xD4EF3085</td>
+<td>0x04881D05</td>
+<td>0xD9D4D039</td>
+<td>0xE6DB99E5</td>
+<td>0x1FA27CF8</td>
+<td>0xC4AC5665</td>
+</tr>
+<tr>
+<td>0xF4292244</td>
+<td>0x432AFF97</td>
+<td>0xAB9423A7</td>
+<td>0xFC93A039</td>
+<td>0x655B59C3</td>
+<td>0x8F0CCC92</td>
+<td>0xFFEFF47D</td>
+<td>0x85845DD1</td>
+</tr>
+<tr>
+<td>0x6FA87E4F</td>
+<td>0xFE2CE6E0</td>
+<td>0xA3014314</td>
+<td>0x4E0811A1</td>
+<td>0xF7537E82</td>
+<td>0xBD3AF235</td>
+<td>0x2AD7D2BB</td>
+<td>0xEB86D391</td>
+</tr>
+</tbody></table>
+<p>​    （注：从第一行起从左往右读，分别表示T[1，2，…，64]，前两行参与第一轮运算，三四行参与第二轮，以此类推。每两行共16个数据依次对应每轮中16步。）</p>
+<p>​    CLSs规则</p>
+<table>
+<thead>
+<tr>
+<th>轮</th>
+<th>1-4步</th>
+<th>5-8步</th>
+<th>9-12步</th>
+<th>13-16步</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>7、12、17、22</td>
+<td>7、12、17、22</td>
+<td>7、12、17、22</td>
+<td>7、12、17、22</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5、9、14、20</td>
+<td>5、9、14、20</td>
+<td>5、9、14、20</td>
+<td>5、9、14、20</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4、11、16、23</td>
+<td>4、11、16、23</td>
+<td>4、11、16、23</td>
+<td>4、11、16、23</td>
+</tr>
+<tr>
+<td>4</td>
+<td>6、10、15、21</td>
+<td>6、10、15、21</td>
+<td>6、10、15、21</td>
+<td>6、10、15、21</td>
+</tr>
+</tbody></table>
+<p>根据上述的三个表以及左移规则，就可以开始md5的计算了。首先，将填充结果分成16段每段32位。</p>
+<p>X[0]：10101000110100001100101001000000 转为16进制为 0xA8D0CA40</p>
+<p>X[1]： 10000110110000101110011011001010</p>
+<p>X[2]： 01000000100111101100110001000000<br> X[3]： 11011010110010000110101100000000<br> …    (注：X[4]-X[13]每段32位上都为0)<br> X[14]：00000000000000000000000000000000<br> X[15]：00000000000000000000000001110111</p>
+<p>第一轮第一步迭代，如图 5所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image008.png" alt="img"></p>
+<p>图5 第一轮第一步迭代带数据</p>
+<p>（注：上述演示数据均为16进制）</p>
+<p>​     第一轮之后的15步以及剩余各轮中的16步都类似图5的操作，不再做演示。</p>
+<h4 id="第四步-输出"><a href="#第四步-输出" class="headerlink" title="第四步 输出"></a>第四步 输出</h4><p>​    最终，经过64步运算后，所得的结果与最初输入的分组进行模232加法（如果两数相加后大于等于232，则结果除以232取余数），见图3。由于本例中只有一个分组，故所得结果即为最终输出，128位的消息摘要（输出位A、B、C、D的值：低字节位A,最高字节位D）。举例如下图5所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image010.png" alt="img"></p>
+<p>图 6 最终输出结果举例</p>
+<h2 id="SHA算法"><a href="#SHA算法" class="headerlink" title="SHA算法"></a>SHA算法</h2><h3 id="算法实例-1"><a href="#算法实例-1" class="headerlink" title="算法实例"></a>算法实例</h3><p>​    以明文“TheCaseOfsha-1”为例。其二进制值为101010001101000011001010100001101100001011100110110010101001111011001100111001101101000011000010010110100110001，长度为111。</p>
+<h3 id="算法过程-1"><a href="#算法过程-1" class="headerlink" title="算法过程"></a>算法过程</h3><p>SHA处理消息的过程与MD5算法类似。</p>
+<h4 id="第一步-消息填充-1"><a href="#第一步-消息填充-1" class="headerlink" title="第一步 消息填充"></a>第一步 消息填充</h4><p>填充消息使其长度与448模512同余。填充的方法是在消息后附加一个1和若干个0。然后附上填充前的报文长度的64位数据（最高有效位在前）。</p>
+<p>本例需要填充1个“1”和337个“0”，最后附上111的长度信息11011110 00000000  00000000  00000000  00000000  00000000  00000000  00000000。</p>
+<h4 id="第二步-初始化缓冲区-1"><a href="#第二步-初始化缓冲区-1" class="headerlink" title="第二步 初始化缓冲区"></a>第二步 初始化缓冲区</h4><p>哈希函数的中间结果和最终结果保存于160位的缓冲区中，缓冲区用5个32位的寄存器（A、B、C、D、E）表示，并将寄存器初始化为下列32位的整数：</p>
+<p>A&#x3D;67452301，B&#x3D;EFCDAB89，C&#x3D;98BADCFB，D&#x3D;10325476，E&#x3D;C3D2E1F0</p>
+<h4 id="第三步-HSHA-1算法"><a href="#第三步-HSHA-1算法" class="headerlink" title="第三步 HSHA-1算法"></a>第三步 HSHA-1算法</h4><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image012.png" alt="img"></p>
+<p>图 7 SHA-1算法产生消息摘要</p>
+<p>类似MD5算法，SHA-1算法也具有4轮运算模块，但每轮进行20步迭代。每轮输入为消息分组Yq 和缓冲区的160位当前值A、B、C、D、E。输出为新的缓冲区值A、B、C、D、E。每轮的结构相同，但每轮使用一个不同的加法常量Kt 其中t表示步数，0≤t≤79，如表所示，且每轮使用不同的逻辑函数。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image013.png" alt="img"></p>
+<p>图 8 一个分组的HSHA-1 处理</p>
+<p>表 4  算法中使用的加法常量</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>十六进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0≤t≤19</td>
+<td>Kt &#x3D;5A827999</td>
+</tr>
+<tr>
+<td>20≤t≤39</td>
+<td>Kt &#x3D;6ED9EBA1</td>
+</tr>
+<tr>
+<td>40≤t≤59</td>
+<td>Kt &#x3D;8F1BBCDC</td>
+</tr>
+<tr>
+<td>60≤t≤76</td>
+<td>Kt &#x3D;CA62C1D6</td>
+</tr>
+</tbody></table>
+<p>表 5 各轮中使用的逻辑函数</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>Kt的十六进制</th>
+<th>取整数部分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0&lt;&#x3D; t &lt;&#x3D;19</td>
+<td>f1 &#x3D; f(t,B,C,D)</td>
+<td>(B&amp;C)|((~B)&amp;D)</td>
+</tr>
+<tr>
+<td>20&lt;&#x3D; t &lt;&#x3D;39</td>
+<td>f2 &#x3D; f(t,B,C,D)</td>
+<td>B<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image014.gif" alt="\displaystyle \oplus">C<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image014.gif" alt="\displaystyle \oplus">D</td>
+</tr>
+<tr>
+<td>40&lt;&#x3D;t&lt;&#x3D;59</td>
+<td>f3 &#x3D; f(t,B,C,D)</td>
+<td>(B&amp;C)|(B&amp;D)|(C&amp;D)</td>
+</tr>
+<tr>
+<td>60&lt;&#x3D;t&lt;&#x3D;79</td>
+<td>f4 &#x3D; f(t,B,C,D)</td>
+<td>B<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image014.gif" alt="\displaystyle \oplus">C<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image014.gif" alt="\displaystyle \oplus">D</td>
+</tr>
+</tbody></table>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image016.png" alt="img"></p>
+<p>图 9 Wt的导出过程</p>
+<p>开始运算，首先将Y0分为16个分组：</p>
+<p>W0&#x3D;10101000110100001100101010000110<br> W1&#x3D;11000010111001101100101010011110<br> W2&#x3D;11001100111001101101000011000010<br> W3&#x3D;01011010011000110000000000000000</p>
+<p>W4-13&#x3D;0000000000000000…000000000000</p>
+<p>W14&#x3D;11011110000000000000000000000000<br> W15&#x3D;00000000000000000000000000000000<br> 再利用分好的16个组计算剩余的分组，以W16为例：</p>
+<p>​    W0<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image014.gif" alt="\displaystyle \oplus"> W2 <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image017.png" alt="img"> W8 <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image017.png" alt="img"> W13&#x3D;1100100001101100001101001000100</p>
+<p>​    W16&#x3D;CLS1(1100100001101100001101001000100)&#x3D;1001000011011000011010010001001</p>
+<p>进入轮操作，以第一轮第一步为例：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas.top/img/post/clip_image018.png" alt="img"></p>
+<p>图 10 第一轮第一步SHA操作</p>
+<h4 id="第四步-输出-1"><a href="#第四步-输出-1" class="headerlink" title="第四步 输出"></a>第四步 输出</h4><p>分组处理完毕后，输出的就是160位的消息摘要。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://lptexas.top">Lptexas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lptexas.top/posts/139880178/">https://lptexas.top/posts/139880178/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lptexas.top" target="_blank">小狼的学习笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MD5/">MD5</a><a class="post-meta__tags" href="/tags/SHA-1/">SHA-1</a></div><div class="post_share"><div class="social-share" data-image="http://lptexas-cub.github.io/img/post/hash.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/3800886977/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://lptexas-cub.github.io/img/post/git.png" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Git使用教程</div></div></a></div><div class="next-post pull-right"><a href="/posts/234306295/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/kerberos.jpg" onerror="onerror=null;src='https://lptexas.top/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Kerberos协议下免密SSH会话</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas.top/img/web-info/avator.jpg" onerror="this.onerror=null;this.src='https://lptexas.top/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Lptexas</div><div class="author-info__description">前端|后端|运维</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">115</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">92</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">18</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LPtexas-cub"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=KdVlnsIni7_hzcBCaK58Eydx9x3gt2CF&amp;noverify=0" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://www.zhihu.com/people/ashbell" target="_blank" title="知乎"><i class="iconfont icon-zhihu-circle-fill"></i></a><a class="social-icon" href="mailto:Asucanyh@outlook.com" target="_blank" title="Email"><i class="fa fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">A<br><a target="_blank" rel="noopener" href="https://LPtexas-cub.github.io/">Github Version</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hash%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">Hash函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81Hash%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">常见Hash算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MD5%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">MD5算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">算法实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">算法过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E6%B6%88%E6%81%AF%E5%A1%AB%E5%85%85"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">第一步 消息填充</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-%E5%88%9D%E5%A7%8B%E5%8C%96%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">第二步 初始化缓冲区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5-HMD5%C2%AD%C2%AD%E8%BF%90%E7%AE%97"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">第三步 HMD5­­运算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5-%E8%BE%93%E5%87%BA"><span class="toc-number">1.3.2.4.</span> <span class="toc-text">第四步 输出</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SHA%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">SHA算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E4%BE%8B-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">算法实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">算法过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E6%B6%88%E6%81%AF%E5%A1%AB%E5%85%85-1"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">第一步 消息填充</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-%E5%88%9D%E5%A7%8B%E5%8C%96%E7%BC%93%E5%86%B2%E5%8C%BA-1"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">第二步 初始化缓冲区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5-HSHA-1%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">第三步 HSHA-1算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5-%E8%BE%93%E5%87%BA-1"><span class="toc-number">1.4.2.4.</span> <span class="toc-text">第四步 输出</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/1975607171/" title="Vue2学习笔记Part3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part3"/></a><div class="content"><a class="title" href="/posts/1975607171/" title="Vue2学习笔记Part3">Vue2学习笔记Part3</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2031351995/" title="在手机上使用MAA一键长草"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/arknights.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="在手机上使用MAA一键长草"/></a><div class="content"><a class="title" href="/posts/2031351995/" title="在手机上使用MAA一键长草">在手机上使用MAA一键长草</a><time datetime="2023-08-06T16:00:00.000Z" title="发表于 2023-08-07 00:00:00">2023-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/46558997/" title="Vue2学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/46558997/" title="Vue2学习笔记Part2">Vue2学习笔记Part2</a><time datetime="2023-08-05T16:00:00.000Z" title="发表于 2023-08-06 00:00:00">2023-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2315174609/" title="Nodejs学习笔记Part2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/nodejs.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Nodejs学习笔记Part2"/></a><div class="content"><a class="title" href="/posts/2315174609/" title="Nodejs学习笔记Part2">Nodejs学习笔记Part2</a><time datetime="2023-07-14T16:00:00.000Z" title="发表于 2023-07-15 00:00:00">2023-07-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/2614050479/" title="Vue2学习笔记Part1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/post/vue.png" onerror="this.onerror=null;this.src='https://lptexas.top/img/404.jpg'" alt="Vue2学习笔记Part1"/></a><div class="content"><a class="title" href="/posts/2614050479/" title="Vue2学习笔记Part1">Vue2学习笔记Part1</a><time datetime="2023-07-13T16:00:00.000Z" title="发表于 2023-07-14 00:00:00">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('http://lptexas-cub.github.io/img/post/hash.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Lptexas</div><div class="framework-info"><!-- span= _p('footer.framework') + ' '--><!-- a(href='https://hexo.io')= 'Hexo'--><!-- span.footer-separator |--><!-- span= _p('footer.theme') + ' '--><!-- a(href='https://github.com/jerryc127/hexo-theme-butterfly')= 'Butterfly'--><span>邮箱 </span><span class="footer-separator">|</span><a href="mailto:asucanyh@outlook.com">@Asucanyh</a></div><div class="framework-info"><!--img(src = '')--><!--span= ' '--><!--a(href='https://beian.miit.gov.cn/')= '待获取'--><img style="width:24px;height:24px;margin-bottom:-4px" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lptexas-cub.github.io/img/web-info/gongan.png"/><a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="">
+<span style="color:#ff00880">蜀</span>
+<span style="color:#ff00880">I</span>
+<span style="color:#ff00880">C</span>
+<span style="color:#ff00880">P</span>
+<span style="color:#ff00880">备</span> 
+</a>
+<a href="https://beian.miit.gov.cn" target="_blank" data-pjax-state="external"> 
+<span style="color:#ff00880">20</span>
+<span style="color:#ff00880">22</span>
+<span style="color:#ff00880">01</span>
+<span style="color:#ff00880">84</span>
+<span style="color:#ff00880">59</span>
+<span style="color:#ff00880">号</span>
+<span style="color:#ff00880">-1</span>
+</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.lptexas.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.lptexas.top',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script type="text/javascript" color="238,130,238" opacity='0.9' zIndex="1" count="99" src="/js/canvas-nest.js"></script><div class="aplayer no-destroy" data-id="7983636384" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false" data-loop="all"> </div><div id="sakana-widget" style="position:fixed;bottom:10px;right:35px;z-index:999;"></div><script>function initSakanaWidget() {new SakanaWidget().mount('#sakana-widget');}</script><script async onload="initSakanaWidget()" src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.2/lib/sakana.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="❤富强❤,❤民主❤,❤文明❤,❤和谐❤,❤自由❤,❤平等❤,❤公正❤,❤法治❤,❤爱国❤,❤敬业❤,❤诚信❤,❤友善❤" data-fontsize="17px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><!--if theme.aplayer && theme.aplayer.enable--><!--	.aplayer(data-id=theme.aplayer.id data-server=theme.aplayer.server data-type=theme.aplayer.type data-fixed=theme.aplayer.fixed data-mini=theme.aplayer.mini //data-listFolded=theme.aplayer.listFolded data-order=theme.aplayer.order data-preload=theme.aplayer.preload)--><!--	each item in theme.aplayer.css--><!--		link(rel='stylesheet', href=item)--><!--	each item in theme.aplayer.js--><!--		script(src=item)--><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
